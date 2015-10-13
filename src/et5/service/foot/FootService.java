@@ -22,7 +22,6 @@ import eu.dataaccess.footballpool.TGoal;
 public class FootService {
 	
 	/* parameters for wsdl acces*/
-	private Info info;
 	private InfoSoapType soap;
 	
 	/**
@@ -38,7 +37,6 @@ public class FootService {
 	 * @param info for wsdl access
 	 */
 	public FootService(Info info) {
-		this.info = info;
 		this.soap = info.getInfoSoap();
 	}
 
