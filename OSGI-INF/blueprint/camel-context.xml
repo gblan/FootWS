@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint
+	xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.osgi.org/xmlns/blueprint/v1.0.0
+		http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+
+	<camelContext xmlns="http://camel.apache.org/schema/blueprint">
+		<route>
+    		<from uri="activemq:queue:requestQueue"/>
+    		<bean ref="logger" method="logginCamel" />
+    		<bean ref="serviceProxy" method="ServiceCamel" />
+    		<to uri="activemq:queue:responseQueue"/>
+    	</route>   	
+	</camelContext>
+
+	<bean id="activemq" class="org.apache.camel.component.jms.JmsComponent">
+		<property name="connectionFactory">
+			<bean class="org.apache.activemq.ActiveMQConnectionFactory">
+				<property name="brokerURL" value="tcp://localhost:61616" />
+			</bean>
+		</property>
+	</bean>
+	<bean id="logger" class="ex11.service.LogginCamel" />
+	<bean id="serviceProxy" class="ex11.service.ServiceCamel" />
+
+</blueprint>

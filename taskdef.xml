@@ -1,0 +1,36 @@
+<?xml version="1.0" standalone="yes"?>
+
+<project basedir=".">
+	<!-- PROPRIETES à adapter -->
+	<property name="jdk.home" value="${java.home}" />
+	<property name="jaxws.home" value="${basedir}/metro/lib" />
+	
+	<path id="classpath">
+		<fileset dir="${jdk.home}" includes="lib/*.jar" />
+		<fileset dir="${jaxws.home}" includes="*.jar" />
+	</path>
+
+	<path id="classpath">
+		<fileset dir="${jdk.home}" includes="lib/*.jar" />
+		<fileset dir="${jaxws.home}" includes="*.jar" />
+	</path>
+
+	<taskdef name="schemagen" classname="com.sun.tools.jxc.SchemaGenTask">
+	    <classpath refid="classpath" />
+	</taskdef>
+	
+	<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+	    <classpath refid="classpath" />
+	</taskdef>
+	
+	<taskdef name="wsimport" classname="com.sun.tools.ws.ant.WsImport">
+	    <classpath refid="classpath" />
+	</taskdef>
+
+	<taskdef name="wsgen" classname="com.sun.tools.ws.ant.WsGen">
+	    <classpath refid="classpath" />
+	</taskdef>
+
+
+</project>
+

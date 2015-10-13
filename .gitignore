@@ -1,8 +1,9 @@
 metro/
 bin/
+.settings/
 
 # Ignoring Eclipse(IDE):  specific files
 build
-.classpath/
+.classpath
 .project
-.settings
+FootWS.jar

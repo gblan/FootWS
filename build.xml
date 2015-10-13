@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Script ANT de déploiement pour ServiceMix -->
+<project name="FootWS" default="all" basedir=".">
+	<property name="work" value="${basedir}" />
+	<property name="bundle" value="${ant.project.name}" />
+
+	<target name="all" depends="package" />
+
+	<target name="clean">
+		<delete dir="${work}/${bundle}" />
+	</target>
+	
+	<target name="init">
+		<mkdir dir="${work}/${bundle}" />
+	</target>
+	
+	<target name="package" depends="clean,init">
+		<copy todir="${work}/${bundle}" overwrite="true">
+			<fileset dir="bin" />
+		</copy>
+		<copy todir="${work}/${bundle}/OSGI-INF" overwrite="true">
+			<fileset dir="OSGI-INF" />
+		</copy>
+		<jar destfile="${work}/${bundle}.jar" basedir="${work}/${bundle}">
+			<manifest>
+				<attribute name="Bundle-ManifestVersion" value="2.0" />
+				<attribute name="Bundle-Name" value="${bundle}" />
+				<attribute name="Bundle-SymbolicName" value="${bundle}" />
+				<attribute name="Bundle-Version" value="1.0.0.0" />
+				<attribute name="DynamicImport-Package" value="*" />
+			</manifest>
+		</jar>
+		<antcall target="clean"></antcall>
+	</target>
+
+</project>
