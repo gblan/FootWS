@@ -1,3 +1,5 @@
+package et5.service.foot;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,42 +15,55 @@ import eu.dataaccess.footballpool.TGameCard;
 import eu.dataaccess.footballpool.TGameInfo;
 import eu.dataaccess.footballpool.TGoal;
 
-public class main {
-
-	static Info info = new Info();
-	static InfoSoapType soap = info.getInfoSoap();
-
-	final static int NB_MATCHES_FIRST_LAP = 48;
-	final static int NB_MATCHES_SECOND_LAP = 56; // huitièmes
-	final static int NB_MATCHES_THIRD_LAP = 60; // quarts
-	final static int NB_MATCHES_FOURTH_LAP = 62; // demis
-	final static int NB_MATCHES_FINAL_LAP = 63; // finale
-
-	public static void main(String[] args) {
-
-		String country = "Germany";
-		List<Integer> idPays = getAllIdTeam(country);
-		System.out.println("Parcours : \n");
-		for (int id : idPays) {
-			printInfoMatchById(id);
-		}
-		
-		getCountryInformation(country);
+/**
+ * Class used to get information about football using the webservice 
+ * http://footballpool.dataaccess.eu/data/info.wso?wsdl
+ */
+public class FootService {
+	
+	/* parameters for wsdl acces*/
+	private Info info;
+	private InfoSoapType soap;
+	
+	/**
+	 * const to know the kind of match was played
+	 */
+	final static int NB_FIRST_LAP = 48;
+	final static int NB_SECOND_LAP = 56; // 1/8
+	final static int NB_THIRD_LAP = 60; // 1/4
+	final static int NB_FOURTH_LAP = 62; // 1/2
+	final static int NB_FINAL_LAP = 63; // final
+	
+	/**
+	 * @param info for wsdl access
+	 */
+	public FootService(Info info) {
+		this.info = info;
+		this.soap = info.getInfoSoap();
 	}
 
-	private static void getCountryInformation(String country) {
+	/**
+	 * print information about a country in param
+	 * @param country
+	 * @return String 
+	 */
+	public String getCountryInformation(String country) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("\nTimes at World Cup : "+soap.playedAtWorldCup(country));
-		TFullTeamInfo teamInfo = soap.fullTeamInfo(country);
+		sb.append("\nTimes at World Cup : "+this.soap.playedAtWorldCup(country));
+		TFullTeamInfo teamInfo = this.soap.fullTeamInfo(country);
 		sb.append("\n"+teamInfo.getSCoach());
 		sb.append("\n"+teamInfo.getSCountryFlagLarge());		
-		System.out.println(sb);
+		return sb.toString();
 	}
 
-	private static List<Integer> getAllIdTeam(String country) {
+	/**
+	 * @param String country
+	 * @return List of all matchs of team passed in param
+	 */
+	public List<Integer> getAllMatchesTeam(String country) {
 		List<Integer> result = new ArrayList<Integer>();
 
-		ArrayOftGameInfo games = soap.allGames();
+		ArrayOftGameInfo games = this.soap.allGames();
 		List<TGameInfo> listGames = games.getTGameInfo();
 
 		for (TGameInfo game : listGames) {
@@ -61,34 +76,40 @@ public class main {
 		return result;
 	}
 
-	private static void printInfoMatchById(int i) {
+	/**
+	 * print info on a specific match passed in parameter
+	 * @param idMatch
+	 */
+	public String getInfoMatchById(int id) {
 		StringBuilder sb = new StringBuilder();
-		TGameInfo gameInfo = soap.gameInfo(i);
+		TGameInfo gameInfo = this.soap.gameInfo(id);
 
+		/* print match category */
 		int idMatch = Integer
 				.parseInt(gameInfo.getSDescription().split(" ")[1]);
 		sb.append("### Match " + idMatch + " : ");
-		if (idMatch <= NB_MATCHES_FIRST_LAP) {
+		if (idMatch <= NB_FIRST_LAP) {
 			sb.append("poules");
-		} else if (idMatch <= NB_MATCHES_SECOND_LAP) {
+		} else if (idMatch <= NB_SECOND_LAP) {
 			sb.append("1/8");
-		} else if (idMatch <= NB_MATCHES_THIRD_LAP) {
+		} else if (idMatch <= NB_THIRD_LAP) {
 			sb.append("1/4");
-		} else if (idMatch <= NB_MATCHES_FOURTH_LAP) {
+		} else if (idMatch <= NB_FOURTH_LAP) {
 			sb.append("1/2");
-		} else if (idMatch <= NB_MATCHES_FINAL_LAP) {
+		} else if (idMatch <= NB_FINAL_LAP) {
 			sb.append("final");
 		}
 
+		/* final score */
 		sb.append("\nFinal score : ");
 		sb.append(gameInfo.getTeam1().getSName() + "\t" + gameInfo.getSScore()
 				+ "\t" + gameInfo.getTeam2().getSName());
 
-		// Stade
+		/* Stade on maps  */
 		sb.append("\nURL STADE : "+gameInfo.getStadiumInfo().getSGoogleMapsURL());
 
+		/* goals */
 		sb.append("\n\n### goals ###");
-		// buteurs
 		ArrayOftGoal goals = gameInfo.getGoals();
 		List<TGoal> listGoal = goals.getTGoal();
 		Collections.sort(listGoal, GoalComparator.getminuteGoalComparator());
@@ -98,8 +119,8 @@ public class main {
 					+ " , " + goal.getSPlayerName());
 		}
 
+		/* cards*/
 		sb.append("\n\n### Cards ###");
-		// cartons
 		ArrayOftGameCard cards = gameInfo.getCards();
 		for (TGameCard card : cards.getTGameCard()) {
 			sb.append("\n" + card.getSTeamName()
@@ -111,6 +132,6 @@ public class main {
 
 			}
 		}
-		System.out.println(sb);
+		return sb.toString();
 	}
 }
