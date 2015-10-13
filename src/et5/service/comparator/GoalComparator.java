@@ -1,3 +1,4 @@
+package et5.service.comparator;
 import java.util.Comparator;
 
 import eu.dataaccess.footballpool.TGoal;

@@ -1,4 +1,4 @@
-package et5.service;
+package et5.service.camel;
 
 import org.apache.camel.Exchange;
 import org.apache.log4j.Logger;

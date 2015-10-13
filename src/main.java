@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import et5.service.comparator.GoalComparator;
 import eu.dataaccess.footballpool.ArrayOftGameCard;
 import eu.dataaccess.footballpool.ArrayOftGameInfo;
 import eu.dataaccess.footballpool.ArrayOftGoal;
