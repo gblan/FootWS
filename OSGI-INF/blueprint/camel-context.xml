@@ -8,10 +8,33 @@
 
 	<camelContext xmlns="http://camel.apache.org/schema/blueprint">
 		<route>
-    		<from uri="activemq:queue:requestQueue"/>
-    		<bean ref="logger" method="logginCamel" />
-    		<bean ref="serviceProxy" method="ServiceCamel" />
-    		<to uri="activemq:queue:responseQueue"/>
+    		<from uri="activemq:queue:fournisseur.requestQueue"/>
+    		<choice>
+    			<!-- ASYNCHRONE MAIL RESULT -->
+	    		<when>
+					<simple>${headers.operationName} == 'obtenir_parcours_mail'</simple>
+					<bean ref="log" method="log" />					
+					<bean ref="service" method="obtenirParcours" />					
+					<bean ref="log" method="log" />					
+					<bean ref="service" method="envoiEmail" />
+					<bean ref="log" method="log" />					
+	    		</when>
+	    		<!-- SYNCHRONE XML RESULT -->
+	    		<when>
+					<simple>${headers.operationName} == 'obtenir_parcours_xml'</simple>
+					<bean ref="log" method="log" />					
+					<bean ref="service" method="obtenirParcours" />					
+					<bean ref="log" method="log" />					
+	    		</when>
+	    		<!-- AFFICHER_CARTE -->
+	    		<when>
+					<simple>${headers.operationName} == 'affiche_carte'</simple>
+					<bean ref="log" method="log" />					
+					<bean ref="service" method="afficherCarte" />					
+					<bean ref="log" method="log" />					
+	    		</when>
+    		</choice>
+    		<to uri="activemq:queue:fournisseur.responseQueue"/>
     	</route>   	
 	</camelContext>
 
@@ -22,7 +45,6 @@
 			</bean>
 		</property>
 	</bean>
-	<bean id="logger" class="ex11.service.LogginCamel" />
-	<bean id="serviceProxy" class="ex11.service.ServiceCamel" />
-
+	<bean id="log" class="et5.service.camel.Log" />
+	<bean id="service" class="et5.service.camel.Service" />
 </blueprint>

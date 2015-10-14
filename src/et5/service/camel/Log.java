@@ -3,15 +3,14 @@ package et5.service.camel;
 import org.apache.camel.Exchange;
 import org.apache.log4j.Logger;
 
-
-public class LogginCamel {
-	private static final Logger logger = Logger.getLogger(LogginCamel.class); 
+public class Log {
+	private static final Logger logger = Logger.getLogger(Log.class); 
 
 	/**
-	 * method print exchange
+	 * Log exchange
 	 * @param exchange
 	 */
-	public void logginCamel(Exchange ex){
+	public void log(Exchange ex){
 		logger.info("["+ex.getExchangeId()+"] : "+ex.getIn().getBody(String.class));						
 	}
 }
