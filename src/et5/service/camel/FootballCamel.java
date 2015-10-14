@@ -13,4 +13,8 @@ public class FootballCamel {
 //		InfoSoapType soap = info.getInfoSoap();
 		
 	}
+	
+	public void afficherCarte(Exchange ex){
+		// Ville en parametre
+	}
 }
