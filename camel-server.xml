@@ -18,10 +18,8 @@ http://camel.apache.org/schema/spring/camel-spring.xsd">
 					<!-- ASYNCHRONE MAIL RESULT -->
 					<camel:simple>${headers.operationName} == 'sendMail'</camel:simple>
 					
-					<camel:bean ref="footCamel" method="getTeamRouteCamel" />
-					
-					<camel:bean ref="log" method="logginCamelXml" />
-					
+					<camel:bean ref="footCamel" method="getTeamRouteCamel" />					
+					<camel:bean ref="log" method="logginCamelXml" />					
 					<camel:bean ref="mail" method="sendMailCamel" />
 					
 
@@ -31,7 +29,6 @@ http://camel.apache.org/schema/spring/camel-spring.xsd">
 					<camel:simple>${headers.operationName} == 'returnXml'</camel:simple>
 
 					<camel:bean ref="footCamel" method="getTeamRouteCamel" />
-
 					<camel:bean ref="log" method="logginCamelXml" />
 					<camel:to uri="activemq:fournisseur.responseQueue" />
 				</camel:when>
