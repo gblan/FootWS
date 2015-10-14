@@ -1,0 +1,64 @@
+
+package org.oorsprong.websamples;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+
+/**
+ * <p>Classe Java pour anonymous complex type.
+ * 
+ * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+ * 
+ * <pre>
+ * &lt;complexType>
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="CountryCurrencyResult" type="{http://www.oorsprong.org/websamples.countryinfo}tCurrency"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = {
+    "countryCurrencyResult"
+})
+@XmlRootElement(name = "CountryCurrencyResponse")
+public class CountryCurrencyResponse {
+
+    @XmlElement(name = "CountryCurrencyResult", required = true)
+    protected TCurrency countryCurrencyResult;
+
+    /**
+     * Obtient la valeur de la propriété countryCurrencyResult.
+     * 
+     * @return
+     *     possible object is
+     *     {@link TCurrency }
+     *     
+     */
+    public TCurrency getCountryCurrencyResult() {
+        return countryCurrencyResult;
+    }
+
+    /**
+     * Définit la valeur de la propriété countryCurrencyResult.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link TCurrency }
+     *     
+     */
+    public void setCountryCurrencyResult(TCurrency value) {
+        this.countryCurrencyResult = value;
+    }
+
+}
