@@ -28,7 +28,7 @@ public class ConsoleHTTPClient {
 			
 			System.out.println(" >> Requete envoyee,  ID = ");
 		}
-
+		scanner.close();
 	}
 	
 	private void readResponse(){
@@ -40,8 +40,8 @@ public class ConsoleHTTPClient {
 	
 	/**
 	 * Open the user default browser and go to the url passed as a parameter
-	 * 
-	 * Note : s'il faut prendre en compte l'OS : https://openclassrooms.com/forum/sujet/ouvrir-une-page-web-54152
+	 * Tested on Windows 7, 8, Ubuntu
+	 * https://openclassrooms.com/forum/sujet/ouvrir-une-page-web-54152
 	 * @param url
 	 * @throws IOException
 	 */
@@ -50,7 +50,7 @@ public class ConsoleHTTPClient {
 		Desktop.getDesktop().browse(uri);
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		try {
 			ConsoleHTTPClient client = new ConsoleHTTPClient();
 			client.connect();

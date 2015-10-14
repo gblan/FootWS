@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <project name="ServerFoot" basedir="." default="generateProxy">
-	<import file="taskdef.xml"/>
+	<import file="taskdef.xml" />
 
-	<property name="wsdl" value="http://footballpool.dataaccess.eu/data/info.wso?wsdl" />
-
+	<!--<property name="wsdl" value="http://footballpool.dataaccess.eu/data/info.wso?wsdl" />-->
+	<property name="wsdl" value="http://www.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?WSDL" />
+	
 	<target name="generateProxy">
-		<wsimport 
-			debug="false"
-			verbose="false"
-			destdir="./bin"
-			keep="true"
-			sourcedestdir="./src"
-			wsdl="${wsdl}">
+		<wsimport debug="false" verbose="false" destdir="./bin" keep="true" sourcedestdir="./src" wsdl="${wsdl}">
 		</wsimport>
 	</target>
 </project>
