@@ -12,11 +12,11 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class Utils {
-	
+	public static void main(String[] args) throws AddressException, MessagingException {
+		sendSMTPMail("julien.preisner@u-psud.fr", "jpreisner@free.fr", "", "smtp.u-psud.fr", "587", "[Javamail] Test", "Coucou.");
+	}
 	/**
 	 * Method that send a message to the adress "to" in param using JavaMail
-	 * 
-	 * Works with GMAIL
 	 * 
 	 * @param from
 	 * @param to
@@ -33,7 +33,7 @@ public class Utils {
 		
 		// Properties used for logging
 		Properties props = new Properties();
-		props.setProperty("mail.host", hostName); 	// smtp.gmail.com
+		props.setProperty("mail.host", hostName); 	// smtp.gmail.com ou smtp.free.fr ou smtp.u-psud.fr
 		props.setProperty("mail.smtp.port", port);  // 587
 		props.setProperty("mail.smtp.auth", "true");
 		props.setProperty("mail.smtp.starttls.enable", "true");

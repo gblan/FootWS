@@ -1,20 +1,10 @@
 package et5.service;
 import java.io.IOException;
-import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
-import org.oorsprong.websamples.CapitalCity;
-import org.oorsprong.websamples.CapitalCityResponse;
-import org.oorsprong.websamples.CountryInfoService;
-import org.oorsprong.websamples.FullCountryInfo;
-import org.oorsprong.websamples.FullCountryInfoResponse;
-
-import et5.client.console.ConsoleHTTPClient;
 import et5.service.country.CountryService;
-import et5.service.foot.FootService;
-import eu.dataaccess.footballpool.Info;
 
 /**
  * CLasse de tests

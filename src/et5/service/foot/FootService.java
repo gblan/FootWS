@@ -1,10 +1,10 @@
 package et5.service.foot;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import et5.service.comparator.GoalComparator;
 import eu.dataaccess.footballpool.ArrayOftGameCard;
 import eu.dataaccess.footballpool.ArrayOftGameInfo;
 import eu.dataaccess.footballpool.ArrayOftGoal;
@@ -19,7 +19,20 @@ import eu.dataaccess.footballpool.TGoal;
  * Class used to get information about football using the webservice 
  * http://footballpool.dataaccess.eu/data/info.wso?wsdl
  */
-public class FootService {
+public class FootService {	
+	
+	public static void main(String[] args) {
+		FootService fs = new FootService(new Info());
+
+		String country = "Germany";
+		List<Integer> idPays = fs.getAllMatchesTeam("Germany");
+		System.out.println("Route of '"+country+"' : \n");
+		for (int id : idPays) {
+			System.out.println(fs.getInfoMatchById(id));
+		}
+
+		System.out.println(fs.getCountryInformation(country));
+	}
 	
 	/* parameters for wsdl acces*/
 	private InfoSoapType soap;
@@ -28,9 +41,9 @@ public class FootService {
 	 * const to know the kind of match was played
 	 */
 	final static int NB_FIRST_LAP = 48;
-	final static int NB_SECOND_LAP = 56; // 1/8
-	final static int NB_THIRD_LAP = 60; // 1/4
-	final static int NB_FOURTH_LAP = 62; // 1/2
+	final static int NB_SECOND_LAP = 56; // 1/8 of final
+	final static int NB_THIRD_LAP = 60; // 1/4 of final
+	final static int NB_FOURTH_LAP = 62; // 1/2 final
 	final static int NB_FINAL_LAP = 63; // final
 	
 	/**
@@ -39,13 +52,22 @@ public class FootService {
 	public FootService(Info info) {
 		this.soap = info.getInfoSoap();
 	}
+	
+	public void obtenirParcours(String pays){
+		// Retourne un XML
+	}
+	
+	public URI afficherCarte(String ville){
+		// Retourne l'URL Google Maps de la ville
+		return null;
+	}
 
 	/**
 	 * print information about a country in param
 	 * @param country
 	 * @return String 
 	 */
-	public String getCountryInformation(String country) {
+	private String getCountryInformation(String country) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("\nTimes at World Cup : "+this.soap.playedAtWorldCup(country));
 		TFullTeamInfo teamInfo = this.soap.fullTeamInfo(country);
@@ -58,7 +80,7 @@ public class FootService {
 	 * @param String country
 	 * @return List of all matchs of team passed in param
 	 */
-	public List<Integer> getAllMatchesTeam(String country) {
+	private List<Integer> getAllMatchesTeam(String country) {
 		List<Integer> result = new ArrayList<Integer>();
 
 		ArrayOftGameInfo games = this.soap.allGames();
@@ -78,7 +100,7 @@ public class FootService {
 	 * print info on a specific match passed in parameter
 	 * @param idMatch
 	 */
-	public String getInfoMatchById(int id) {
+	private String getInfoMatchById(int id) {
 		StringBuilder sb = new StringBuilder();
 		TGameInfo gameInfo = this.soap.gameInfo(id);
 
