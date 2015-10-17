@@ -6,6 +6,9 @@ import eu.dataaccess.footballpool.TGoal;
 
 public class GoalComparator {
 
+	/**
+	 * @return Comparator used to sort goals depending on the minute
+	 */
 	public static Comparator<? super TGoal> getminuteGoalComparator() {
 		return new Comparator<TGoal>() {
 			@Override
