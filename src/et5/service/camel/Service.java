@@ -23,18 +23,14 @@ public class Service {
 	
 	public void envoiEmail(Exchange ex){
 		// 1. Récupérer le @email et l'XML dans 'ex'
-		String from = "";
 		String to = "";
-		String fromPassword = "";
-		String hostName = "";
-		String port = "";
 		String subject = "";
 		
 		// 2. Transformer l'XML -> HTML (.xslt)
 		String message = "";
 		
 		try {
-			Utils.sendSMTPMail(from, to, fromPassword, hostName, port, subject, message);
+			Utils.sendSMTPMailUsingAppliEmail(to, subject, message);
 			// Ecrire XML en disant que l'envoi du mail a reussi
 		} 
 		catch (MessagingException e) {

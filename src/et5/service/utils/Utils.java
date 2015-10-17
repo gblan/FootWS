@@ -1,5 +1,8 @@
 package et5.service.utils;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -11,10 +14,31 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+/**
+ * class utils contains utils static methods
+ */
 public class Utils {
-	public static void main(String[] args) throws AddressException, MessagingException {
-		sendSMTPMail("julien.preisner@u-psud.fr", "jpreisner@free.fr", "", "smtp.u-psud.fr", "587", "[Javamail] Test", "Coucou.");
+
+	private static final String APPLI_PROPERTIES = "resources/appliMail.properties";
+
+	/**
+	 * @param to
+	 * @param subject
+	 * @param content
+	 * @throws AddressException
+	 * @throws MessagingException
+	 */
+	public static void sendSMTPMailUsingAppliEmail(String to, String subject,
+			String content) throws AddressException, MessagingException {
+
+		String appliEmail = readProperty(APPLI_PROPERTIES, "Appli.Email");
+		String appliPassword = readProperty(APPLI_PROPERTIES, "Appli.Password");
+		String appliPort = readProperty(APPLI_PROPERTIES, "Appli.Port");
+		String applihostname = readProperty(APPLI_PROPERTIES, "Appli.HostName");
+		sendSMTPMail(appliEmail, to, appliPassword, applihostname, appliPort,
+				subject, content);
 	}
+
 	/**
 	 * Method that send a message to the adress "to" in param using JavaMail
 	 * 
@@ -28,13 +52,16 @@ public class Utils {
 	 * @throws AddressException
 	 * @throws MessagingException
 	 */
-	public static void sendSMTPMail(String from, String to, String fromPassword, String hostName, String port,
-			String subject, String content) throws AddressException, MessagingException {
-		
+	private static void sendSMTPMail(String from, String to,
+			String fromPassword, String hostName, String port, String subject,
+			String content) throws AddressException, MessagingException {
+
 		// Properties used for logging
 		Properties props = new Properties();
-		props.setProperty("mail.host", hostName); 	// smtp.gmail.com ou smtp.free.fr ou smtp.u-psud.fr
-		props.setProperty("mail.smtp.port", port);  // 587
+		props.setProperty("mail.host", hostName); // smtp.gmail.com ou
+													// smtp.free.fr ou
+													// smtp.u-psud.fr
+		props.setProperty("mail.smtp.port", port); // 587
 		props.setProperty("mail.smtp.auth", "true");
 		props.setProperty("mail.smtp.starttls.enable", "true");
 
@@ -49,8 +76,7 @@ public class Utils {
 
 		// Set From/to: header field of the header.
 		message.setFrom(new InternetAddress(from));
-		message.addRecipient(Message.RecipientType.TO, new InternetAddress(
-				to));
+		message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 
 		// Write subject and content
 		message.setSubject(subject);
@@ -58,5 +84,39 @@ public class Utils {
 
 		// Send message
 		Transport.send(message);
+	}
+
+	/**
+	 * @param filename
+	 * @param keyProperty
+	 * @return a property read in the file passed in param, at the key position
+	 *         passed in param
+	 */
+	public static String readProperty(String filename, String keyProperty) {
+		Properties prop = new Properties();
+		InputStream input = null;
+		String result = "";
+		try {
+
+			input = new FileInputStream(filename);
+
+			// load a properties file
+			prop.load(input);
+
+			// get the property value and print it out
+			result = prop.getProperty(keyProperty);
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return result;
 	}
 }

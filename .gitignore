@@ -1,6 +1,7 @@
 metro/
 bin/
 .settings/
+resources/appliMail.properties
 
 # Ignoring Eclipse(IDE):  specific files
 build

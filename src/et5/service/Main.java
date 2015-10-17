@@ -5,6 +5,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
 import et5.service.country.CountryService;
+import et5.service.utils.Utils;
 
 /**
  * CLasse de tests
@@ -29,7 +30,6 @@ public class Main {
 		CountryService cs = new CountryService();
 		System.out.println(cs.getCountryInformation("Italy"));
 		
-
 	}
 
 
