@@ -3,6 +3,10 @@ package et5.service.utils;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Date;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -37,15 +41,17 @@ public class Utils {
 	 * @throws AddressException
 	 * @throws MessagingException
 	 */
-	public static void sendSMTPMailUsingAppliEmail(String to, String subject,
+	public static void sendHTMLMailUsingSMTPAppliEmail(String to, String subject,
 			String content) throws AddressException, MessagingException {
 
 		String appliEmail = readPropertyFile(APPLI_PROPERTIES, "Appli.Email");
-		String appliPassword = readPropertyFile(APPLI_PROPERTIES, "Appli.Password");
+		String appliPassword = readPropertyFile(APPLI_PROPERTIES,
+				"Appli.Password");
 		String appliPort = readPropertyFile(APPLI_PROPERTIES, "Appli.Port");
-		String applihostname = readPropertyFile(APPLI_PROPERTIES, "Appli.HostName");
+		String applihostname = readPropertyFile(APPLI_PROPERTIES,
+				"Appli.HostName");
 		sendSMTPMail(appliEmail, to, appliPassword, applihostname, appliPort,
-				subject, content);
+				subject, content, "text/html; charset=utf-8");
 	}
 
 	/**
@@ -58,12 +64,13 @@ public class Utils {
 	 * @param port
 	 * @param subject
 	 * @param content
+	 * @param messageType 
 	 * @throws AddressException
 	 * @throws MessagingException
 	 */
 	private static void sendSMTPMail(String from, String to,
 			String fromPassword, String hostName, String port, String subject,
-			String content) throws AddressException, MessagingException {
+			String content, String messageType) throws AddressException, MessagingException {
 
 		// Properties used for logging
 		Properties props = new Properties();
@@ -89,8 +96,8 @@ public class Utils {
 
 		// Write subject and content
 		message.setSubject(subject);
-		message.setText(content);
-
+		message.setContent(content,messageType);
+		message.setSentDate(new Date());
 		// Send message
 		Transport.send(message);
 	}
@@ -128,29 +135,44 @@ public class Utils {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * transformation xslt, to transform an XML to an HTML for presentation
+	 * 
 	 * @param input
 	 * @param output
 	 * @param transfo
 	 */
-	public static void transformationXML(String input, String output, String transfo) {
+	public static void transformationXML(String input, String output,
+			String transfo) {
 		TransformerFactory tFactory = TransformerFactory.newInstance();
 		Source xslSource = new StreamSource(transfo);
 		try {
 			Transformer xml2soap = tFactory.newTransformer(xslSource);
 			StreamSource xmlSource = new StreamSource(input);
 			Result outputTarget = new StreamResult(output);
-			System.out
-					.println("transformation de "+input+" en "+output+" par "+transfo);
+			System.out.println("transformation de " + input + " en " + output
+					+ " par " + transfo);
 			xml2soap.setOutputProperty(OutputKeys.INDENT, "yes");
-			xml2soap.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+			xml2soap.setOutputProperty(
+					"{http://xml.apache.org/xslt}indent-amount", "2");
 			xml2soap.transform(xmlSource, outputTarget);
 		} catch (TransformerConfigurationException e) {
 			e.printStackTrace();
 		} catch (TransformerException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * @param path
+	 * @param encoding
+	 * @return String of the file passed in parameter
+	 * @throws IOException
+	 */
+	public static String readFile(String path, Charset encoding)
+			throws IOException {
+		byte[] encoded = Files.readAllBytes(Paths.get(path));
+		return new String(encoded, encoding);
 	}
 }
