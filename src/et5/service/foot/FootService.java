@@ -159,7 +159,8 @@ public class FootService {
 			Card card = new Card();
 			card.setColor((tCard.isBRedCard()) ? "Red card" : "Yellow Card");
 			card.setGoalTeam(tCard.getSTeamName());
-			card.setPlayer(tCard.getSPlayerName());
+			card.setPlayer(tCard.getSPlayerName().trim());
+			cards.getCard().add(card);
 		}
 		match.setCards(cards);
 
