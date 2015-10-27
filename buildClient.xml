@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Script ANT de déploiement pour ServiceMix -->
+<project name="FootWS" default="all" basedir=".">
+	<property name="work" value="${basedir}" />
+	<property name="bundle" value="${ant.project.name}" />
+	<property name="main-class" value="et5.client.jaxws.ClientJaxWS" />
+
+	<target name="all" depends="package" />
+
+	<target name="clean" description="delete temporary files/directory">
+		<delete dir="${work}/${bundle}" />
+	</target>
+
+	<target name="init" description="create temporary directory">
+		<mkdir dir="${work}/${bundle}" />
+	</target>
+
+	<target name="package" depends="clean,init">
+		<copy todir="${work}/${bundle}" overwrite="true">
+			<fileset dir="bin">
+				<!-- ONLY THE CLIENT -->
+				<exclude name="et5/service/**" />
+				<exclude name="eu/**" />
+				<exclude name="org/**" />
+				<exclude name="*.properties" />
+			</fileset>
+		</copy>
+		<jar destfile="${work}/${bundle}-client.jar" basedir="${work}/${bundle}">
+			<manifest>
+				<!-- RUNNABLE JAR FILE-->
+				<attribute name="Main-Class" value="${main-class}" />
+				<attribute name="Bundle-ManifestVersion" value="2.0" />
+				<attribute name="Bundle-Name" value="${bundle}" />
+				<attribute name="Bundle-SymbolicName" value="${bundle}" />
+				<attribute name="Bundle-Version" value="1.0.0.0" />
+				<attribute name="DynamicImport-Package" value="*" />
+			</manifest>
+		</jar>
+		<antcall target="clean">
+		</antcall>
+	</target>
+
+</project>
