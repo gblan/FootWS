@@ -8,6 +8,7 @@ import javax.xml.bind.JAXBException;
 
 import et5.service.camel.Service;
 import et5.service.country.CountryService;
+import et5.service.utils.Utils;
 
 /**
  * CLasse de tests
@@ -46,6 +47,7 @@ public class Main {
 		Service serv = new Service();
 		serv.obtenirParcours(null);
 
+		Utils.transformationXML("routeGermany.xml", "routeGermany.html", "resources/displayHTMLroute.xslt");
 	}
 
 }
