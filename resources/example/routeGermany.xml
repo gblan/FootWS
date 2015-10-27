@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<route>
+    <teamName>Germany</teamName>
+    <coachName>Joachim Löw</coachName>
+    <flagURL>http://footballpool.dataaccess.eu/images/flags/de.png</flagURL>
+    <nbParticipation>17</nbParticipation>
+    <matches>
+        <match>
+            <idMatch>13</idMatch>
+            <competitionPhase>Group stage</competitionPhase>
+            <team1>Germany</team1>
+            <finalScore>4-0</finalScore>
+            <team2>Portugal</team2>
+            <stadiumMapsURL>http://maps.google.com/maps?ll=-12.978611,-38.504167&amp;q=loc:-12.978611,-38.504167&amp;hl=en&amp;t=h&amp;z=17</stadiumMapsURL>
+            <goals>
+                <goal>
+                    <minutes>12</minutes>
+                    <goalTeam>Germany</goalTeam>
+                    <striker>Thomas Mueller</striker>
+                </goal>
+                <goal>
+                    <minutes>32</minutes>
+                    <goalTeam>Germany</goalTeam>
+                    <striker>Mats Hummels</striker>
+                </goal>
+                <goal>
+                    <minutes>45</minutes>
+                    <goalTeam>Germany</goalTeam>
+                    <striker>Thomas Mueller</striker>
+                </goal>
+                <goal>
+                    <minutes>78</minutes>
+                    <goalTeam>Germany</goalTeam>
+                    <striker>Thomas Mueller</striker>
+                </goal>
+            </goals>
+            <cards>
+                <card>
+                    <color>Yellow Card</color>
+                    <goalTeam>Portugal</goalTeam>
+                    <player>Pereira</player>
+                </card>
+                <card>
+                    <color>Red card</color>
+                    <goalTeam>Portugal</goalTeam>
+                    <player>Pepe</player>
+                </card>
+            </cards>
+        </match>
+        <match>
+            <idMatch>29</idMatch>
+            <competitionPhase>Group stage</competitionPhase>
+            <team1>Germany</team1>
+            <finalScore>2-2</finalScore>
+            <team2>Ghana</team2>
+            <stadiumMapsURL>http://maps.google.com/maps?ll=-3.807267,-38.522481&amp;q=loc:-3.807267,-38.522481&amp;hl=en&amp;t=h&amp;z=15</stadiumMapsURL>
+            <goals>
+                <goal>
+                    <minutes>51</minutes>
+                    <goalTeam>Germany</goalTeam>
+                    <striker>Mario Gotze</striker>
+                </goal>
+                <goal>
+                    <minutes>54</minutes>
+                    <goalTeam>Ghana</goalTeam>
+                    <striker>André Ayew</striker>
+                </goal>
+                <goal>
+                    <minutes>63</minutes>
+                    <goalTeam>Ghana</goalTeam>
+                    <striker>Asamoah Gyan</striker>
+                </goal>
+                <goal>
+                    <minutes>71</minutes>
+                    <goalTeam>Germany</goalTeam>
+                    <striker>Miroslav Klose</striker>
+                </goal>
+            </goals>
+            <cards>
+                <card>
+                    <color>Yellow Card</color>
+                    <goalTeam>Ghana</goalTeam>
+                    <player>Sulley Muntari</player>
+                </card>
+            </cards>
+        </match>
+        <match>
+            <idMatch>45</idMatch>
+            <competitionPhase>Group stage</competitionPhase>
+            <team1>United States</team1>
+            <finalScore>0-1</finalScore>
+            <team2>Germany</team2>
+            <stadiumMapsURL>http://maps.google.com/maps?ll=-8.04,-35.008056&amp;q=loc:-8.04,-35.008056&amp;hl=en&amp;t=h&amp;z=17</stadiumMapsURL>
+            <goals>
+                <goal>
+                    <minutes>55</minutes>
+                    <goalTeam>Germany</goalTeam>
+                    <striker>Thomas Mueller</striker>
+                </goal>
+            </goals>
+            <cards>
+                <card>
+                    <color>Yellow Card</color>
+                    <goalTeam>United States</goalTeam>
+                    <player>Omar Gonzalez</player>
+                </card>
+                <card>
+                    <color>Yellow Card</color>
+                    <goalTeam>United States</goalTeam>
+                    <player>Kyle Beckerman</player>
+                </card>
+                <card>
+                    <color>Yellow Card</color>
+                    <goalTeam>Germany</goalTeam>
+                    <player>Benedikt Höwedes</player>
+                </card>
+            </cards>
+        </match>
+        <match>
+            <idMatch>54</idMatch>
+            <competitionPhase>Round of 16</competitionPhase>
+            <team1>Germany</team1>
+            <finalScore>2-1</finalScore>
+            <team2>Algeria</team2>
+            <stadiumMapsURL>http://maps.google.com/maps?ll=-30.065614,-51.236086&amp;q=loc:-30.065614,-51.236086&amp;hl=en&amp;t=h&amp;z=17</stadiumMapsURL>
+            <goals>
+                <goal>
+                    <minutes>92</minutes>
+                    <goalTeam>Germany</goalTeam>
+                    <striker>Andre Schurrle</striker>
+                </goal>
+                <goal>
+                    <minutes>120</minutes>
+                    <goalTeam>Germany</goalTeam>
+                    <striker>Mesut Ozil</striker>
+                </goal>
+                <goal>
+                    <minutes>121</minutes>
+                    <goalTeam>Algeria</goalTeam>
+                    <striker>Islam Slimani</striker>
+                </goal>
+            </goals>
+            <cards>
+                <card>
+                    <color>Yellow Card</color>
+                    <goalTeam>Algeria</goalTeam>
+                    <player>Rafik Halliche</player>
+                </card>
+                <card>
+                    <color>Yellow Card</color>
+                    <goalTeam>Germany</goalTeam>
+                    <player>Philipp Lahm</player>
+                </card>
+            </cards>
+        </match>
+        <match>
+            <idMatch>58</idMatch>
+            <competitionPhase>Quarter-finals</competitionPhase>
+            <team1>France</team1>
+            <finalScore>0-1</finalScore>
+            <team2>Germany</team2>
+            <stadiumMapsURL>http://maps.google.com/maps?ll=-22.912167,-43.230164&amp;q=loc:-22.912167,-43.230164&amp;hl=en&amp;t=h&amp;z=15</stadiumMapsURL>
+            <goals>
+                <goal>
+                    <minutes>13</minutes>
+                    <goalTeam>Germany</goalTeam>
+                    <striker>Mats Hummels</striker>
+                </goal>
+            </goals>
+            <cards>
+                <card>
+                    <color>Yellow Card</color>
+                    <goalTeam>Germany</goalTeam>
+                    <player>Sami Khedira</player>
+                </card>
+                <card>
+                    <color>Yellow Card</color>
+                    <goalTeam>Germany</goalTeam>
+                    <player>Bastian Schweinsteiger</player>
+                </card>
+            </cards>
+        </match>
+        <match>
+            <idMatch>61</idMatch>
+            <competitionPhase>Semi-finals</competitionPhase>
+            <team1>Brazil</team1>
+            <finalScore>1-7</finalScore>
+            <team2>Germany</team2>
+            <stadiumMapsURL>http://maps.google.com/maps?ll=-19.865833,-43.970833&amp;q=loc:-19.865833,-43.970833&amp;hl=en&amp;t=h&amp;z=17</stadiumMapsURL>
+            <goals>
+                <goal>
+                    <minutes>11</minutes>
+                    <goalTeam>Germany</goalTeam>
+                    <striker>Thomas Mueller</striker>
+                </goal>
+                <goal>
+                    <minutes>23</minutes>
+                    <goalTeam>Germany</goalTeam>
+                    <striker>Miroslav Klose</striker>
+                </goal>
+                <goal>
+                    <minutes>25</minutes>
+                    <goalTeam>Germany</goalTeam>
+                    <striker>Toni Kroos</striker>
+                </goal>
+                <goal>
+                    <minutes>26</minutes>
+                    <goalTeam>Germany</goalTeam>
+                    <striker>Toni Kroos</striker>
+                </goal>
+                <goal>
+                    <minutes>29</minutes>
+                    <goalTeam>Germany</goalTeam>
+                    <striker>Sami Khedira</striker>
+                </goal>
+                <goal>
+                    <minutes>69</minutes>
+                    <goalTeam>Germany</goalTeam>
+                    <striker>Andre Schurrle</striker>
+                </goal>
+                <goal>
+                    <minutes>79</minutes>
+                    <goalTeam>Germany</goalTeam>
+                    <striker>Andre Schurrle</striker>
+                </goal>
+                <goal>
+                    <minutes>90</minutes>
+                    <goalTeam>Brazil</goalTeam>
+                    <striker>Oscar</striker>
+                </goal>
+            </goals>
+            <cards>
+                <card>
+                    <color>Yellow Card</color>
+                    <goalTeam>Brazil</goalTeam>
+                    <player>Dante</player>
+                </card>
+            </cards>
+        </match>
+        <match>
+            <idMatch>64</idMatch>
+            <competitionPhase>Final</competitionPhase>
+            <team1>Germany</team1>
+            <finalScore>1-0</finalScore>
+            <team2>Argentina</team2>
+            <stadiumMapsURL>http://maps.google.com/maps?ll=-22.912167,-43.230164&amp;q=loc:-22.912167,-43.230164&amp;hl=en&amp;t=h&amp;z=15</stadiumMapsURL>
+            <goals>
+                <goal>
+                    <minutes>113</minutes>
+                    <goalTeam>Germany</goalTeam>
+                    <striker>Mario Gotze</striker>
+                </goal>
+            </goals>
+            <cards>
+                <card>
+                    <color>Yellow Card</color>
+                    <goalTeam>Germany</goalTeam>
+                    <player>Bastian Schweinsteiger</player>
+                </card>
+                <card>
+                    <color>Yellow Card</color>
+                    <goalTeam>Germany</goalTeam>
+                    <player>Benedikt Höwedes</player>
+                </card>
+                <card>
+                    <color>Yellow Card</color>
+                    <goalTeam>Argentina</goalTeam>
+                    <player>Javier Mascherano</player>
+                </card>
+                <card>
+                    <color>Yellow Card</color>
+                    <goalTeam>Argentina</goalTeam>
+                    <player>Sergio Agüero</player>
+                </card>
+            </cards>
+        </match>
+    </matches>
+</route>
