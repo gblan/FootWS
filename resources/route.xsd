@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.service.et5/route"
+	xmlns:tns="http://www.service.et5/route" elementFormDefault="qualified">
+	<element name="route">
+		<complexType>
+			<sequence>
+				<element name="teamName" type="string" />
+				<element name="coachName" type="string" />
+				<element name="flagURL" type="string" />
+				<element name="nbParticipation" type="integer" />
+				<element name="route">
+					<complexType>
+						<sequence>
+							<element name="match" maxOccurs="unbounded">
+								<complexType>
+									<sequence>
+										<element name="idMatch" type="integer" />
+										<element name="team1" type="string" />
+										<element name="team2" type="string" />
+										<element name="finalScore" type="string" />
+										<element name="stadiumMapsURL" type="string" />
+										<element name="goals">
+											<complexType>
+												<sequence>
+													<element name="minutes" type="integer" />
+													<element name="goalTeam" type="string" />
+													<element name="striker" type="string" />
+												</sequence>
+											</complexType>
+										</element>
+										<element name="cards">
+											<complexType>
+												<sequence>
+													<element name="color" type="string" />
+													<element name="goalTeam" type="string" />
+													<element name="striker" type="string" />
+												</sequence>
+											</complexType>
+										</element>
+									</sequence>
+								</complexType>
+							</element>
+						</sequence>
+					</complexType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+</schema>
