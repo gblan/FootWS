@@ -125,7 +125,7 @@ public class FootService {
 			match.setCompetitionPhase("Quarter-finals");
 		} else if (idMatch <= NB_FOURTH_LAP) {
 			match.setCompetitionPhase("Semi-finals");
-		} else if (idMatch <= NB_FINAL_LAP) {
+		} else if (idMatch > NB_FINAL_LAP) {
 			match.setCompetitionPhase("Final");
 		}
 

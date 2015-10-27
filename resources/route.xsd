@@ -17,8 +17,8 @@
 										<element name="idMatch" type="integer" />
 										<element name="competitionPhase" type="string" />
 										<element name="team1" type="string" />
-										<element name="team2" type="string" />
 										<element name="finalScore" type="string" />
+										<element name="team2" type="string" />
 										<element name="stadiumMapsURL" type="string" />
 										<element name="goals">
 											<complexType>
