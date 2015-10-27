@@ -3,23 +3,22 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<!-- output -->
 	<xsl:output method="html" indent="yes" />
-
-	<xsl:template match="/">
+	<xsl:template match="/route">
 
 <html>
 	<head>
-		<title> (<xsl:value-of select="//teamName" />) FIFA world cup 2014 </title>
+		<title> (<xsl:value-of select="teamName" />) FIFA world cup 2014 </title>
 	</head>
 	<body>
-		<h1> Route of <xsl:value-of select="//teamName" /> during FIFA world cup 2014 </h1>
+		<h1> Route of <xsl:value-of select="teamName" /> during FIFA world cup 2014 </h1>
 		<br/>
-		<h3> Coach of <xsl:value-of select="route/teamName" /> : <xsl:value-of select="route/coachName" /> </h3>
-		<xsl:variable name="flagURL"><xsl:value-of select="route/flagURL"/></xsl:variable>
-		<h3> Flag of <xsl:value-of select="route/teamName" /> : <img src="{$flagURL}"/> </h3>
-		<h3> <xsl:value-of select="route/nbParticipation" /> particiaption to FIFA World cup </h3>
+		<h3> Coach of <xsl:value-of select="teamName" /> : <xsl:value-of select="coachName" /> </h3>
+		<xsl:variable name="flagURL"><xsl:value-of select="flagURL"/></xsl:variable>
+		<h3> Flag of <xsl:value-of select="teamName" /> : <img src="{$flagURL}"/> </h3>
+		<h3> <xsl:value-of select="nbParticipation" /> particiaption to FIFA World cup </h3>
 
 		<h2> Matches </h2>
-		<xsl:for-each select="route/matches/match">
+		<xsl:for-each select="matches/match">
 			<table border="1">
 				<tr bgcolor="#9acd32">
 					<th>Match number</th>
