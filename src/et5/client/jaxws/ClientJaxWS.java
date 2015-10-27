@@ -2,9 +2,17 @@ package et5.client.jaxws;
 
 import java.awt.Desktop;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.Scanner;
+
+import javax.jms.ConnectionFactory;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+
+import org.apache.camel.CamelContext;
+import org.apache.camel.ProducerTemplate;
+import org.apache.camel.component.jms.JmsComponent;
+import org.apache.camel.impl.DefaultCamelContext;
 
 /** Sites : 
  * 
@@ -16,20 +24,28 @@ import java.util.Scanner;
  * 
  */
 public class ClientJaxWS {
-	//private ConnectionFactory connectionFactory;
+	private static final String responseQueue = "activemq:fournisseur.responseQueue";
+	private static final String requestQueue = "activemq:fournisseur.requestQueue";
+	private CamelContext camelcontext;
 
-	private void connect() throws MalformedURLException{
-		
-        // URL wsdlLocation = new URL("http://localhost:8585/DemoService?wsdl");
-		
-		/*
-		// Creation d'un contexte JNDI
+	private void connect() throws Exception {
+		// Cr�ation d'un contexte JNDI
 		Context jndiContext = new InitialContext();
-
+		
 		// Lookup de la fabrique de connexion et de la destination
-		connectionFactory = (ConnectionFactory) jndiContext.lookup("connectionFactory");
-		*/
+		ConnectionFactory connectionFactory = (ConnectionFactory) jndiContext.lookup("connectionFactory");		
 
+		camelcontext = new DefaultCamelContext();
+		camelcontext.addComponent("jms-test", JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
+		camelcontext.start();		
+	}
+
+
+	/* envoi du code produit dans la queue*/
+	private void sendMessage(String message) throws Exception {
+		ProducerTemplate pt = camelcontext.createProducerTemplate();
+		pt.sendBody(requestQueue, message);
+		
 	}
 	
 	private void sendRequest(){
@@ -48,23 +64,38 @@ public class ClientJaxWS {
 			
 			if (msg.equals("1")){
 				// 2. Demande le pays
-				System.out.println("Entrez le pays :");
+				System.out.println("Entrez le pays (en Anglais):");
 				msg = scanner.nextLine().trim();
 				
 				// 3. Ajoute les elements necessaires pour distinguer le choix de l'utilisateur
+				System.out.println("Veuillez maintenant choisir le mode de réception");
+				System.out.println("Pour le mode synchrone (réception par file JMS puis affichage navigateur), tapez 1");
+				System.out.println("Pour le mode asynchrone (réception par e-mail), tapez 2");
+				int choix = Integer.parseInt(scanner.nextLine().trim());
+				if(choix==1){
+					/* ${headers.operationName} == 'obtenir_parcours_xml' */
+
+				}else if(choix==2){
+					System.out.println("Veuillez saisir votre e-mail :");
+					String mail = scanner.nextLine().trim();
+					/* ${headers.operationName} == 'obtenir_parcours_mail' */
+
+				}else{
+					System.out.println("Erreur dans la saisie!");
+				}
 
 			}
 			else if (msg.equals("2")){
 				// 2. Demande la ville
-				msg = scanner.nextLine().trim();
+				String city = scanner.nextLine().trim();
 
 				// 3. Ajoute les elements necessaires pour distinguer le choix de l'utilisateur
+				/* ${headers.operationName} == 'affiche_carte' */
 			}
 			
 			// 4. Envoi le message
 			
-			System.out.println(">> Requete envoyee : ID=[]");
-		} 
+		}
 		scanner.close();
 		System.out.println("Bye !");
 	}
@@ -106,6 +137,4 @@ public class ClientJaxWS {
 			e.printStackTrace();
 		}
 	}
-
-
 }
