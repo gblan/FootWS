@@ -16,27 +16,13 @@ import eu.dataaccess.footballpool.TGameInfo;
 import eu.dataaccess.footballpool.TGoal;
 
 /**
- * Class used to get information about football using the webservice 
+ * Class used to get information about football using the webservice
  * http://footballpool.dataaccess.eu/data/info.wso?wsdl
  */
-public class FootService {	
-	
-	public static void main(String[] args) {
-		FootService fs = new FootService(new Info());
-
-		String country = "Germany";
-		List<Integer> idPays = fs.getAllMatchesTeam("Germany");
-		System.out.println("Route of '"+country+"' : \n");
-		for (int id : idPays) {
-			System.out.println(fs.getInfoMatchById(id));
-		}
-
-		System.out.println(fs.getCountryInformation(country));
-	}
-	
-	/* parameters for wsdl acces*/
+public class FootService {
+	/* parameters for wsdl acces */
 	private InfoSoapType soap;
-	
+
 	/**
 	 * const to know the kind of match was played
 	 */
@@ -45,39 +31,43 @@ public class FootService {
 	final static int NB_THIRD_LAP = 60; // 1/4 of final
 	final static int NB_FOURTH_LAP = 62; // 1/2 final
 	final static int NB_FINAL_LAP = 63; // final
-	
+
 	/**
-	 * @param info for wsdl access
+	 * @param info
+	 *            for wsdl access
 	 */
 	public FootService(Info info) {
 		this.soap = info.getInfoSoap();
 	}
-	
-	public void obtenirParcours(String pays){
+
+	public void obtenirParcours(String pays) {
 		// Retourne un XML
 	}
-	
-	public URI afficherCarte(String ville){
+
+	public URI afficherCarte(String ville) {
 		// Retourne l'URL Google Maps de la ville
 		return null;
 	}
 
 	/**
 	 * print information about a country in param
+	 * 
 	 * @param country
-	 * @return String 
+	 * @return String
 	 */
 	private String getCountryInformation(String country) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("\nTimes at World Cup : "+this.soap.playedAtWorldCup(country));
+		sb.append("\nTimes at World Cup : "
+				+ this.soap.playedAtWorldCup(country));
 		TFullTeamInfo teamInfo = this.soap.fullTeamInfo(country);
-		sb.append("\n"+teamInfo.getSCoach());
-		sb.append("\n"+teamInfo.getSCountryFlagLarge());		
+		sb.append("\n" + teamInfo.getSCoach());
+		sb.append("\n" + teamInfo.getSCountryFlagLarge());
 		return sb.toString();
 	}
 
 	/**
-	 * @param String country
+	 * @param String
+	 *            country
 	 * @return List of all matchs of team passed in param
 	 */
 	private List<Integer> getAllMatchesTeam(String country) {
@@ -98,6 +88,7 @@ public class FootService {
 
 	/**
 	 * print info on a specific match passed in parameter
+	 * 
 	 * @param idMatch
 	 */
 	private String getInfoMatchById(int id) {
@@ -125,8 +116,9 @@ public class FootService {
 		sb.append(gameInfo.getTeam1().getSName() + "\t" + gameInfo.getSScore()
 				+ "\t" + gameInfo.getTeam2().getSName());
 
-		/* Stade on maps  */
-		sb.append("\nURL STADE : "+gameInfo.getStadiumInfo().getSGoogleMapsURL());
+		/* Stade on maps */
+		sb.append("\nURL STADE : "
+				+ gameInfo.getStadiumInfo().getSGoogleMapsURL());
 
 		/* goals */
 		sb.append("\n\n### goals ###");
@@ -139,12 +131,12 @@ public class FootService {
 					+ " , " + goal.getSPlayerName());
 		}
 
-		/* cards*/
+		/* cards */
 		sb.append("\n\n### Cards ###");
 		ArrayOftGameCard cards = gameInfo.getCards();
 		for (TGameCard card : cards.getTGameCard()) {
-			sb.append("\n" + card.getSTeamName()
-					+ " (" + card.getSPlayerName().trim() + ") ");
+			sb.append("\n" + card.getSTeamName() + " ("
+					+ card.getSPlayerName().trim() + ") ");
 			if (card.isBRedCard()) {
 				sb.append("RED CARD");
 			} else {
@@ -153,5 +145,18 @@ public class FootService {
 			}
 		}
 		return sb.toString();
+	}
+
+	public static void main(String[] args) {
+		FootService fs = new FootService(new Info());
+
+		String country = "Germany";
+		List<Integer> idPays = fs.getAllMatchesTeam("Germany");
+		System.out.println("Route of '" + country + "' : \n");
+		for (int id : idPays) {
+			System.out.println(fs.getInfoMatchById(id));
+		}
+
+		System.out.println(fs.getCountryInformation(country));
 	}
 }

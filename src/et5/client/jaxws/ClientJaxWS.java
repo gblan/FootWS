@@ -14,7 +14,6 @@ import java.util.Scanner;
  * https://docs.oracle.com/middleware/1213/wls/WSGET/jax-ws-jmstransport.htm#WSGET3638
  * http://www.mastertheintegration.com/camel/camel-and-web-services/calling-a-jax-ws-web-service-from-camel.html
  * 
- *
  */
 public class ClientJaxWS {
 	//private ConnectionFactory connectionFactory;
@@ -87,7 +86,7 @@ public class ClientJaxWS {
 	
 	/**
 	 * Open the user default browser and go to the url passed as a parameter
-	 * Tested on Windows 7, 8, Ubuntu
+	 * Tested on Windows 7, 8, Ubuntu, MacOS
 	 * https://openclassrooms.com/forum/sujet/ouvrir-une-page-web-54152
 	 * @param url
 	 * @throws IOException

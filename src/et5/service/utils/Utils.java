@@ -31,10 +31,10 @@ public class Utils {
 	public static void sendSMTPMailUsingAppliEmail(String to, String subject,
 			String content) throws AddressException, MessagingException {
 
-		String appliEmail = readProperty(APPLI_PROPERTIES, "Appli.Email");
-		String appliPassword = readProperty(APPLI_PROPERTIES, "Appli.Password");
-		String appliPort = readProperty(APPLI_PROPERTIES, "Appli.Port");
-		String applihostname = readProperty(APPLI_PROPERTIES, "Appli.HostName");
+		String appliEmail = readPropertyFile(APPLI_PROPERTIES, "Appli.Email");
+		String appliPassword = readPropertyFile(APPLI_PROPERTIES, "Appli.Password");
+		String appliPort = readPropertyFile(APPLI_PROPERTIES, "Appli.Port");
+		String applihostname = readPropertyFile(APPLI_PROPERTIES, "Appli.HostName");
 		sendSMTPMail(appliEmail, to, appliPassword, applihostname, appliPort,
 				subject, content);
 	}
@@ -92,7 +92,7 @@ public class Utils {
 	 * @return a property read in the file passed in param, at the key position
 	 *         passed in param
 	 */
-	public static String readProperty(String filename, String keyProperty) {
+	public static String readPropertyFile(String filename, String keyProperty) {
 		Properties prop = new Properties();
 		InputStream input = null;
 		String result = "";
