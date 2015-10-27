@@ -7,4 +7,4 @@ resources/appliMail.properties
 build
 .classpath
 .project
-*.jar
+FootWS*.jar
