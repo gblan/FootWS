@@ -13,6 +13,15 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 /**
  * class utils contains utils static methods
@@ -118,5 +127,30 @@ public class Utils {
 			}
 		}
 		return result;
+	}
+	
+	/**
+	 * transformation xslt, to transform an XML to an HTML for presentation
+	 * @param input
+	 * @param output
+	 * @param transfo
+	 */
+	public static void transformationXML(String input, String output, String transfo) {
+		TransformerFactory tFactory = TransformerFactory.newInstance();
+		Source xslSource = new StreamSource(transfo);
+		try {
+			Transformer xml2soap = tFactory.newTransformer(xslSource);
+			StreamSource xmlSource = new StreamSource(input);
+			Result outputTarget = new StreamResult(output);
+			System.out
+					.println("transformation de "+input+" en "+output+" par "+transfo);
+			xml2soap.setOutputProperty(OutputKeys.INDENT, "yes");
+			xml2soap.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+			xml2soap.transform(xmlSource, outputTarget);
+		} catch (TransformerConfigurationException e) {
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			e.printStackTrace();
+		}
 	}
 }
