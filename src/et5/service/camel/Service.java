@@ -1,24 +1,29 @@
 package et5.service.camel;
 
 import javax.mail.MessagingException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 import org.apache.camel.Exchange;
 
+import et5.service.foot.FootService;
 import et5.service.utils.Utils;
+import eu.dataaccess.footballpool.Info;
 
 public class Service {
 	
-	public void obtenirParcours(Exchange ex){
-		/*
-		Info info = new Info();
-		InfoSoapType soap = info.getInfoSoap();
-		*/
-		
+	public void obtenirParcours(Exchange ex) throws JAXBException{
 		// 1. Récupérer le pays dans 'ex'
-			// 1.bis Récupérer le mail si il est présent
 		// 2. Faire appel a la méthode obtenirParcours(pays) dans FootballService.java
 		// 3. Mettre l'XML dans 'ex'
-			// 3.bis : remettre le mail dans 'ex'
+		JAXBContext context = JAXBContext.newInstance("et5.service.route");
+		Marshaller m = context.createMarshaller();
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+		Info info = new Info();
+		FootService fs = new FootService(info);
+
 	}
 	
 	public void envoiEmail(Exchange ex){
