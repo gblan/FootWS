@@ -5,5 +5,5 @@
 // Generated on: 2015.10.27 at 01:46:46 PM CET 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://www.service.et5/route", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@javax.xml.bind.annotation.XmlSchema(namespace = "", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package et5.service.route;
