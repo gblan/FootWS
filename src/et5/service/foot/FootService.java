@@ -1,10 +1,18 @@
 package et5.service.foot;
 
+import java.math.BigInteger;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import et5.service.route.Route;
+import et5.service.route.Route.Matches;
+import et5.service.route.Route.Matches.Match;
+import et5.service.route.Route.Matches.Match.Cards;
+import et5.service.route.Route.Matches.Match.Cards.Card;
+import et5.service.route.Route.Matches.Match.Goals;
+import et5.service.route.Route.Matches.Match.Goals.Goal;
 import eu.dataaccess.footballpool.ArrayOftGameCard;
 import eu.dataaccess.footballpool.ArrayOftGameInfo;
 import eu.dataaccess.footballpool.ArrayOftGoal;
@@ -55,14 +63,22 @@ public class FootService {
 	 * @param country
 	 * @return String
 	 */
-	private String getCountryInformation(String country) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("\nTimes at World Cup : "
-				+ this.soap.playedAtWorldCup(country));
+	private Route getCountryRoute(String country) {
 		TFullTeamInfo teamInfo = this.soap.fullTeamInfo(country);
-		sb.append("\n" + teamInfo.getSCoach());
-		sb.append("\n" + teamInfo.getSCountryFlagLarge());
-		return sb.toString();
+		Route route = new Route();
+		route.setCoachName(teamInfo.getSCoach());
+		route.setFlagURL(teamInfo.getSCountryFlagLarge());
+		route.setNbParticipation(BigInteger.valueOf(soap.playedAtWorldCup(country)));
+		route.setTeamName(country);
+		
+		Matches matches = new Matches();
+		List<Integer> idPays = getAllMatchesTeam(country);
+		for (int id : idPays) {
+			matches.getMatch().add(getInfoMatchById(id));
+		}
+		
+		route.setMatches(matches);
+		return route;
 	}
 
 	/**
@@ -91,60 +107,63 @@ public class FootService {
 	 * 
 	 * @param idMatch
 	 */
-	private String getInfoMatchById(int id) {
-		StringBuilder sb = new StringBuilder();
+	private Match getInfoMatchById(int id) {
+		Match match = new Match();
 		TGameInfo gameInfo = this.soap.gameInfo(id);
 
 		/* print match category */
 		int idMatch = Integer
 				.parseInt(gameInfo.getSDescription().split(" ")[1]);
-		sb.append("### Match " + idMatch + " : ");
+		match.setIdMatch(BigInteger.valueOf(idMatch));
+		
+		
 		if (idMatch <= NB_FIRST_LAP) {
-			sb.append("poules");
+			match.setCompetitionPhase("Group stage");
 		} else if (idMatch <= NB_SECOND_LAP) {
-			sb.append("1/8");
+			match.setCompetitionPhase("Round of 16");
 		} else if (idMatch <= NB_THIRD_LAP) {
-			sb.append("1/4");
+			match.setCompetitionPhase("Quarter-finals");
 		} else if (idMatch <= NB_FOURTH_LAP) {
-			sb.append("1/2");
+			match.setCompetitionPhase("Semi-finals");
 		} else if (idMatch <= NB_FINAL_LAP) {
-			sb.append("final");
+			match.setCompetitionPhase("Final");
 		}
 
 		/* final score */
-		sb.append("\nFinal score : ");
-		sb.append(gameInfo.getTeam1().getSName() + "\t" + gameInfo.getSScore()
-				+ "\t" + gameInfo.getTeam2().getSName());
+		match.setTeam1(gameInfo.getTeam1().getSName());
+		match.setFinalScore(gameInfo.getSScore());
+		match.setTeam2(gameInfo.getTeam2().getSName());
 
 		/* Stade on maps */
-		sb.append("\nURL STADE : "
-				+ gameInfo.getStadiumInfo().getSGoogleMapsURL());
+		match.setStadiumMapsURL(gameInfo.getStadiumInfo().getSGoogleMapsURL());
 
 		/* goals */
-		sb.append("\n\n### goals ###");
-		ArrayOftGoal goals = gameInfo.getGoals();
-		List<TGoal> listGoal = goals.getTGoal();
+		ArrayOftGoal listTgoals = gameInfo.getGoals();
+		List<TGoal> listGoal = listTgoals.getTGoal();
 		Collections.sort(listGoal, GoalComparator.getminuteGoalComparator());
 
-		for (TGoal goal : goals.getTGoal()) {
-			sb.append("\n" + goal.getIMinute() + "' : " + goal.getSTeamName()
-					+ " , " + goal.getSPlayerName());
+		Goals goals = new Goals();
+		for (TGoal tgoal : listTgoals.getTGoal()) {
+			Goal goal = new Goal();
+			goal.setMinutes(BigInteger.valueOf(tgoal.getIMinute()));
+			goal.setGoalTeam(tgoal.getSTeamName());
+			goal.setStriker(tgoal.getSPlayerName());
+			goals.getGoal().add(goal);
 		}
+		match.setGoals(goals);
 
 		/* cards */
-		sb.append("\n\n### Cards ###");
-		ArrayOftGameCard cards = gameInfo.getCards();
-		for (TGameCard card : cards.getTGameCard()) {
-			sb.append("\n" + card.getSTeamName() + " ("
-					+ card.getSPlayerName().trim() + ") ");
-			if (card.isBRedCard()) {
-				sb.append("RED CARD");
-			} else {
-				sb.append("YELLOW CARD");
-
-			}
+		Cards cards = new Cards();
+		ArrayOftGameCard listcards = gameInfo.getCards();
+		for (TGameCard tCard : listcards.getTGameCard()) {
+			Card card = new Card();
+			card.setColor((tCard.isBRedCard())?"Red card":"Yellow Card");
+			card.setGoalTeam(tCard.getSTeamName());
+			card.setPlayer(tCard.getSPlayerName());
 		}
-		return sb.toString();
+		match.setCards(cards);
+		
+		return match;
 	}
 
 	public static void main(String[] args) {
@@ -154,9 +173,10 @@ public class FootService {
 		List<Integer> idPays = fs.getAllMatchesTeam("Germany");
 		System.out.println("Route of '" + country + "' : \n");
 		for (int id : idPays) {
-			System.out.println(fs.getInfoMatchById(id));
+			Match x = fs.getInfoMatchById(id);
+			System.out.println(x);
 		}
 
-		System.out.println(fs.getCountryInformation(country));
+		System.out.println(fs.getCountryRoute(country));
 	}
 }

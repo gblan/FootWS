@@ -5,7 +5,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
 import et5.service.country.CountryService;
-import et5.service.utils.Utils;
 
 /**
  * CLasse de tests
