@@ -63,20 +63,21 @@ public class FootService {
 	 * @param country
 	 * @return String
 	 */
-	private Route getCountryRoute(String country) {
+	public Route getCountryRoute(String country) {
 		TFullTeamInfo teamInfo = this.soap.fullTeamInfo(country);
 		Route route = new Route();
 		route.setCoachName(teamInfo.getSCoach());
 		route.setFlagURL(teamInfo.getSCountryFlagLarge());
-		route.setNbParticipation(BigInteger.valueOf(soap.playedAtWorldCup(country)));
+		route.setNbParticipation(BigInteger.valueOf(soap
+				.playedAtWorldCup(country)));
 		route.setTeamName(country);
-		
+
 		Matches matches = new Matches();
 		List<Integer> idPays = getAllMatchesTeam(country);
 		for (int id : idPays) {
 			matches.getMatch().add(getInfoMatchById(id));
 		}
-		
+
 		route.setMatches(matches);
 		return route;
 	}
@@ -115,8 +116,7 @@ public class FootService {
 		int idMatch = Integer
 				.parseInt(gameInfo.getSDescription().split(" ")[1]);
 		match.setIdMatch(BigInteger.valueOf(idMatch));
-		
-		
+
 		if (idMatch <= NB_FIRST_LAP) {
 			match.setCompetitionPhase("Group stage");
 		} else if (idMatch <= NB_SECOND_LAP) {
@@ -147,7 +147,7 @@ public class FootService {
 			Goal goal = new Goal();
 			goal.setMinutes(BigInteger.valueOf(tgoal.getIMinute()));
 			goal.setGoalTeam(tgoal.getSTeamName());
-			goal.setStriker(tgoal.getSPlayerName());
+			goal.setStriker(tgoal.getSPlayerName().trim());
 			goals.getGoal().add(goal);
 		}
 		match.setGoals(goals);
@@ -157,26 +157,12 @@ public class FootService {
 		ArrayOftGameCard listcards = gameInfo.getCards();
 		for (TGameCard tCard : listcards.getTGameCard()) {
 			Card card = new Card();
-			card.setColor((tCard.isBRedCard())?"Red card":"Yellow Card");
+			card.setColor((tCard.isBRedCard()) ? "Red card" : "Yellow Card");
 			card.setGoalTeam(tCard.getSTeamName());
 			card.setPlayer(tCard.getSPlayerName());
 		}
 		match.setCards(cards);
-		
+
 		return match;
-	}
-
-	public static void main(String[] args) {
-		FootService fs = new FootService(new Info());
-
-		String country = "Germany";
-		List<Integer> idPays = fs.getAllMatchesTeam("Germany");
-		System.out.println("Route of '" + country + "' : \n");
-		for (int id : idPays) {
-			Match x = fs.getInfoMatchById(id);
-			System.out.println(x);
-		}
-
-		System.out.println(fs.getCountryRoute(country));
 	}
 }
