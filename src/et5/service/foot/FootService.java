@@ -48,8 +48,9 @@ public class FootService {
 		this.soap = info.getInfoSoap();
 	}
 
-	public void obtenirParcours(String pays) {
-		// Retourne un XML
+	public String obtenirParcours(String pays) {
+		// Retourne un XML : TODO : voir si retourner un string ou autre chose
+		return null;
 	}
 
 	public URI afficherCarte(String ville) {
