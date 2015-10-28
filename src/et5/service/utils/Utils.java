@@ -1,5 +1,6 @@
 package et5.service.utils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +18,10 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -174,5 +179,25 @@ public class Utils {
 			throws IOException {
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 		return new String(encoded, encoding);
+	}
+	
+	
+	
+	/**
+	 * Necessaire ???? 
+	 */
+
+	
+	public Object unmarshal(String packageName, String xmlFile) throws JAXBException{
+		JAXBContext context = JAXBContext.newInstance(packageName);
+		Unmarshaller u = context.createUnmarshaller();
+		return u.unmarshal(new File(xmlFile));
+	}
+	
+	public void marshal(String packageName, Object obj, String newFile) throws JAXBException{
+		JAXBContext context = JAXBContext.newInstance(packageName);
+		Marshaller marshaller = context.createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+		marshaller.marshal(obj, new File(newFile));
 	}
 }
