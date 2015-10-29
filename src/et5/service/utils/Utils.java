@@ -180,21 +180,27 @@ public class Utils {
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 		return new String(encoded, encoding);
 	}
-	
-	
-	
-	/**
-	 * Necessaire ???? 
-	 */
 
-	
-	public Object unmarshal(String packageName, String xmlFile) throws JAXBException{
+	/**
+	 * @param packageName
+	 * @param xmlFile
+	 * @return Object corresponding to the XMLfile param , having a XML schema and a XML description at the packageName param
+	 * @throws JAXBException
+	 */
+	public static Object unmarshal(String packageName, String xmlFile) throws JAXBException{
 		JAXBContext context = JAXBContext.newInstance(packageName);
 		Unmarshaller u = context.createUnmarshaller();
 		return u.unmarshal(new File(xmlFile));
 	}
 	
-	public void marshal(String packageName, Object obj, String newFile) throws JAXBException{
+	/**
+	 * output an XML file at the newFile param, corresponding to the obj param, and with the XMLSchema and the XMLDescription at the packageName param
+	 * @param packageName
+	 * @param obj
+	 * @param newFile
+	 * @throws JAXBException
+	 */
+	public static void marshal(String packageName, Object obj, String newFile) throws JAXBException{
 		JAXBContext context = JAXBContext.newInstance(packageName);
 		Marshaller marshaller = context.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
