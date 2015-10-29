@@ -22,6 +22,9 @@
 				<exclude name="et5/service/**" />
 				<exclude name="eu/**" />
 				<exclude name="org/**" />
+				<exclude name="example/**" />
+				<exclude name="*.xslt" />
+				<exclude name="*.xsd" />
 				<exclude name="*.properties" />
 			</fileset>
 		</copy>

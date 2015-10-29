@@ -19,6 +19,7 @@
 			<fileset dir="bin" >
 				<!-- ONLY THE SERVICE -->
 				<exclude name="et5/client/**"/>
+				<exclude name="example/**" />				
 			</fileset>
 		</copy>
 		<copy todir="${work}/${bundle}/OSGI-INF" overwrite="true">
