@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.ws.soap.SOAPFaultException;
+
 import et5.service.route.Route;
 import et5.service.route.Route.Matches;
 import et5.service.route.Route.Matches.Match;
@@ -42,7 +44,7 @@ public class FootService {
 
 	/**
 	 * @param info
-	 *            for wsdl access
+	 * Constructor need info parameter for wsdl access
 	 */
 	public FootService(Info info) {
 		this.soap = info.getInfoSoap();
@@ -59,7 +61,7 @@ public class FootService {
 	}
 
 	/**
-	 * print information about a country in param
+	 * print route information about a country in param
 	 * 
 	 * @param country
 	 * @return String
@@ -67,10 +69,10 @@ public class FootService {
 	public Route getCountryRoute(String country) {
 		TFullTeamInfo teamInfo = this.soap.fullTeamInfo(country);
 		Route route = new Route();
+		
 		route.setCoachName(teamInfo.getSCoach());
 		route.setFlagURL(teamInfo.getSCountryFlagLarge());
-		route.setNbParticipation(BigInteger.valueOf(soap
-				.playedAtWorldCup(country)));
+		route.setNbParticipation(BigInteger.valueOf(soap.playedAtWorldCup(country)));
 		route.setTeamName(country);
 
 		Matches matches = new Matches();
@@ -84,8 +86,7 @@ public class FootService {
 	}
 
 	/**
-	 * @param String
-	 *            country
+	 * @param String 
 	 * @return List of all matchs of team passed in param
 	 */
 	private List<Integer> getAllMatchesTeam(String country) {
@@ -106,10 +107,9 @@ public class FootService {
 
 	/**
 	 * print info on a specific match passed in parameter
-	 * 
 	 * @param idMatch
 	 */
-	private Match getInfoMatchById(int id) {
+	public Match getInfoMatchById(int id) throws SOAPFaultException{
 		Match match = new Match();
 		TGameInfo gameInfo = this.soap.gameInfo(id);
 
