@@ -15,9 +15,8 @@ public class GoalComparator {
 			public int compare(TGoal o1, TGoal o2) {
 				int x = o1.getIMinute();
 				int y = o2.getIMinute();
-				return x < y ? -1 : x > y ? 1 : 0;
+				return ((x < y) ? -1 : ((x > y) ? 1 : 0));
 			}
 		};
 	}
-
 }
