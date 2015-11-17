@@ -6,14 +6,13 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.xml.bind.JAXBException;
 
-import et5.service.camel.Service;
-import et5.service.country.CountryService;
-import et5.service.utils.Utils;
+import et5.service.foot.FootService;
+import eu.dataaccess.footballpool.Info;
 
 /**
  * CLasse de tests
  */
-public class Main {
+public class Tests {
 
 	public static void main(String[] args) throws AddressException,
 			MessagingException, IOException, JAXBException {
@@ -31,8 +30,8 @@ public class Main {
 		//
 		// ConsoleHTTPClient.openDefaultBrowser("https://openclassrooms.com/forum/sujet/ouvrir-une-page-web-54152");
 
-		CountryService cs = new CountryService();
-		System.out.println(cs.getCountryInformation("Italy"));
+//		CountryService cs = new CountryService();
+//		System.out.println(cs.getCountryInformation("Italy"));
 		// FootService fs = new FootService(new Info());
 		//
 		// String country = "Germany";
@@ -44,10 +43,14 @@ public class Main {
 		// }
 		//
 		// System.out.println(fs.getCountryRoute(country));
-		Service serv = new Service();
-		serv.obtenirParcours(null);
+//		Service serv = new Service();
+//		serv.obtenirParcours(null);
 
-		Utils.transformationXML("routeGermany.xml", "routeGermany.html", "resources/displayHTMLroute.xslt");
+		FootService fs = new FootService(new Info());
+		fs.getInfoMatchById(99);
+//		Utils.transformationXML("routeGermany.xml", "routeGermany.html", "resources/displayHTMLroute.xslt");
+//		String message = Utils.readFile("resources/example/routeGermany.html", Charset.forName("UTF-8"));
+//		Utils.sendHTMLMailUsingSMTPAppliEmail("julien.preisner@u-psud.fr","Objet Message", message);
 	}
 
 }
