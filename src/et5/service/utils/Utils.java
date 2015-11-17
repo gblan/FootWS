@@ -50,13 +50,10 @@ public class Utils {
 			String content) throws AddressException, MessagingException {
 
 		String appliEmail = readPropertyFile(APPLI_PROPERTIES, "Appli.Email");
-		String appliPassword = readPropertyFile(APPLI_PROPERTIES,
-				"Appli.Password");
+		String appliPassword = readPropertyFile(APPLI_PROPERTIES,"Appli.Password");
 		String appliPort = readPropertyFile(APPLI_PROPERTIES, "Appli.Port");
-		String applihostname = readPropertyFile(APPLI_PROPERTIES,
-				"Appli.HostName");
-		sendSMTPMail(appliEmail, to, appliPassword, applihostname, appliPort,
-				subject, content, "text/html; charset=utf-8");
+		String applihostname = readPropertyFile(APPLI_PROPERTIES,"Appli.HostName");
+		sendSMTPMail(appliEmail, to, appliPassword, applihostname, appliPort,subject, content, "text/html; charset=utf-8");
 	}
 
 	/**
@@ -97,7 +94,7 @@ public class Utils {
 
 		// Set From/to: header field of the header.
 		message.setFrom(new InternetAddress(from));
-		message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+		message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 
 		// Write subject and content
 		message.setSubject(subject);
@@ -118,7 +115,6 @@ public class Utils {
 		InputStream input = null;
 		String result = "";
 		try {
-
 			input = new FileInputStream(filename);
 
 			// load a properties file
@@ -148,19 +144,16 @@ public class Utils {
 	 * @param output
 	 * @param transfo
 	 */
-	public static void transformationXML(String input, String output,
-			String transfo) {
+	public static void transformationXML(String input, String output,String transfo) {
 		TransformerFactory tFactory = TransformerFactory.newInstance();
 		Source xslSource = new StreamSource(transfo);
 		try {
 			Transformer xml2soap = tFactory.newTransformer(xslSource);
 			StreamSource xmlSource = new StreamSource(input);
 			Result outputTarget = new StreamResult(output);
-			System.out.println("transformation de " + input + " en " + output
-					+ " par " + transfo);
+			System.out.println("transformation de " + input + " en " + output	+ " par " + transfo);
 			xml2soap.setOutputProperty(OutputKeys.INDENT, "yes");
-			xml2soap.setOutputProperty(
-					"{http://xml.apache.org/xslt}indent-amount", "2");
+			xml2soap.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 			xml2soap.transform(xmlSource, outputTarget);
 		} catch (TransformerConfigurationException e) {
 			e.printStackTrace();
@@ -175,8 +168,7 @@ public class Utils {
 	 * @return String of the file passed in parameter
 	 * @throws IOException
 	 */
-	public static String readFile(String path, Charset encoding)
-			throws IOException {
+	public static String readFile(String path, Charset encoding) throws IOException {
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 		return new String(encoded, encoding);
 	}
