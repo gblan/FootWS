@@ -10,8 +10,12 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 
 import org.apache.camel.CamelContext;
+import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.component.jms.JmsComponent;
+import org.apache.camel.component.jms.JmsConsumer;
+import org.apache.camel.component.jms.JmsEndpoint;
 import org.apache.camel.impl.DefaultCamelContext;
 
 /** Sites : 
@@ -26,6 +30,7 @@ import org.apache.camel.impl.DefaultCamelContext;
 public class ClientJaxWS {
 	private static final String responseQueue = "activemq:fournisseur.responseQueue";
 	private static final String requestQueue = "activemq:fournisseur.requestQueue";
+	protected static final String RESPONSE_TYPE = "responseType";
 	private CamelContext camelcontext;
 
 	public static void main(String[] args) throws Exception {
@@ -100,19 +105,35 @@ public class ClientJaxWS {
 		pt.sendBodyAndHeader(requestQueue, message, header);
 	}
 	
-	public void readResponse(){
-		System.out.println(">> Reponse obtenue : ID=[]");
+	public void readResponse() throws Exception{
+		JmsEndpoint responseEndPoint = (JmsEndpoint)camelcontext.getEndpoint(responseQueue);		
 		
-		// 1. Transforme l'element recu (XML) en HTML
+		JmsConsumer consumer = responseEndPoint.createConsumer(new Processor() {
+			public void process(Exchange e) throws Exception {
+				System.out.println(">> Reponse obtenue : ID=["+e.getIn().getMessageId()+"]");
+				
+				// 1. Transforme l'element recu (XML) en HTML
+				String response_type = (String) e.getIn().getHeader(RESPONSE_TYPE);
+				if(response_type.equals("Route")){
+					/* transfo xslt route*/
+				}else if (response_type.equals("City")){
+					/* transfo xslt city*/					
+				}				
+				
+				
+				// 2. Ouvre l'element recu (HTML) dans le navigateur par defaut de l'utilisateur
+				try {
+					openDefaultBrowser("");
+					System.out.println("Ouverture du navigateur par defaut OK");
+				} catch (Exception e1) {
+					System.err.println("Impossible d'ouvrir l'element HTML dans le navigateur par defaut. " + e1.getMessage());
+				}
+							}});
 		
-		// 2. Ouvre l'element recu (HTML) dans le navigateur par defaut de l'utilisateur
-		try {
-			openDefaultBrowser("");
-			System.out.println("Ouverture du navigateur par defaut OK");
-		} catch (Exception e) {
-			System.err.println("Impossible d'ouvrir l'element HTML dans le navigateur par defaut. " + e.getMessage());
-		}
+		/* d�marrage du consumer pour r�ception de la r�ponse */
+		consumer.start();
 		
+
 	}
 			
 	/**
