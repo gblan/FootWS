@@ -202,6 +202,10 @@ public class Utils {
 		marshaller.marshal(obj, new File(newFile));
 	}
 
+	/**
+	 * @param mail
+	 * @return true/false if the param is a mail adress
+	 */
 	public static boolean mailValidator(String mail) {
 		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 		return pattern.matcher(mail).matches();

@@ -16,11 +16,11 @@ import javax.xml.ws.ResponseWrapper;
  * Generated source version: 2.2
  * 
  */
-@WebService(name = "FootService", targetNamespace = "http://web.service.et5/")
+@WebService(name = "FootWorldCup", targetNamespace = "http://web.service.et5/")
 @XmlSeeAlso({
     ObjectFactory.class
 })
-public interface FootService {
+public interface FootWorldCup {
 
 
     /**
@@ -33,7 +33,7 @@ public interface FootService {
     @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "getRouteTeamSynchronous", targetNamespace = "http://web.service.et5/", className = "et5.service.web.GetRouteTeamSynchronous")
     @ResponseWrapper(localName = "getRouteTeamSynchronousResponse", targetNamespace = "http://web.service.et5/", className = "et5.service.web.GetRouteTeamSynchronousResponse")
-    @Action(input = "http://web.service.et5/FootService/getRouteTeamSynchronousRequest", output = "http://web.service.et5/FootService/getRouteTeamSynchronousResponse")
+    @Action(input = "http://web.service.et5/FootWorldCup/getRouteTeamSynchronousRequest", output = "http://web.service.et5/FootWorldCup/getRouteTeamSynchronousResponse")
     public String getRouteTeamSynchronous(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0);
@@ -49,7 +49,7 @@ public interface FootService {
     @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "getRouteTeamAsynchronous", targetNamespace = "http://web.service.et5/", className = "et5.service.web.GetRouteTeamAsynchronous")
     @ResponseWrapper(localName = "getRouteTeamAsynchronousResponse", targetNamespace = "http://web.service.et5/", className = "et5.service.web.GetRouteTeamAsynchronousResponse")
-    @Action(input = "http://web.service.et5/FootService/getRouteTeamAsynchronousRequest", output = "http://web.service.et5/FootService/getRouteTeamAsynchronousResponse")
+    @Action(input = "http://web.service.et5/FootWorldCup/getRouteTeamAsynchronousRequest", output = "http://web.service.et5/FootWorldCup/getRouteTeamAsynchronousResponse")
     public int getRouteTeamAsynchronous(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0,

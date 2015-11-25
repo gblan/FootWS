@@ -1,16 +1,10 @@
 package et5.service;
 
-import java.io.IOException;
 import java.util.Scanner;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
-import javax.xml.bind.JAXBException;
 import javax.xml.ws.Endpoint;
 
-import et5.service.foot.FootServiceManager;
-import et5.service.web.FootService;
-import eu.dataaccess.footballpool.Info;
+import et5.service.web.FootWorldCup;
 
 /**
  * CLasse de tests
@@ -57,7 +51,7 @@ public class Tests {
 //	}
 	
 	public static void main(String[] args) {
-		FootService impl = new FootService();		
+		FootWorldCup impl = new FootWorldCup();		
 		Endpoint endpoint = Endpoint.create(impl);
 		
 		endpoint.publish("http://localhost:8090/ws");
@@ -68,6 +62,7 @@ public class Tests {
 		
 		endpoint.stop();
 		System.out.println("Endpoint stopp� !");
+		sc.close();
 	}
 
 }
