@@ -13,7 +13,8 @@
 	<!--<property name="wsdl" value="http://www.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?WSDL" />-->
 
 	<target name="generateProxy">
-		<wsimport debug="false" verbose="false" destdir="./bin" keep="true" sourcedestdir="./src" wsdl="${wsdl}">
+		<wsimport debug="false" verbose="false" destdir="./bin" keep="true" sourcedestdir="./src/et5/client" wsdl="${wsdl}">
+			<!--<wsimport debug="false" verbose="false" destdir="./bin" keep="true" sourcedestdir="./src" wsdl="${wsdl}">-->
 		</wsimport>
 	</target>
 </project>
