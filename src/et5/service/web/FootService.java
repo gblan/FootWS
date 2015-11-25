@@ -16,15 +16,15 @@ public class FootService {
 	 */
 	@WebMethod
 	public String getRouteTeamSynchronous(String teamName){
-		// TODO return XML -> to stringt
+		// TODO return XML -> to string
 		return null;
 	}
 	
 	@WebMethod
-	public String getRouteTeamAsynchronous(String teamName, String mail){
+	public int getRouteTeamAsynchronous(String teamName, String mail){
 		// TODO XML -> via mail
 		// return error code
-		return null;
+		return 0;
 	}
 	
 }
