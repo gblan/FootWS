@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -38,7 +39,9 @@ import javax.xml.transform.stream.StreamSource;
 public class Utils {
 
 	private static final String APPLI_PROPERTIES = "resources/appliMail.properties";
-
+	private static final String EMAIL_PATTERN = 
+			"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	/**
 	 * @param to
 	 * @param subject
@@ -197,5 +200,10 @@ public class Utils {
 		Marshaller marshaller = context.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 		marshaller.marshal(obj, new File(newFile));
+	}
+
+	public static boolean mailValidator(String mail) {
+		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+		return pattern.matcher(mail).matches();
 	}
 }
