@@ -29,7 +29,7 @@ import eu.dataaccess.footballpool.TGoal;
  * Class used to get information about football using the webservice
  * http://footballpool.dataaccess.eu/data/info.wso?wsdl
  */
-public class FootService {
+public class FootServiceManager {
 	/* parameters for wsdl acces */
 	private InfoSoapType soap;
 
@@ -46,7 +46,7 @@ public class FootService {
 	 * @param info
 	 * Constructor need info parameter for wsdl access
 	 */
-	public FootService(Info info) {
+	public FootServiceManager(Info info) {
 		this.soap = info.getInfoSoap();
 	}
 

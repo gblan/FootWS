@@ -6,7 +6,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.xml.bind.JAXBException;
 
-import et5.service.foot.FootService;
+import et5.service.foot.FootServiceManager;
 import eu.dataaccess.footballpool.Info;
 
 /**
@@ -46,7 +46,7 @@ public class Tests {
 //		Service serv = new Service();
 //		serv.obtenirParcours(null);
 
-		FootService fs = new FootService(new Info());
+		FootServiceManager fs = new FootServiceManager(new Info());
 		fs.getInfoMatchById(99);
 //		Utils.transformationXML("routeGermany.xml", "routeGermany.html", "resources/displayHTMLroute.xslt");
 //		String message = Utils.readFile("resources/example/routeGermany.html", Charset.forName("UTF-8"));
