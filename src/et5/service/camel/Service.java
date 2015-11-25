@@ -9,7 +9,7 @@ import javax.xml.bind.Marshaller;
 
 import org.apache.camel.Exchange;
 
-import et5.service.foot.FootService;
+import et5.service.foot.FootServiceManager;
 import et5.service.route.Route;
 import et5.service.utils.Utils;
 import eu.dataaccess.footballpool.Info;
@@ -26,7 +26,7 @@ public class Service {
 
 		// 2. Faire appel a la methode obtenirParcours(pays) dans FootballService.java
 		Info info = new Info();
-		FootService fs = new FootService(info);
+		FootServiceManager fs = new FootServiceManager(info);
 
 		/**
 		 * TODO : lequel des 2?
@@ -94,7 +94,7 @@ public class Service {
 
 		// 2. Faire appel a la méthode afficherCarte(ville) dans FootballService.java
 		Info info = new Info();
-		FootService fs = new FootService(info);
+		FootServiceManager fs = new FootServiceManager(info);
 		URI uri = fs.afficherCarte(ville);
 
 		// 3. Modifier ex pour retourner un XML qui contient l'URI (?)
