@@ -19,6 +19,7 @@
 			<fileset dir="bin" >
 				<!-- ONLY THE SERVICE -->
 				<exclude name="et5/client/**"/>
+				<exclude name="et5/service/Tests.class*"/>
 				<exclude name="example/**" />				
 			</fileset>
 		</copy>
