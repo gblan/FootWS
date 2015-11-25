@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Scanner;
 
+import et5.client.et5.service.web.FootWorldCup;
+import et5.client.et5.service.web.FootWorldCupService;
+
 /**
  * Sites :
  * 
@@ -26,8 +29,8 @@ public class ClientJaxWS {
 		String msg;
 		String city;
 
-		//FootServiceService s = new FootServiceService();
-		// port = s.getFootServicePort();
+		FootWorldCupService fwcs = new FootWorldCupService();
+		FootWorldCup port = fwcs.getFootWorldCupPort();
 
 		while (true) {
 			// 1. Demande ce que souhaite faire l'utilisateur
@@ -50,13 +53,13 @@ public class ClientJaxWS {
 			int choix = Integer.parseInt(scanner.nextLine().trim());
 			if (choix == 1) {
 				/* FIXME afficher l'xml dans une page web avec le xslt */
-				//port.getRouteTeamSynchronous(city);
+				port.getRouteTeamSynchronous(city);
 
 			} else if (choix == 2) {
 				System.out.println("Veuillez saisir votre e-mail :");
 				String mail = scanner.nextLine().trim();
 				/* FIXME valeur de retour de la methode */
-				//port.getRouteTeamAsynchronous(city, mail);
+				port.getRouteTeamAsynchronous(city, mail);
 
 			} else {
 				System.out.println("Erreur dans la saisie!");
