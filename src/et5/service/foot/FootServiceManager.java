@@ -1,12 +1,23 @@
 package et5.service.foot;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
+import javax.jms.ConnectionFactory;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.ws.soap.SOAPFaultException;
+
+import org.apache.camel.CamelContext;
+import org.apache.camel.ProducerTemplate;
+import org.apache.camel.component.jms.JmsComponent;
+import org.apache.camel.impl.DefaultCamelContext;
 
 import et5.service.route.Route;
 import et5.service.route.Route.Matches;
@@ -15,6 +26,7 @@ import et5.service.route.Route.Matches.Match.Cards;
 import et5.service.route.Route.Matches.Match.Cards.Card;
 import et5.service.route.Route.Matches.Match.Goals;
 import et5.service.route.Route.Matches.Match.Goals.Goal;
+import et5.service.utils.Utils;
 import eu.dataaccess.footballpool.ArrayOftGameCard;
 import eu.dataaccess.footballpool.ArrayOftGameInfo;
 import eu.dataaccess.footballpool.ArrayOftGoal;
@@ -32,7 +44,9 @@ import eu.dataaccess.footballpool.TGoal;
 public class FootServiceManager {
 	/* parameters for wsdl acces */
 	private InfoSoapType soap;
-
+	private static final String responseQueue = "activemq:foot.responseQueue";
+	private static final String requestQueue = "activemq:foot.requestQueue";
+	private CamelContext camelcontext = new DefaultCamelContext();
 	/**
 	 * const to know the kind of match was played
 	 */
@@ -50,16 +64,37 @@ public class FootServiceManager {
 		this.soap = info.getInfoSoap();
 	}
 
-	public String obtenirParcours(String pays) {
+	public String obtenirParcours(String country) throws JAXBException, IOException {
 		// Retourne un XML : TODO : voir si retourner un string ou autre chose
-		return null;
+		Route route = getCountryRoute(country);
+		String filename = UUID.randomUUID().toString();
+		Utils.marshal("et5.service.route", route, filename+".xml");
+		return Utils.fileToString(filename+".xml");
 	}
 
-	public URI afficherCarte(String ville) {
-		// Retourne l'URL Google Maps de la ville
-		return null;
+	public void connect() throws Exception {
+		// Creation d'un contexte JNDI
+		Context jndiContext = new InitialContext();
+		
+		// Lookup de la fabrique de connexion et de la destination
+		ConnectionFactory connectionFactory = (ConnectionFactory) jndiContext.lookup("connectionFactory");		
+
+		camelcontext.addComponent("jms-test", JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
+		camelcontext.start();		
 	}
 
+
+	/**
+	 * @param message
+	 * @param header
+	 * @throws Exception
+	 * envoi du code produit dans la queue
+	 */
+	public void sendMessageWithHeader(String message, String header) throws Exception {
+		ProducerTemplate pt = camelcontext.createProducerTemplate();
+		pt.sendBodyAndHeader(requestQueue, message, header);
+	}
+	
 	/**
 	 * print route information about a country in param
 	 * 
