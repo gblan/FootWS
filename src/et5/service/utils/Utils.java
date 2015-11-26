@@ -247,6 +247,13 @@ public class Utils {
 		marshaller(packageName).marshal(obj, new File(newFile));
 	}
 	
+	/**
+	 * @param packageName
+	 * @param obj
+	 * @return xml string correspondind to the obj in param and with the XMLSchema and the XMLDescription at the packageName param
+	 * @throws JAXBException
+	 * @throws UnsupportedEncodingException
+	 */
 	public static String marshalToString(String packageName, Object obj) throws JAXBException, UnsupportedEncodingException{
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		marshaller(packageName).marshal(obj, os);
