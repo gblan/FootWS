@@ -1,14 +1,16 @@
 package et5.service.utils;
 
+import static java.nio.file.Files.readAllBytes;
+import static java.nio.file.Paths.get;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -37,8 +39,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import static java.nio.file.Files.readAllBytes;
-import static java.nio.file.Paths.get;
 /**
  * class utils contains utils static methods
  */
@@ -169,6 +169,29 @@ public class Utils {
 		transformationXML(output, transfo, new StreamSource(new StringReader(input)));
 	}
 	
+	/**
+	 * 
+	 * transformation xslt, to transform an XML string with the xslt transfo param
+	 * @param input
+	 * @param output
+	 * @param transfo
+	 */
+	public static String transformationXMLFromString(String input,String transfo) {
+		TransformerFactory tFactory = TransformerFactory.newInstance();
+		Source xslSource = new StreamSource(transfo);
+		Result outputTarget = new StreamResult(new StringWriter());
+		try {
+			Transformer xml2soap = tFactory.newTransformer(xslSource);
+			xml2soap.setOutputProperty(OutputKeys.INDENT, "yes");
+			xml2soap.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+			xml2soap.transform(new StreamSource(new StringReader(input)), outputTarget);
+		} catch (TransformerConfigurationException e) {
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			e.printStackTrace();
+		}
+		return outputTarget.toString();
+	}
 	
 	/**
 	 * transformation xslt, to transform an xmlSource with the xslt transfo param
