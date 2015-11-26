@@ -1,6 +1,6 @@
 package et5.service.camel;
 
-import java.net.URI;
+import java.io.IOException;
 
 import javax.mail.MessagingException;
 import javax.xml.bind.JAXBContext;
@@ -16,7 +16,7 @@ import eu.dataaccess.footballpool.Info;
 
 public class Service {
 
-	public void obtenirParcours(Exchange ex) throws JAXBException{
+	public void obtenirParcours(Exchange ex) throws JAXBException, IOException{
 		// 1. Recuperer le pays dans 'ex'
 		String pays = (String) ex.getIn().getHeader("COUNTRY");
 
@@ -74,31 +74,6 @@ public class Service {
 		}
 
 		// 3. Mettre l'XML dans 'ex'
-		ex.getOut().setBody(responseXML); 
-		/* 
-		 * TODO : modifier l'id de ex?
-		 * Ex :
-		 * ((JmsMessage)e.getOut()).getJmsMessage().setJMSCorrelationID(message.getMessageId());
-		 */
-	}
-
-
-	/**
-	 * A l'image de Route.java, faire en sorte d'avoir un xslt, xsd et une classe java 
-	 * qui correspond a l'envoi XML de l'URI pour afficher la carte sur google maps???
-	 * @param ex
-	 */
-	public void afficherCarte(Exchange ex){
-		// 1. Récupérer la ville dans 'ex'
-		String ville = (String) ex.getIn().getHeader("CITY");
-
-		// 2. Faire appel a la méthode afficherCarte(ville) dans FootballService.java
-		Info info = new Info();
-		FootServiceManager fs = new FootServiceManager(info);
-		URI uri = fs.afficherCarte(ville);
-
-		// 3. Modifier ex pour retourner un XML qui contient l'URI (?)
-		String responseXML = uri.toString();	// TODO : mettre l'URI dans l'XML
 		ex.getOut().setBody(responseXML); 
 		/* 
 		 * TODO : modifier l'id de ex?
