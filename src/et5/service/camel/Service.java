@@ -60,9 +60,10 @@ public class Service {
 		String subject = (String) ex.getIn().getHeader("SUBJECT");
 
 		// 2. Transformer l'XML -> HTML (.xslt)
-		String messageHTML = "";
 
-		String responseXML = "";
+		String responseXML = (String) ex.getIn().getHeader("CONTENT");
+		String messageHTML = "";
+		
 		try {
 			Utils.sendHTMLMailUsingSMTPAppliEmail(to, subject, messageHTML);
 			// Ecrire XML en disant que l'envoi du mail a reussi
