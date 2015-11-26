@@ -1,9 +1,11 @@
 package et5.service;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 import javax.xml.ws.Endpoint;
 
+import et5.service.utils.Utils;
 import et5.service.web.FootWorldCup;
 
 /**
@@ -11,7 +13,7 @@ import et5.service.web.FootWorldCup;
  */
 public class Tests {
 
-//	public static void main(String[] args) throws AddressException,
+//	public static void main(String[] args) throws IOException{
 //			MessagingException, IOException, JAXBException {
 
 		// FootService fs = new FootService(new Info());
@@ -45,7 +47,11 @@ public class Tests {
 
 //		FootServiceManager fs = new FootServiceManager(new Info());
 //		fs.getInfoMatchById(99);
-//		Utils.transformationXML("routeGermany.xml", "routeGermany.html", "resources/displayHTMLroute.xslt");
+//		String route = Utils.fileToString("resources/example/routeGermany.xml");
+//		System.out.println(route);
+//		
+//		Utils.transformationXMLFromString(route, "resources/example/routeGermany.html", "resources/displayHTMLroute.xslt");
+//		Utils.transformationXMLFromFile("resources/example/routeGermany.xml", "resources/example/routeGermany.html", "resources/displayHTMLroute.xslt");
 //		String message = Utils.readFile("resources/example/routeGermany.html", Charset.forName("UTF-8"));
 //		Utils.sendHTMLMailUsingSMTPAppliEmail("julien.preisner@u-psud.fr","Objet Message", message);
 //	}
