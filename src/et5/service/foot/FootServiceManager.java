@@ -44,9 +44,7 @@ import eu.dataaccess.footballpool.TGoal;
 public class FootServiceManager {
 	/* parameters for wsdl acces */
 	private InfoSoapType soap;
-	private static final String responseQueue = "activemq:foot.responseQueue";
-	private static final String requestQueue = "activemq:foot.requestQueue";
-	private CamelContext camelcontext = new DefaultCamelContext();
+	
 	/**
 	 * const to know the kind of match was played
 	 */
@@ -67,32 +65,8 @@ public class FootServiceManager {
 	public String obtenirParcours(String country) throws JAXBException, IOException {
 		// Retourne un XML : TODO : voir si retourner un string ou autre chose
 		Route route = getCountryRoute(country);
-		String filename = UUID.randomUUID().toString();
-		Utils.marshal("et5.service.route", route, filename+".xml");
-		return Utils.fileToString(filename+".xml");
-	}
-
-	public void connect() throws Exception {
-		// Creation d'un contexte JNDI
-		Context jndiContext = new InitialContext();
-		
-		// Lookup de la fabrique de connexion et de la destination
-		ConnectionFactory connectionFactory = (ConnectionFactory) jndiContext.lookup("connectionFactory");		
-
-		camelcontext.addComponent("jms-test", JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
-		camelcontext.start();		
-	}
-
-
-	/**
-	 * @param message
-	 * @param header
-	 * @throws Exception
-	 * envoi du code produit dans la queue
-	 */
-	public void sendMessageWithHeader(String message, String header) throws Exception {
-		ProducerTemplate pt = camelcontext.createProducerTemplate();
-		pt.sendBodyAndHeader(requestQueue, message, header);
+		Utils.marshalToFile("et5.service.route", route, country+".xml");
+		return Utils.fileToString(country+".xml");
 	}
 	
 	/**
@@ -144,7 +118,7 @@ public class FootServiceManager {
 	 * print info on a specific match passed in parameter
 	 * @param idMatch
 	 */
-	public Match getInfoMatchById(int id) throws SOAPFaultException{
+	private Match getInfoMatchById(int id) throws SOAPFaultException{
 		Match match = new Match();
 		TGameInfo gameInfo = this.soap.gameInfo(id);
 
