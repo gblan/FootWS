@@ -2,22 +2,12 @@ package et5.service.foot;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
-import javax.jms.ConnectionFactory;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.ws.soap.SOAPFaultException;
-
-import org.apache.camel.CamelContext;
-import org.apache.camel.ProducerTemplate;
-import org.apache.camel.component.jms.JmsComponent;
-import org.apache.camel.impl.DefaultCamelContext;
 
 import et5.service.route.Route;
 import et5.service.route.Route.Matches;
