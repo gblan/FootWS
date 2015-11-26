@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -142,20 +143,41 @@ public class Utils {
 	}
 
 	/**
-	 * transformation xslt, to transform an XML to an HTML for presentation
+	 * transformation xslt, to transform an XML file with the xslt transfo param
 	 * 
+	 * @param fileInput
+	 * @param output
+	 * @param transfo
+	 */
+	public static void transformationXMLFromFile(String fileInput, String output,String transfo) {
+		transformationXML(output, transfo, new StreamSource(fileInput));
+
+	}
+	
+	/**
+	 * 
+	 * transformation xslt, to transform an XML string with the xslt transfo param
 	 * @param input
 	 * @param output
 	 * @param transfo
 	 */
-	public static void transformationXML(String input, String output,String transfo) {
+	public static void transformationXMLFromString(String input, String output,String transfo) {
+		transformationXML(output, transfo, new StreamSource(new StringReader(input)));
+	}
+	
+	
+	/**
+	 * transformation xslt, to transform an xmlSource with the xslt transfo param
+	 * @param output
+	 * @param transfo
+	 * @param xmlSource
+	 */
+	private static void transformationXML(String output,String transfo, StreamSource xmlSource) {
 		TransformerFactory tFactory = TransformerFactory.newInstance();
 		Source xslSource = new StreamSource(transfo);
 		try {
 			Transformer xml2soap = tFactory.newTransformer(xslSource);
-			StreamSource xmlSource = new StreamSource(input);
 			Result outputTarget = new StreamResult(output);
-			System.out.println("transformation de " + input + " en " + output	+ " par " + transfo);
 			xml2soap.setOutputProperty(OutputKeys.INDENT, "yes");
 			xml2soap.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 			xml2soap.transform(xmlSource, outputTarget);
@@ -165,6 +187,8 @@ public class Utils {
 			e.printStackTrace();
 		}
 	}
+
+
 
 	/**
 	 * @param path
@@ -179,15 +203,34 @@ public class Utils {
 
 	/**
 	 * @param packageName
-	 * @param xmlFile
+	 * @param pathToXmlFile
 	 * @return Object corresponding to the XMLfile param , having a XML schema and a XML description at the packageName param
 	 * @throws JAXBException
 	 */
-	public static Object unmarshal(String packageName, String xmlFile) throws JAXBException{
-		JAXBContext context = JAXBContext.newInstance(packageName);
-		Unmarshaller u = context.createUnmarshaller();
-		return u.unmarshal(new File(xmlFile));
+	public static Object unmarshalFromFile(String packageName, String pathToXmlFile) throws JAXBException{
+		return Utils.unmarshaller(packageName).unmarshal(new File(pathToXmlFile));
 	}
+	
+	/**
+	 * @param packageName
+	 * @param inputStream
+	 * @return Object corresponding to the XML string param , having a XML schema and a XML description at the packageName param
+	 * @throws JAXBException
+	 */
+	public static Object unmarshalFromString(String packageName, InputStream inputStream) throws JAXBException{
+		return Utils.unmarshaller(packageName).unmarshal(inputStream);
+	}
+	
+	/**
+	 * @param packageName
+	 * @return unmarshaller
+	 * @throws JAXBException
+	 */
+	private static Unmarshaller unmarshaller(String packageName) throws JAXBException{
+		JAXBContext context = JAXBContext.newInstance(packageName);
+		return context.createUnmarshaller();
+	}
+
 	
 	/**
 	 * output an XML file at the newFile param, corresponding to the obj param, and with the XMLSchema and the XMLDescription at the packageName param
@@ -196,7 +239,7 @@ public class Utils {
 	 * @param newFile
 	 * @throws JAXBException
 	 */
-	public static void marshal(String packageName, Object obj, String newFile) throws JAXBException{
+	public static void marshalToFile(String packageName, Object obj, String newFile) throws JAXBException{
 		JAXBContext context = JAXBContext.newInstance(packageName);
 		Marshaller marshaller = context.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
@@ -212,7 +255,12 @@ public class Utils {
 		return pattern.matcher(mail).matches();
 	}
 	
+	/**
+	 * @param filePath
+	 * @return String of the file content in param
+	 * @throws IOException
+	 */
 	public static String fileToString(String filePath) throws IOException{
-		return new String(readAllBytes(get("test.txt")));
+		return new String(readAllBytes(get(filePath)));
 	}
 }
