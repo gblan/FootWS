@@ -1,5 +1,7 @@
 package et5.service.web;
 
+import java.io.IOException;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
@@ -16,7 +18,13 @@ public class FootWorldCup {
 	@WebMethod
 	public String getRouteTeamSynchronous(String teamName){
 		FootWorldCupManager fwcm = new FootWorldCupManager();
-		return fwcm.getRouteTeamSynchronous(teamName);
+		String result = "";
+		try {
+			result = fwcm.getRouteTeamSynchronous(teamName);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 	@WebMethod
