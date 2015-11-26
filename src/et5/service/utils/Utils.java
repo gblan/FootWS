@@ -32,7 +32,8 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
+import static java.nio.file.Files.readAllBytes;
+import static java.nio.file.Paths.get;
 /**
  * class utils contains utils static methods
  */
@@ -209,5 +210,9 @@ public class Utils {
 	public static boolean mailValidator(String mail) {
 		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 		return pattern.matcher(mail).matches();
+	}
+	
+	public static String fileToString(String filePath) throws IOException{
+		return new String(readAllBytes(get("test.txt")));
 	}
 }
