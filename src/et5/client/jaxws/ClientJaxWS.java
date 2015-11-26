@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Scanner;
 
-import et5.client.et5.service.web.FootWorldCup;
-import et5.client.et5.service.web.FootWorldCupService;
+import et5.client.web.FootWorldCup;
+import et5.client.web.FootWorldCupService;
 
 /**
  * Sites :
@@ -27,23 +27,21 @@ public class ClientJaxWS {
 	public static void main(String[] args) throws Exception {
 		Scanner scanner = new Scanner(System.in);
 		String msg;
-		String city;
+		String country;
 
-		FootWorldCupService fwcs = new FootWorldCupService();
-		FootWorldCup port = fwcs.getFootWorldCupPort();
+		
+		  FootWorldCupService fwcs = new FootWorldCupService(); 
+		  FootWorldCup port = fwcs.getFootWorldCupPort();
+		 
 
 		while (true) {
 			// 1. Demande ce que souhaite faire l'utilisateur
-			System.out.println("Web service permettant d'obtenir le parcours d'une equipe nationale durant la Coupe du Monde 2014");
-			System.out.println("Pour arreter le programme : tapez 'quit'");
-			msg = scanner.nextLine().trim();
-			if (msg.equals("quit")) {
-				break;
-			}
+			System.out.println(
+					"Web service permettant d'obtenir le parcours d'une equipe nationale durant la Coupe du Monde 2014");
 
 			// 2. Demande le pays
 			System.out.println("Entrez le pays (en Anglais):");
-			city = scanner.nextLine().trim();
+			country = scanner.nextLine().trim();
 
 			// 3. Ajoute les elements necessaires pour distinguer le choix de
 			// l'utilisateur
@@ -53,19 +51,25 @@ public class ClientJaxWS {
 			int choix = Integer.parseInt(scanner.nextLine().trim());
 			if (choix == 1) {
 				/* FIXME afficher l'xml dans une page web avec le xslt */
-				port.getRouteTeamSynchronous(city);
+				 port.getRouteTeamSynchronous(country);
 
 			} else if (choix == 2) {
 				System.out.println("Veuillez saisir votre e-mail :");
 				String mail = scanner.nextLine().trim();
 				/* FIXME valeur de retour de la methode */
-				port.getRouteTeamAsynchronous(city, mail);
+				 port.getRouteTeamAsynchronous(country, mail);
 
 			} else {
 				System.out.println("Erreur dans la saisie!");
 
 			}
 
+			System.out.println("Pour arreter le programme : tapez 'quit'");
+			System.out.println("Pour obtenir un nouveau parcours d'équipe, saisir : tapez 'Entrer'");
+			msg = scanner.nextLine().trim();
+			if (msg.equals("quit")) {
+				break;
+			}
 		}
 		scanner.close();
 	}
