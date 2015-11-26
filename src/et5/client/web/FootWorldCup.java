@@ -1,4 +1,4 @@
-package et5.client.et5.service.web;
+package et5.client.web;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
