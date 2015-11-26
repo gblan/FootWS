@@ -3,9 +3,7 @@ package et5.service.camel;
 import java.io.IOException;
 
 import javax.mail.MessagingException;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 
 import org.apache.camel.Exchange;
 
@@ -15,71 +13,50 @@ import et5.service.utils.Utils;
 import eu.dataaccess.footballpool.Info;
 
 public class Service {
+	private static final int MAIL_FORMAT_ERROR = 1;
+	private static final int MAIL_TRANSPORT_ERROR = 2;
+	private static final int CORRECT_SEND = 0;
 
-	public void obtenirParcours(Exchange ex) throws JAXBException, IOException{
-		// 1. Recuperer le pays dans 'ex'
-		String pays = (String) ex.getIn().getHeader("COUNTRY");
+	public void obtenirParcours(Exchange ex) throws JAXBException, IOException {
+		FootServiceManager fsm = new FootServiceManager(new Info());
+		Route route = fsm.getCountryRoute((String) ex.getIn().getHeader("COUNTRY"));
 
-		JAXBContext context = JAXBContext.newInstance("et5.service.route");
-		Marshaller m = context.createMarshaller();
-		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-
-		// 2. Faire appel a la methode obtenirParcours(pays) dans FootballService.java
-		Info info = new Info();
-		FootServiceManager fs = new FootServiceManager(info);
-
-		/**
-		 * TODO : lequel des 2?
-		 */
-		
-		// Solution 1 ?
-		String parcoursPaysXML = fs.obtenirParcours(pays);
-		// 3. Mettre l'XML dans 'ex'
-		ex.getOut().setBody(parcoursPaysXML); 
-
-		// Solution 2 ?
-		Route route = fs.getCountryRoute(pays);
-		// 3. Mettre l'XML dans 'ex'
-		ex.getOut().setBody(route);
-
-		/* 
-		 * TODO : modifier l'id de ex?
-		 * Ex :
-		 * ((JmsMessage)e.getOut()).getJmsMessage().setJMSCorrelationID(message.getMessageId());
-		 */
+		/* data */
+		ex.getOut().setBody(Utils.marshalToString("et5.service.route", route));
+		/* JMScorrelationID */
+		ex.getOut().setHeader("JMSCorrelationID", ex.getIn().getMessageId());
 	}
 
 	/**
-	 * A l'image de Route.java et des fichiers xslt et xsd, faire la meme pour un type
-	 *  de message XML qui indique juste si tout s'est bien passe ou pas???
+	 * A l'image de Route.java et des fichiers xslt et xsd, faire la meme pour
+	 * un type de message XML qui indique juste si tout s'est bien passe ou
+	 * pas???
+	 * 
 	 * @param ex
 	 */
-	public void envoiEmail(Exchange ex){
-		// 1. Récupérer le @email et l'XML dans 'ex'
-		String to = (String) ex.getIn().getHeader("TO");
-		String subject = (String) ex.getIn().getHeader("SUBJECT");
+	public void envoiEmail(Exchange ex) {
+		String country = (String) ex.getIn().getHeader("COUNTRY");
+		String mail = (String) ex.getIn().getHeader("MAIL");
+		int status = CORRECT_SEND;
 
-		// 2. Transformer l'XML -> HTML (.xslt)
+		if (!Utils.mailValidator((String) ex.getIn().getHeader("MAIL"))) {
+			status = MAIL_FORMAT_ERROR;
+		} else {
+			FootServiceManager fsm = new FootServiceManager(new Info());
+			try {
+				String html = Utils.transformationXMLFromString(fsm.obtenirParcours(country),
+						"resources/displayHTMLroute.xslt");
+				Utils.sendHTMLMailUsingSMTPAppliEmail(mail, "route of " + country, html);
 
-		String responseXML = (String) ex.getIn().getHeader("CONTENT");
-		String messageHTML = "";
-		
-		try {
-			Utils.sendHTMLMailUsingSMTPAppliEmail(to, subject, messageHTML);
-			// Ecrire XML en disant que l'envoi du mail a reussi
-			responseXML = "ok";	// TODO
-		} 
-		catch (MessagingException e) {
-			// Ecrire XML en disant que l'envoi du mail a echoue
-			responseXML = "not ok"; // TODO
+			} catch (MessagingException | JAXBException | IOException e) {
+				status = MAIL_TRANSPORT_ERROR;
+			}
 		}
 
-		// 3. Mettre l'XML dans 'ex'
-		ex.getOut().setBody(responseXML); 
-		/* 
-		 * TODO : modifier l'id de ex?
-		 * Ex :
-		 * ((JmsMessage)e.getOut()).getJmsMessage().setJMSCorrelationID(message.getMessageId());
-		 */
+		/* JMScorrelationID */
+		ex.getOut().setHeader("JMSCorrelationID", ex.getIn().getMessageId());
+		/* status */
+		ex.getOut().setHeader("STATUS", status);
+
 	}
 }
