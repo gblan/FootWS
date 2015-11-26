@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Scanner;
 
+import javax.xml.ws.WebServiceException;
+
 import et5.client.web.FootWorldCup;
 import et5.client.web.FootWorldCupService;
 
@@ -24,16 +26,20 @@ import et5.client.web.FootWorldCupService;
 public class ClientJaxWS {
 	protected static final String RESPONSE_TYPE = "responseType";
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
 		String msg;
 		String country;
 
-		
-		  FootWorldCupService fwcs = new FootWorldCupService(); 
-		  FootWorldCup port = fwcs.getFootWorldCupPort();
-		 
-
+		/* Appel des méthodes du web service*/
+		FootWorldCupService fwcs;
+		FootWorldCup port = null;
+		try{
+			fwcs = new FootWorldCupService();
+			port = fwcs.getFootWorldCupPort();
+		}catch(WebServiceException e){
+			System.err.println("Impossible de se connecter au web service FootWorldCupService : "+e.getMessage());
+		}
 		while (true) {
 			// 1. Demande ce que souhaite faire l'utilisateur
 			System.out.println(
@@ -51,13 +57,13 @@ public class ClientJaxWS {
 			int choix = Integer.parseInt(scanner.nextLine().trim());
 			if (choix == 1) {
 				/* FIXME afficher l'xml dans une page web avec le xslt */
-				 port.getRouteTeamSynchronous(country);
+				System.out.println(port.getRouteTeamSynchronous(country));
 
 			} else if (choix == 2) {
 				System.out.println("Veuillez saisir votre e-mail :");
 				String mail = scanner.nextLine().trim();
 				/* FIXME valeur de retour de la methode */
-				 port.getRouteTeamAsynchronous(country, mail);
+				System.out.println(port.getRouteTeamAsynchronous(country, mail));
 
 			} else {
 				System.out.println("Erreur dans la saisie!");
