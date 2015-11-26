@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+import javax.xml.bind.JAXBException;
 
 /**
  * Cette classe est l'impl�mentation d'un web-service
@@ -21,7 +22,7 @@ public class FootWorldCup {
 		String result = "";
 		try {
 			result = fwcm.getRouteTeamSynchronous(teamName);
-		} catch (IOException e) {
+		} catch (IOException | JAXBException e) {
 			e.printStackTrace();
 		}
 		return result;

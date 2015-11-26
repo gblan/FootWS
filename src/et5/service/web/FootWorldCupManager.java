@@ -1,6 +1,8 @@
 package et5.service.web;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.jms.ConnectionFactory;
 import javax.mail.MessagingException;
@@ -9,12 +11,15 @@ import javax.naming.InitialContext;
 import javax.xml.bind.JAXBException;
 
 import org.apache.camel.CamelContext;
+import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.component.jms.JmsComponent;
+import org.apache.camel.component.jms.JmsConsumer;
+import org.apache.camel.component.jms.JmsEndpoint;
 import org.apache.camel.impl.DefaultCamelContext;
 
 import et5.service.foot.FootServiceManager;
-import et5.service.route.Route;
 import et5.service.utils.Utils;
 import eu.dataaccess.footballpool.Info;
 
@@ -27,73 +32,127 @@ public class FootWorldCupManager {
 	private static final String responseQueue = "activemq:foot.responseQueue";
 	private static final String requestQueue = "activemq:foot.requestQueue";
 	private CamelContext camelcontext = new DefaultCamelContext();
-	
+
 	public FootWorldCupManager() {
-
+		connect();
 	}
-	
-	public void connect() throws Exception {
-		// Creation d'un contexte JNDI
-		Context jndiContext = new InitialContext();
-		
-		// Lookup de la fabrique de connexion et de la destination
-		ConnectionFactory connectionFactory = (ConnectionFactory) jndiContext.lookup("connectionFactory");		
 
-		camelcontext.addComponent("jms-test", JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
-		camelcontext.start();		
-	}
 	/**
 	 * @param teamName
 	 * @return XML -> to string via JMS
-	 * @throws IOException 
+	 * @throws IOException
+	 * @throws JAXBException
 	 * 
 	 */
-	public String getRouteTeamSynchronous(String teamName) throws IOException {
-		FootServiceManager fsm = new FootServiceManager(new Info());
-		Route route = fsm.getCountryRoute(teamName);
+	public String getRouteTeamSynchronous(String teamName) throws IOException, JAXBException {
+		Map<String, Object> headers = new HashMap<String,Object>();
+		headers.put("OPERATION_NAME", "obtenir_parcours_xml");
+		headers.put("COUNTRY", teamName);
+		int messageID = sendMessageWithHeader(teamName,headers);
 		
-		try {
-			Utils.marshalToFile("et5.service.route", route, teamName+".xml");
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return Utils.fileToString(teamName+".xml");
+		return receiveResponseString(messageID);
 	}
 
 	/**
 	 * XML -> via mail
+	 * 
 	 * @param teamName
 	 * @param mail
-	 * @return int 
+	 * @return int
 	 */
 	public int getRouteTeamAsynchronous(String teamName, String mail) {
-		/* ${headers.operationName} == 'obtenir_parcours_mail' */
+		Map<String, Object> headers = new HashMap<String,Object>();
+		headers.put("OPERATION_NAME", "obtenir_parcours_mail");
+		headers.put("COUNTRY", teamName);
+		headers.put("MAIL", mail);
+		int messageID = sendMessageWithHeader(teamName,headers);
 		
-		
-		if (!Utils.mailValidator(mail)) {
-			return MAIL_FORMAT_ERROR;
-		} else {
-			FootServiceManager fsm = new FootServiceManager(new Info());
-			try {
-				Utils.sendHTMLMailUsingSMTPAppliEmail(mail, "route of "+teamName, fsm.obtenirParcours(teamName));
-			} catch (MessagingException | JAXBException | IOException e) {
-				return MAIL_TRANSPORT_ERROR;
-			}
-		}
-		return CORRECT_SEND;
+		return receiveResponseInt(messageID);
+
 	}
 
+	
+	public void connect() {
+		try {
+			// Creation d'un contexte JNDI
+			Context jndiContext = new InitialContext();
 
+			// Lookup de la fabrique de connexion et de la destination
+			ConnectionFactory connectionFactory = (ConnectionFactory) jndiContext.lookup("connectionFactory");
+
+			camelcontext.addComponent("jms-test", JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
+			camelcontext.start();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * @param message
 	 * @param header
-	 * @throws Exception
 	 * envoi du code produit dans la queue
+	 * @param headers 
 	 */
-	public void sendMessageWithHeader(String message, String header) throws Exception {
+	public int sendMessageWithHeader(String message, Map<String, Object> headers){
 		ProducerTemplate pt = camelcontext.createProducerTemplate();
-		pt.sendBodyAndHeader(requestQueue, message, header);
+		pt.sendBodyAndHeaders(requestQueue, message, headers);
+		//TODO recuperer l'id du messag envoyé et le retourner
+		return 0;
+	}
+	
+	/**
+	 * TODO
+	 * @return
+	 * @throws Exception
+	 */
+	public String receiveResponseString(final int idMessage){
+		JmsEndpoint responseEndPoint = (JmsEndpoint)camelcontext.getEndpoint(responseQueue);		
+		
+		JmsConsumer consumer;
+		try {
+			consumer = responseEndPoint.createConsumer(new Processor() {
+				final String response = "";
+
+				public void process(Exchange e) throws Exception {
+					e.getIn().getBody().toString();
+				}});
+			/* d�marrage du consumer pour r�ception de la r�ponse */
+			consumer.start();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return null;
+	}
+	
+	/**
+	 * TODO
+	 * @return
+	 * @throws Exception
+	 */
+	public int receiveResponseInt(final int idMessage){
+		JmsEndpoint responseEndPoint = (JmsEndpoint)camelcontext.getEndpoint(responseQueue);			
+		JmsConsumer consumer;
+		
+		final int response = 0;
+
+		try {
+			consumer = responseEndPoint.createConsumer(new Processor() {
+
+				public void process(Exchange e) throws Exception {
+					if(e.getIn().getMessageId().equals(Integer.toString(idMessage))){
+						 e.getIn().getBody().toString();
+					}
+				}});
+			/* d�marrage du consumer pour r�ception de la r�ponse */
+			consumer.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+				
+		return response;
 	}
 }
