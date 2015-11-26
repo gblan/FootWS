@@ -1,10 +1,14 @@
 package et5.service.utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -240,11 +244,27 @@ public class Utils {
 	 * @throws JAXBException
 	 */
 	public static void marshalToFile(String packageName, Object obj, String newFile) throws JAXBException{
+		marshaller(packageName).marshal(obj, new File(newFile));
+	}
+	
+	public static String marshalToString(String packageName, Object obj) throws JAXBException, UnsupportedEncodingException{
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		marshaller(packageName).marshal(obj, os);
+		return new String(os.toByteArray(), "UTF-8");
+	}
+	
+	/**
+	 * @param packageName
+	 * @return marshaller
+	 * @throws JAXBException
+	 */
+	private static Marshaller marshaller(String packageName) throws JAXBException{
 		JAXBContext context = JAXBContext.newInstance(packageName);
 		Marshaller marshaller = context.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-		marshaller.marshal(obj, new File(newFile));
+		return marshaller;
 	}
+
 
 	/**
 	 * @param mail
