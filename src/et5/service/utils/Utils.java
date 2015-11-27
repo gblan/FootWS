@@ -43,7 +43,7 @@ import javax.xml.transform.stream.StreamSource;
  * class utils contains utils static methods
  */
 public class Utils {
-
+	private static final String DEFAULT_PATH_TRANSFO_XSLT = "resources/displayHTMLroute.xslt";
 	private static final String APPLI_PROPERTIES = "resources/appliMail.properties";
 	private static final String EMAIL_PATTERN = 
 			"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -146,15 +146,27 @@ public class Utils {
 		return result;
 	}
 
+	
 	/**
 	 * transformation xslt, to transform an XML file with the xslt transfo param
 	 * 
 	 * @param fileInput
 	 * @param output
+	 */
+	public static void transformXMLFileintoHTMLFile(String fileInput, String output) {
+		transformXMLFileintoHTMLFile(fileInput, output, DEFAULT_PATH_TRANSFO_XSLT);
+
+	}
+	
+	/**
+	 * transformation xslt, to transform an XML file with the xslt transfo param
+	 * 
+	 * @param fileInput
+	 * @param fileOutput
 	 * @param transfo
 	 */
-	public static void transformationXMLFromFile(String fileInput, String output,String transfo) {
-		transformationXML(output, transfo, new StreamSource(fileInput));
+	public static void transformXMLFileintoHTMLFile(String fileInput, String fileOutput, String transfo) {
+		transformXMLintoHTML(new StreamSource(fileInput), fileOutput, transfo);
 
 	}
 	
@@ -163,20 +175,39 @@ public class Utils {
 	 * transformation xslt, to transform an XML string with the xslt transfo param
 	 * @param input
 	 * @param output
+	 */
+	public static void transformXMLStringintoHTMLFile(String stringInput, String fileOutput) {
+		transformXMLStringintoHTMLFile(stringInput, fileOutput, DEFAULT_PATH_TRANSFO_XSLT);
+	}
+	
+	
+	/**
+	 * 
+	 * transformation xslt, to transform an XML string with the xslt transfo param
+	 * @param stringInput
+	 * @param fileOutput
 	 * @param transfo
 	 */
-	public static void transformationXMLFromString(String input, String output,String transfo) {
-		transformationXML(output, transfo, new StreamSource(new StringReader(input)));
+	public static void transformXMLStringintoHTMLFile(String stringInput, String fileOutput,String transfo) {
+		transformXMLintoHTML(new StreamSource(new StringReader(stringInput)), fileOutput, transfo);
+	}
+	
+	/**
+	 * 
+	 * transformation xslt, to transform an XML string with the xslt transfo param
+	 * @param stringInput
+	 */
+	public static String transformXMLStringintoHTMLString(String stringInput) {
+		return transformXMLStringintoHTMLString(stringInput, DEFAULT_PATH_TRANSFO_XSLT);
 	}
 	
 	/**
 	 * 
 	 * transformation xslt, to transform an XML string with the xslt transfo param
 	 * @param input
-	 * @param output
 	 * @param transfo
 	 */
-	public static String transformationXMLFromString(String input,String transfo) {
+	public static String transformXMLStringintoHTMLString(String stringInput, String transfo) {
 		TransformerFactory tFactory = TransformerFactory.newInstance();
 		Source xslSource = new StreamSource(transfo);
 		Result outputTarget = new StreamResult(new StringWriter());
@@ -184,7 +215,7 @@ public class Utils {
 			Transformer xml2soap = tFactory.newTransformer(xslSource);
 			xml2soap.setOutputProperty(OutputKeys.INDENT, "yes");
 			xml2soap.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-			xml2soap.transform(new StreamSource(new StringReader(input)), outputTarget);
+			xml2soap.transform(new StreamSource(new StringReader(stringInput)), outputTarget);
 		} catch (TransformerConfigurationException e) {
 			e.printStackTrace();
 		} catch (TransformerException e) {
@@ -199,7 +230,7 @@ public class Utils {
 	 * @param transfo
 	 * @param xmlSource
 	 */
-	private static void transformationXML(String output,String transfo, StreamSource xmlSource) {
+	private static void transformXMLintoHTML(StreamSource xmlSource, String output,String transfo) {
 		TransformerFactory tFactory = TransformerFactory.newInstance();
 		Source xslSource = new StreamSource(transfo);
 		try {

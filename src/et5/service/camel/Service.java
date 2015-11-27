@@ -44,8 +44,7 @@ public class Service {
 		} else {
 			FootServiceManager fsm = new FootServiceManager(new Info());
 			try {
-				String html = Utils.transformationXMLFromString(fsm.obtenirParcours(country),
-						"resources/displayHTMLroute.xslt");
+				String html = Utils.transformXMLStringintoHTMLString(fsm.obtenirParcours(country));
 				Utils.sendHTMLMailUsingSMTPAppliEmail(mail, "route of " + country, html);
 
 			} catch (MessagingException | JAXBException | IOException e) {

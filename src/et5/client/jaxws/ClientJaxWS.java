@@ -1,6 +1,8 @@
 package et5.client.jaxws;
 
 import java.awt.Desktop;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Scanner;
@@ -9,6 +11,7 @@ import javax.xml.ws.WebServiceException;
 
 import et5.client.web.FootWorldCup;
 import et5.client.web.FootWorldCupService;
+import et5.service.utils.Utils;
 
 /**
  * Sites :
@@ -92,4 +95,41 @@ public class ClientJaxWS {
 		URI uri = URI.create(url);
 		Desktop.getDesktop().browse(uri);
 	}
+	
+	/**
+	 * Open the user default browser and go to the url passed as a parameter
+	 * Tested on Windows 7, 8, Ubuntu, MacOS
+	 * https://openclassrooms.com/forum/sujet/ouvrir-une-page-web-54152
+	 * 
+	 * @param url
+	 * @throws IOException
+	 */
+	public static void openDefaultBrowser(File file) throws IOException {
+		Desktop.getDesktop().browse(file.toURI());
+	}
+	
+	
+	
+	/**
+	 * The XML content passed as a parameter is transformed into HTML content and
+	 * displayed in the default web browser of the user
+	 * 
+	 * @param xmlContent
+	 * @param country used in the temporary file name
+	 */
+	public void transformAndDisplayRouteTeam(String xmlContent, String country){
+		File temp = null;
+		try {
+			temp = File.createTempFile("result-" + country, ".html");
+			Utils.transformXMLStringintoHTMLFile(xmlContent, temp.getAbsolutePath());
+			openDefaultBrowser(temp);
+			
+		} catch (Exception e) {
+			System.err.println("Impossible to transform and display the route team. " + e.getMessage());
+		} finally {
+			if(temp != null)
+				temp.deleteOnExit();	// delete the file when the JVM terminates itself
+		}
+	}
+	
 }
