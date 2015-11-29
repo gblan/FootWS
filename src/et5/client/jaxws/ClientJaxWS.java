@@ -44,6 +44,7 @@ public class ClientJaxWS {
 			port = fwcs.getFootWorldCupPort();
 		}catch(WebServiceException e){
 			System.err.println("Impossible de se connecter au web service FootWorldCupService : "+e.getMessage());
+			System.exit(-1);
 		}
 		while (true) {
 			// 1. Demande ce que souhaite faire l'utilisateur
