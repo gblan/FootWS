@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.jms.ConnectionFactory;
-import javax.mail.MessagingException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.xml.bind.JAXBException;
@@ -19,14 +18,7 @@ import org.apache.camel.component.jms.JmsConsumer;
 import org.apache.camel.component.jms.JmsEndpoint;
 import org.apache.camel.impl.DefaultCamelContext;
 
-import et5.service.foot.FootServiceManager;
-import et5.service.utils.Utils;
-import eu.dataaccess.footballpool.Info;
-
 public class FootWorldCupManager {
-	private static final int MAIL_FORMAT_ERROR = 1;
-	private static final int MAIL_TRANSPORT_ERROR = 2;
-	private static final int CORRECT_SEND = 0;
 
 	/* parameters for wsdl acces */
 	private static final String responseQueue = "activemq:foot.responseQueue";
@@ -48,7 +40,7 @@ public class FootWorldCupManager {
 		Map<String, Object> headers = new HashMap<String,Object>();
 		headers.put("OPERATION_NAME", "obtenir_parcours_xml");
 		headers.put("COUNTRY", teamName);
-		int messageID = sendMessageWithHeader(teamName,headers);
+		String messageID = sendMessageWithHeader(teamName,headers);
 		
 		return receiveResponseString(messageID);
 	}
@@ -65,7 +57,7 @@ public class FootWorldCupManager {
 		headers.put("OPERATION_NAME", "obtenir_parcours_mail");
 		headers.put("COUNTRY", teamName);
 		headers.put("MAIL", mail);
-		int messageID = sendMessageWithHeader(teamName,headers);
+		String messageID = sendMessageWithHeader(teamName,headers);
 		
 		return receiveResponseInt(messageID);
 
@@ -90,15 +82,14 @@ public class FootWorldCupManager {
 	
 	/**
 	 * @param message
-	 * @param header
-	 * envoi du code produit dans la queue
-	 * @param headers 
+	 * @param headers
+	 * @return idMessage
 	 */
-	public int sendMessageWithHeader(String message, Map<String, Object> headers){
+	public String sendMessageWithHeader(String message, Map<String, Object> headers){
 		ProducerTemplate pt = camelcontext.createProducerTemplate();
 		pt.sendBodyAndHeaders(requestQueue, message, headers);
 		//TODO recuperer l'id du messag envoyé et le retourner
-		return 0;
+		return "";
 	}
 	
 	/**
@@ -106,7 +97,7 @@ public class FootWorldCupManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public String receiveResponseString(final int idMessage){
+	public String receiveResponseString(final String idMessage){
 		JmsEndpoint responseEndPoint = (JmsEndpoint)camelcontext.getEndpoint(responseQueue);		
 		
 		JmsConsumer consumer;
@@ -115,7 +106,9 @@ public class FootWorldCupManager {
 				final String response = "";
 
 				public void process(Exchange e) throws Exception {
-					e.getIn().getBody().toString();
+					if(e.getIn().getHeader("JMSCorrelationID").equals(idMessage)){
+						e.getIn().getBody().toString();
+					}
 				}});
 			/* d�marrage du consumer pour r�ception de la r�ponse */
 			consumer.start();
@@ -133,7 +126,7 @@ public class FootWorldCupManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public int receiveResponseInt(final int idMessage){
+	public int receiveResponseInt(final String idMessage){
 		JmsEndpoint responseEndPoint = (JmsEndpoint)camelcontext.getEndpoint(responseQueue);			
 		JmsConsumer consumer;
 		
@@ -143,8 +136,8 @@ public class FootWorldCupManager {
 			consumer = responseEndPoint.createConsumer(new Processor() {
 
 				public void process(Exchange e) throws Exception {
-					if(e.getIn().getMessageId().equals(Integer.toString(idMessage))){
-						 e.getIn().getBody().toString();
+					if(e.getIn().getHeader("JMSCorrelationID").equals(idMessage)){
+						e.getIn().getBody().toString();
 					}
 				}});
 			/* d�marrage du consumer pour r�ception de la r�ponse */
