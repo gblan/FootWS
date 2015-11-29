@@ -1,13 +1,5 @@
 package et5.service;
 
-import java.io.IOException;
-import java.util.Scanner;
-
-import javax.xml.ws.Endpoint;
-
-import et5.service.utils.Utils;
-import et5.service.web.FootWorldCup;
-
 /**
  * CLasse de tests
  */
@@ -56,19 +48,20 @@ public class Tests {
 //		Utils.sendHTMLMailUsingSMTPAppliEmail("julien.preisner@u-psud.fr","Objet Message", message);
 //	}
 	
-	public static void main(String[] args) {
-		FootWorldCup impl = new FootWorldCup();		
-		Endpoint endpoint = Endpoint.create(impl);
-		
-		endpoint.publish("http://localhost:8090/ws");
-		
-		System.err.println("Saisir (car + return) pour arreter le endpoint ");	
-		Scanner sc = new Scanner(System.in);
-		sc.next();
-		
-		endpoint.stop();
-		System.out.println("Endpoint stopp� !");
-		sc.close();
-	}
+	/* pour lancer le ws local (route) */
+//	public static void main(String[] args) {
+//		FootWorldCup impl = new FootWorldCup();		
+//		Endpoint endpoint = Endpoint.create(impl);
+//		
+//		endpoint.publish("http://localhost:8090/ws");
+//		
+//		System.err.println("Saisir (car + return) pour arreter le endpoint ");	
+//		Scanner sc = new Scanner(System.in);
+//		sc.next();
+//		
+//		endpoint.stop();
+//		System.out.println("Endpoint stopp� !");
+//		sc.close();
+//	}
 
 }
