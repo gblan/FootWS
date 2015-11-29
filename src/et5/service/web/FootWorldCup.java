@@ -7,7 +7,7 @@ import javax.jws.WebService;
 import javax.xml.bind.JAXBException;
 
 /**
- * Cette classe est l'impl�mentation d'un web-service
+ * Cette classe est l'implementation d'un web-service
  */
 @WebService
 public class FootWorldCup {
