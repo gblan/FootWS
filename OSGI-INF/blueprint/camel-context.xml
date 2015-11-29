@@ -26,13 +26,6 @@
 					<bean ref="service" method="obtenirParcours" />					
 					<bean ref="log" method="log" />					
 	    		</when>
-	    		<!-- AFFICHER_CARTE -->
-	    		<when>
-					<simple>${headers.operationName} == 'affiche_carte'</simple>
-					<bean ref="log" method="log" />					
-					<bean ref="service" method="afficherCarte" />					
-					<bean ref="log" method="log" />					
-	    		</when>
     		</choice>
     		<to uri="activemq:queue:fournisseur.responseQueue"/>
     	</route>   	
