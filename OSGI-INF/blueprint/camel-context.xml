@@ -8,7 +8,7 @@
 
 	<camelContext xmlns="http://camel.apache.org/schema/blueprint">
 		<route>
-    		<from uri="activemq:queue:fournisseur.requestQueue"/>
+    		<from uri="activemq:queue:foot.requestQueue"/>
     		<choice>
     			<!-- ASYNCHRONE MAIL RESULT -->
 	    		<when>
@@ -27,7 +27,7 @@
 					<bean ref="log" method="log" />					
 	    		</when>
     		</choice>
-    		<to uri="activemq:queue:fournisseur.responseQueue"/>
+    		<to uri="activemq:queue:foot.responseQueue"/>
     	</route>   	
 	</camelContext>
 
