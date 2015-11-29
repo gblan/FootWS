@@ -2,7 +2,6 @@ package et5.client.jaxws;
 
 import java.awt.Desktop;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Scanner;
@@ -28,7 +27,10 @@ import et5.service.utils.Utils;
  */
 public class ClientJaxWS {
 	protected static final String RESPONSE_TYPE = "responseType";
-
+	private static final int MAIL_FORMAT_ERROR = 1;
+	private static final int MAIL_TRANSPORT_ERROR = 2;
+	private static final int CORRECT_SEND = 0;
+	
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
 		String msg;
@@ -59,14 +61,29 @@ public class ClientJaxWS {
 			System.out.println("Pour le mode asynchrone (réception par e-mail), tapez 2");
 			int choix = Integer.parseInt(scanner.nextLine().trim());
 			if (choix == 1) {
-				/* FIXME afficher l'xml dans une page web avec le xslt */
-				System.out.println(port.getRouteTeamSynchronous(country));
-
+				
+				/* afficher l'xml dans une page web avec le xslt */
+				ClientJaxWS.transformAndDisplayRouteTeam(port.getRouteTeamSynchronous(country),country);
+			
 			} else if (choix == 2) {
 				System.out.println("Veuillez saisir votre e-mail :");
 				String mail = scanner.nextLine().trim();
-				/* FIXME valeur de retour de la methode */
-				System.out.println(port.getRouteTeamAsynchronous(country, mail));
+				
+				/* valeur de retour de la methode */
+				switch (port.getRouteTeamAsynchronous(country, mail)) {
+					case CORRECT_SEND:
+						System.out.println("envoi de la réponse effectué, veuillez consulter votre boite de reception ("+mail+")");
+						break;	
+					case MAIL_FORMAT_ERROR:
+						System.out.println("mauvais format de l'e-mail, veuillez réessayer");
+						break;
+					case MAIL_TRANSPORT_ERROR:
+						System.out.println("erreur de transmission de l'e-mail, veuillez réessayer");
+						break;
+				
+					default:
+						break;
+				}
 
 			} else {
 				System.out.println("Erreur dans la saisie!");
@@ -117,7 +134,7 @@ public class ClientJaxWS {
 	 * @param xmlContent
 	 * @param country used in the temporary file name
 	 */
-	public void transformAndDisplayRouteTeam(String xmlContent, String country){
+	public static void transformAndDisplayRouteTeam(String xmlContent, String country){
 		File temp = null;
 		try {
 			temp = File.createTempFile("result-" + country, ".html");
