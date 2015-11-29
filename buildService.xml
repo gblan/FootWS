@@ -3,6 +3,7 @@
 <project name="FootWS" default="all" basedir=".">
 	<property name="work" value="${basedir}" />
 	<property name="bundle" value="${ant.project.name}" />
+	<property name="main-class" value="et5.service.Tests" />
 
 	<target name="all" depends="package" />
 
@@ -19,7 +20,6 @@
 			<fileset dir="bin" >
 				<!-- ONLY THE SERVICE -->
 				<exclude name="et5/client/**"/>
-				<exclude name="et5/service/Tests.class*"/>
 				<exclude name="example/**" />				
 			</fileset>
 		</copy>
@@ -28,7 +28,9 @@
 		</copy>
 		<jar destfile="${work}/${bundle}-service.jar" basedir="${work}/${bundle}">
 			<manifest>
-				<attribute name="Bundle-ManifestVersion" value="2.0" />
+				<!-- RUNNABLE JAR FILE-->
+				<attribute name="Main-Class" value="${main-class}" />				
+				<attribute name="Bundle-ManifestVersion" value="2" />
 				<attribute name="Bundle-Name" value="${bundle}" />
 				<attribute name="Bundle-SymbolicName" value="${bundle}" />
 				<attribute name="Bundle-Version" value="1.0.0.0" />
