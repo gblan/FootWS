@@ -1,4 +1,4 @@
-package et5.service.utils;
+package et5.utils;
 
 import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Paths.get;
@@ -39,6 +39,8 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
+import et5.service.utils.SMTPAuthenticator;
 /**
  * class utils contains utils static methods
  */

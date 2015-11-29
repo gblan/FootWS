@@ -16,7 +16,7 @@ import et5.service.route.Route.Matches.Match.Cards;
 import et5.service.route.Route.Matches.Match.Cards.Card;
 import et5.service.route.Route.Matches.Match.Goals;
 import et5.service.route.Route.Matches.Match.Goals.Goal;
-import et5.service.utils.Utils;
+import et5.utils.Utils;
 import eu.dataaccess.footballpool.ArrayOftGameCard;
 import eu.dataaccess.footballpool.ArrayOftGameInfo;
 import eu.dataaccess.footballpool.ArrayOftGoal;

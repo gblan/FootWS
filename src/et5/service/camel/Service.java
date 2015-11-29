@@ -9,7 +9,7 @@ import org.apache.camel.Exchange;
 
 import et5.service.foot.FootServiceManager;
 import et5.service.route.Route;
-import et5.service.utils.Utils;
+import et5.utils.Utils;
 import eu.dataaccess.footballpool.Info;
 
 public class Service {

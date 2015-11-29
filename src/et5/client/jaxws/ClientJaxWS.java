@@ -10,7 +10,7 @@ import javax.xml.ws.WebServiceException;
 
 import et5.client.web.FootWorldCup;
 import et5.client.web.FootWorldCupService;
-import et5.service.utils.Utils;
+import et5.utils.Utils;
 
 /**
  * Sites :
