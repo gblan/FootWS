@@ -9,7 +9,8 @@ import org.apache.camel.Exchange;
 
 import et5.service.foot.FootServiceManager;
 import et5.service.route.Route;
-import et5.utils.Utils;
+import et5.utils.UtilsIO;
+import et5.utils.UtilsMail;
 import eu.dataaccess.footballpool.Info;
 
 public class Service {
@@ -22,7 +23,7 @@ public class Service {
 		Route route = fsm.getCountryRoute((String) ex.getIn().getHeader("COUNTRY"));
 
 		/* data */
-		ex.getOut().setBody(Utils.marshalToString("et5.service.route", route));
+		ex.getOut().setBody(UtilsIO.marshalToString("et5.service.route", route));
 		/* JMScorrelationID */
 		ex.getOut().setHeader("JMSCorrelationID", ex.getIn().getMessageId());
 	}
@@ -39,13 +40,13 @@ public class Service {
 		String mail = (String) ex.getIn().getHeader("MAIL");
 		int status = CORRECT_SEND;
 
-		if (!Utils.mailValidator((String) ex.getIn().getHeader("MAIL"))) {
+		if (!UtilsMail.mailValidator((String) ex.getIn().getHeader("MAIL"))) {
 			status = MAIL_FORMAT_ERROR;
 		} else {
 			FootServiceManager fsm = new FootServiceManager(new Info());
 			try {
-				String html = Utils.transformXMLStringintoHTMLString(fsm.obtenirParcours(country));
-				Utils.sendHTMLMailUsingSMTPAppliEmail(mail, "route of " + country, html);
+				String html = UtilsIO.transformXMLStringintoHTMLString(fsm.obtenirParcours(country));
+				UtilsMail.sendHTMLMailUsingSMTPAppliEmail(mail, "route of " + country, html);
 
 			} catch (MessagingException | JAXBException | IOException e) {
 				status = MAIL_TRANSPORT_ERROR;
