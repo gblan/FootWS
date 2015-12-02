@@ -10,7 +10,7 @@ import javax.xml.ws.WebServiceException;
 
 import et5.client.web.FootWorldCup;
 import et5.client.web.FootWorldCupService;
-import et5.utils.Utils;
+import et5.utils.UtilsIO;
 
 /**
  * Sites :
@@ -71,6 +71,7 @@ public class ClientJaxWS {
 				String mail = scanner.nextLine().trim();
 				
 				/* valeur de retour de la methode */
+				//FIXME, voir si on renvoie qq chose ou pas
 				switch (port.getRouteTeamAsynchronous(country, mail)) {
 					case CORRECT_SEND:
 						System.out.println("envoi de la réponse effectué, veuillez consulter votre boite de reception ("+mail+")");
@@ -139,7 +140,7 @@ public class ClientJaxWS {
 		File temp = null;
 		try {
 			temp = File.createTempFile("result-" + country, ".html");
-			Utils.transformXMLStringintoHTMLFile(xmlContent, temp.getAbsolutePath());
+			UtilsIO.transformXMLStringintoHTMLFile(xmlContent, temp.getAbsolutePath());
 			openDefaultBrowser(temp);
 			
 		} catch (Exception e) {
