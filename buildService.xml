@@ -10,18 +10,32 @@
 	<target name="clean" description="delete temporary files/directory">
 		<delete dir="${work}/${bundle}" />
 	</target>
-	
+
 	<target name="init" description="create temporary directory">
 		<mkdir dir="${work}/${bundle}" />
 	</target>
-	
+
 	<target name="package" depends="clean,init">
 		<copy todir="${work}/${bundle}" overwrite="true" >
 			<fileset dir="bin" >
 				<!-- ONLY THE SERVICE -->
+				<exclude name="eu/**" />
+				<exclude name="org/**" />
 				<exclude name="et5/client/**"/>
-				<exclude name="et5/service/web/**"/>
-				<exclude name="example/**" />				
+				<exclude name="et5/utils/**"/>
+				<exclude name="et5/service/camel/**"/>
+				<exclude name="et5/service/country/**"/>
+				<exclude name="et5/service/foot/**"/>
+				<exclude name="et5/service/route/**"/>
+				<exclude name="et5/service/utils/**"/>
+				<exclude name="et5/service/camel/**"/>
+				<exclude name="example/**" />
+				<exclude name="OSGI-INF/**" />
+				<exclude name="*.xsd" />
+				<exclude name="*.xml" />
+				<exclude name="*.xslt" />
+				<exclude name="camel-context.xml" />
+				<exclude name="*.properties" />				
 			</fileset>
 		</copy>
 		<copy todir="${work}/${bundle}/OSGI-INF" overwrite="true">
@@ -30,7 +44,7 @@
 		<jar destfile="${work}/${bundle}-service.jar" basedir="${work}/${bundle}">
 			<manifest>
 				<!-- RUNNABLE JAR FILE-->
-				<attribute name="Main-Class" value="${main-class}" />				
+				<attribute name="Main-Class" value="${main-class}" />
 				<attribute name="Bundle-ManifestVersion" value="2" />
 				<attribute name="Bundle-Name" value="${bundle}" />
 				<attribute name="Bundle-SymbolicName" value="${bundle}" />
@@ -38,7 +52,8 @@
 				<attribute name="DynamicImport-Package" value="*" />
 			</manifest>
 		</jar>
-		<antcall target="clean"></antcall>
+		<antcall target="clean">
+		</antcall>
 	</target>
 
 </project>

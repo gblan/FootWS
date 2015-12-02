@@ -19,7 +19,8 @@
 			<fileset dir="bin">
 				<!-- ONLY THE BUNDLE -->
 				<exclude name="et5/client/**"/>
-				<exclude name="example/**" />		
+				<exclude name="example/**" />
+				<exclude name="et5/service/web/**"/>
 			</fileset>
 		</copy>
 		<jar destfile="${work}/${bundle}-bundle.jar" basedir="${work}/${bundle}">
