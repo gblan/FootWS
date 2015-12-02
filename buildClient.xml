@@ -20,6 +20,7 @@
 			<fileset dir="bin">
 				<!-- ONLY THE CLIENT -->
 				<exclude name="et5/service/**" />
+				<exclude name="et5/utils/UtilsMail.class" />
 				<exclude name="eu/**" />
 				<exclude name="org/**" />
 				<exclude name="example/**" />
