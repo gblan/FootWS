@@ -3,34 +3,28 @@
 <project name="FootWS" default="all" basedir=".">
 	<property name="work" value="${basedir}" />
 	<property name="bundle" value="${ant.project.name}" />
-	<property name="main-class" value="et5.service.Tests" />
 
 	<target name="all" depends="package" />
 
 	<target name="clean" description="delete temporary files/directory">
 		<delete dir="${work}/${bundle}" />
 	</target>
-	
+
 	<target name="init" description="create temporary directory">
 		<mkdir dir="${work}/${bundle}" />
 	</target>
-	
+
 	<target name="package" depends="clean,init">
-		<copy todir="${work}/${bundle}" overwrite="true" >
-			<fileset dir="bin" >
-				<!-- ONLY THE SERVICE -->
+		<copy todir="${work}/${bundle}" overwrite="true">
+			<fileset dir="bin">
+				<!-- ONLY THE BUNDLE -->
 				<exclude name="et5/client/**"/>
-				<exclude name="et5/service/web/**"/>
-				<exclude name="example/**" />				
+				<exclude name="example/**" />		
 			</fileset>
 		</copy>
-		<copy todir="${work}/${bundle}/OSGI-INF" overwrite="true">
-			<fileset dir="OSGI-INF" />
-		</copy>
-		<jar destfile="${work}/${bundle}-service.jar" basedir="${work}/${bundle}">
+		<jar destfile="${work}/${bundle}-bundle.jar" basedir="${work}/${bundle}">
 			<manifest>
 				<!-- RUNNABLE JAR FILE-->
-				<attribute name="Main-Class" value="${main-class}" />				
 				<attribute name="Bundle-ManifestVersion" value="2" />
 				<attribute name="Bundle-Name" value="${bundle}" />
 				<attribute name="Bundle-SymbolicName" value="${bundle}" />
@@ -38,7 +32,8 @@
 				<attribute name="DynamicImport-Package" value="*" />
 			</manifest>
 		</jar>
-		<antcall target="clean"></antcall>
+		<antcall target="clean">
+		</antcall>
 	</target>
 
 </project>
