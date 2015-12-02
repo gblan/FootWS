@@ -110,7 +110,7 @@ public class FootWorldCupManager {
 						e.getIn().getBody().toString();
 					}
 				}});
-			/* d�marrage du consumer pour r�ception de la r�ponse */
+			/* demarrage du consumer pour reception de la reponse */
 			consumer.start();
 
 		} catch (Exception e) {

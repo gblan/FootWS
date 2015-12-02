@@ -16,7 +16,7 @@ import et5.service.route.Route.Matches.Match.Cards;
 import et5.service.route.Route.Matches.Match.Cards.Card;
 import et5.service.route.Route.Matches.Match.Goals;
 import et5.service.route.Route.Matches.Match.Goals.Goal;
-import et5.utils.Utils;
+import et5.utils.UtilsIO;
 import eu.dataaccess.footballpool.ArrayOftGameCard;
 import eu.dataaccess.footballpool.ArrayOftGameInfo;
 import eu.dataaccess.footballpool.ArrayOftGoal;
@@ -55,8 +55,8 @@ public class FootServiceManager {
 	public String obtenirParcours(String country) throws JAXBException, IOException {
 		// Retourne un XML : TODO : voir si retourner un string ou autre chose
 		Route route = getCountryRoute(country);
-		Utils.marshalToFile("et5.service.route", route, country+".xml");
-		return Utils.fileToString(country+".xml");
+		UtilsIO.marshalToFile("et5.service.route", route, country+".xml");
+		return UtilsIO.fileToString(country+".xml");
 	}
 	
 	/**
