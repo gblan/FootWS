@@ -22,7 +22,7 @@ public class ClientJaxWS {
 		Scanner scanner = new Scanner(System.in);
 		String msg;
 		String country;
-
+		    
 		/* Appel des méthodes du web service*/
 		FootWorldCupService fwcs;
 		FootWorldCup port = null;
@@ -63,7 +63,7 @@ public class ClientJaxWS {
 				System.out.println("Veuillez saisir votre e-mail :");
 
 				/* repositionnement du buffer en debut de ligne*/
-				scanner.nextLine();
+				scanner.reset();
 				/* lecture de la donnee */
 				String mail = scanner.nextLine().trim();
 				
