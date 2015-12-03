@@ -21,14 +21,19 @@ import org.apache.camel.impl.DefaultCamelContext;
 public class FootWorldCupManager {
 
 	/* parameters for wsdl acces */
-	private static final String responseQueue = "activemq:foot.responseQueue";
-	private static final String requestQueue = "activemq:foot.requestQueue";
+	private final String responseQueue = "activemq:foot.responseQueue";
+	private final String requestQueue = "activemq:foot.requestQueue";
 	private CamelContext camelcontext = new DefaultCamelContext();
+
+	// Message Header 
+	private final String countryHeader = "COUNTRY";
+	private final String operationNameHeader = "OPERATION_NAME";
+	private final String mailHeader = "MAIL";
 
 	public FootWorldCupManager() {
 		connect();
 	}
-	
+
 	public void connect() {
 		try {
 			// Creation d'un contexte JNDI
@@ -37,7 +42,7 @@ public class FootWorldCupManager {
 			// Lookup de la fabrique de connexion et de la destination
 			ConnectionFactory connectionFactory = (ConnectionFactory) jndiContext.lookup("connectionFactory");
 			camelcontext.addComponent("jms-test", JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
-			
+
 			camelcontext.start();
 		} catch (Exception e) {
 			System.err.println("Impossible de se connecter JNDI/JMS : " + e.getMessage());
@@ -54,8 +59,8 @@ public class FootWorldCupManager {
 	 */
 	public String getRouteTeamSynchronous(String teamName) throws IOException, JAXBException {
 		Map<String, Object> headers = new HashMap<String,Object>();
-		headers.put("OPERATION_NAME", "obtenir_parcours_xml");
-		headers.put("COUNTRY", teamName);
+		headers.put(operationNameHeader, "obtenir_parcours_xml");
+		headers.put(countryHeader, teamName);
 		sendMessageWithHeader(teamName,headers);
 		return receiveResponseString(teamName);
 	}
@@ -69,13 +74,13 @@ public class FootWorldCupManager {
 	 */
 	public int getRouteTeamAsynchronous(String teamName, String mail) {
 		Map<String, Object> headers = new HashMap<String,Object>();
-		headers.put("OPERATION_NAME", "obtenir_parcours_mail");
-		headers.put("COUNTRY", teamName);
-		headers.put("MAIL", mail);
+		headers.put(operationNameHeader, "obtenir_parcours_mail");
+		headers.put(countryHeader, teamName);
+		headers.put(mailHeader, mail);
 		sendMessageWithHeader(teamName, headers);
 		return receiveResponseInt(teamName);
 	}
-	
+
 	/**
 	 * @param message
 	 * @param headers
@@ -84,23 +89,22 @@ public class FootWorldCupManager {
 		ProducerTemplate pt = camelcontext.createProducerTemplate();
 		pt.sendBodyAndHeaders(requestQueue, message, headers);
 	}
-	
+
 	/**
-	 * TODO
+	 * 
+	 * @param teamName
 	 * @return
-	 * @throws Exception
 	 */
 	public String receiveResponseString(final String teamName){
 		JmsEndpoint responseEndPoint = (JmsEndpoint)camelcontext.getEndpoint(responseQueue);		
 		JmsConsumer consumer;
-		
+
 		try {
 			consumer = responseEndPoint.createConsumer(new Processor() {
-				final String response = "";
+				final String response = "";	// FIXME
 
 				public void process(Exchange e) throws Exception {
-					// TODO: voir si JMSCorrelationID ou autre
-					if(e.getIn().getHeader("JMSCorrelationID").equals(teamName)){
+					if(e.getIn().getHeader(countryHeader).equals(teamName)){
 						e.getIn().getBody().toString();
 					}
 				}});
@@ -110,31 +114,30 @@ public class FootWorldCupManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
+
+
 		return null;
 	}
-	
+
 	/**
-	 * TODO
+	 * 
+	 * @param teamName
 	 * @return
-	 * @throws Exception
 	 */
 	public int receiveResponseInt(final String teamName){
 		JmsEndpoint responseEndPoint = (JmsEndpoint)camelcontext.getEndpoint(responseQueue);			
 		JmsConsumer consumer;
-		
+
 		final int response = 0;
 
 		try {
 			consumer = responseEndPoint.createConsumer(new Processor() {
-
 				public void process(Exchange e) throws Exception {
-					// TODO: voir si JMSCorrelationID ou autre
-					if(e.getIn().getHeader("JMSCorrelationID").equals(teamName)){
+					if(e.getIn().getHeader(countryHeader).equals(teamName)){
 						e.getIn().getBody().toString();
 					}
 				}});
+			
 			/* demarrage du consumer pour reception de la reponse */
 			consumer.start();
 		} catch (Exception e) {
