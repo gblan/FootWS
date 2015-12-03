@@ -11,3 +11,11 @@ pour acceder a la webconsole de service mix, utiliser l'url suivante après avoi
 http://localhost:8181/system/console/bundles
 user : karaf
 pass : karaf
+
+
+#Lancement des jars
+service : java -jar FootWS-service.jar
+
+ensuite le WSDL est accessible sur http://localhost:8090/ws?wsdl, et on peut lancer le client
+
+client : java -jar FootWS-client.jar
