@@ -34,7 +34,7 @@
 				<attribute name="DynamicImport-Package" value="*" />
 			</manifest>
 			<!-- TO INCLUDE REFERENCED JAR -->
-		    <zipgroupfileset dir="${lib.dir}" includes="**/*.jar" />
+		    <zipgroupfileset dir="${lib.dir}" includes="**/javax.mail-1.5.4.jar" />
 
 		</jar>
 		<antcall target="clean">
