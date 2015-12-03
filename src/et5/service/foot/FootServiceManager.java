@@ -54,9 +54,7 @@ public class FootServiceManager {
 
 	public String obtenirParcours(String country) throws JAXBException, IOException {
 		Route route = getCountryRoute(country);
-		String fileName = country + ".xml";
-		UtilsIO.marshalToFile("et5.service.route", route, fileName);
-		return UtilsIO.fileToString(fileName);
+		return UtilsIO.marshalToString("et5.service.route", route);
 	}
 	
 	/**
