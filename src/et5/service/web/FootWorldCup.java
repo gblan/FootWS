@@ -1,10 +1,8 @@
 package et5.service.web;
 
-import java.io.IOException;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.xml.bind.JAXBException;
 
 /**
  * Cette classe est l'implementation d'un web-service
@@ -22,7 +20,8 @@ public class FootWorldCup {
 		String result = "";
 		try {
 			result = fwcm.getRouteTeamSynchronous(teamName);
-		} catch (IOException | JAXBException e) {
+		} catch (Exception e) {
+			System.err.println("Erreur lors de la récuperation du parcours du pays [" + teamName + "] en mode synchrone. " + e.getMessage());
 			e.printStackTrace();
 		}
 		return result;

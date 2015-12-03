@@ -28,6 +28,22 @@ public class FootWorldCupManager {
 	public FootWorldCupManager() {
 		connect();
 	}
+	
+	public void connect() {
+		try {
+			// Creation d'un contexte JNDI
+			Context jndiContext = new InitialContext();
+
+			// Lookup de la fabrique de connexion et de la destination
+			ConnectionFactory connectionFactory = (ConnectionFactory) jndiContext.lookup("connectionFactory");
+			camelcontext.addComponent("jms-test", JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
+			
+			camelcontext.start();
+		} catch (Exception e) {
+			System.err.println("Impossible de se connecter JNDI/JMS : " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * @param teamName
@@ -40,9 +56,8 @@ public class FootWorldCupManager {
 		Map<String, Object> headers = new HashMap<String,Object>();
 		headers.put("OPERATION_NAME", "obtenir_parcours_xml");
 		headers.put("COUNTRY", teamName);
-		String messageID = sendMessageWithHeader(teamName,headers);
-		
-		return receiveResponseString(messageID);
+		sendMessageWithHeader(teamName,headers);
+		return receiveResponseString(teamName);
 	}
 
 	/**
@@ -57,39 +72,17 @@ public class FootWorldCupManager {
 		headers.put("OPERATION_NAME", "obtenir_parcours_mail");
 		headers.put("COUNTRY", teamName);
 		headers.put("MAIL", mail);
-		String messageID = sendMessageWithHeader(teamName,headers);
-		
-		return receiveResponseInt(messageID);
-
-	}
-
-	
-	public void connect() {
-		try {
-			// Creation d'un contexte JNDI
-			Context jndiContext = new InitialContext();
-
-			// Lookup de la fabrique de connexion et de la destination
-			ConnectionFactory connectionFactory = (ConnectionFactory) jndiContext.lookup("connectionFactory");
-
-			camelcontext.addComponent("jms-test", JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
-			camelcontext.start();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		sendMessageWithHeader(teamName, headers);
+		return receiveResponseInt(teamName);
 	}
 	
 	/**
 	 * @param message
 	 * @param headers
-	 * @return idMessage
 	 */
-	public String sendMessageWithHeader(String message, Map<String, Object> headers){
+	public void sendMessageWithHeader(String message, Map<String, Object> headers){
 		ProducerTemplate pt = camelcontext.createProducerTemplate();
 		pt.sendBodyAndHeaders(requestQueue, message, headers);
-		//TODO recuperer l'id du messag envoyé et le retourner
-		return "";
 	}
 	
 	/**
@@ -97,16 +90,17 @@ public class FootWorldCupManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public String receiveResponseString(final String idMessage){
+	public String receiveResponseString(final String teamName){
 		JmsEndpoint responseEndPoint = (JmsEndpoint)camelcontext.getEndpoint(responseQueue);		
-		
 		JmsConsumer consumer;
+		
 		try {
 			consumer = responseEndPoint.createConsumer(new Processor() {
 				final String response = "";
 
 				public void process(Exchange e) throws Exception {
-					if(e.getIn().getHeader("JMSCorrelationID").equals(idMessage)){
+					// TODO: voir si JMSCorrelationID ou autre
+					if(e.getIn().getHeader("JMSCorrelationID").equals(teamName)){
 						e.getIn().getBody().toString();
 					}
 				}});
@@ -126,7 +120,7 @@ public class FootWorldCupManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public int receiveResponseInt(final String idMessage){
+	public int receiveResponseInt(final String teamName){
 		JmsEndpoint responseEndPoint = (JmsEndpoint)camelcontext.getEndpoint(responseQueue);			
 		JmsConsumer consumer;
 		
@@ -136,16 +130,16 @@ public class FootWorldCupManager {
 			consumer = responseEndPoint.createConsumer(new Processor() {
 
 				public void process(Exchange e) throws Exception {
-					if(e.getIn().getHeader("JMSCorrelationID").equals(idMessage)){
+					// TODO: voir si JMSCorrelationID ou autre
+					if(e.getIn().getHeader("JMSCorrelationID").equals(teamName)){
 						e.getIn().getBody().toString();
 					}
 				}});
-			/* d�marrage du consumer pour r�ception de la r�ponse */
+			/* demarrage du consumer pour reception de la reponse */
 			consumer.start();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-				
 		return response;
 	}
 }
