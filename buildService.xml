@@ -51,6 +51,9 @@
 				<attribute name="Bundle-Version" value="1.0.0.0" />
 				<attribute name="DynamicImport-Package" value="*" />
 			</manifest>
+
+			<!-- TO INCLUDE REFERENCED JAR -->
+		    <zipgroupfileset dir="${lib.dir}" includes="**/camel-core-2.15.3.jar" />
 		</jar>
 		<antcall target="clean">
 		</antcall>
