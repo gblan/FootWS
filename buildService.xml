@@ -4,6 +4,7 @@
 	<property name="work" value="${basedir}" />
 	<property name="bundle" value="${ant.project.name}" />
 	<property name="main-class" value="et5.service.Tests" />
+	<property name="lib.dir" value="lib" />
 
 	<target name="all" depends="package" />
 
@@ -54,6 +55,7 @@
 
 			<!-- TO INCLUDE REFERENCED JAR -->
 		    <zipgroupfileset dir="${lib.dir}" includes="**/camel-core-2.15.3.jar" />
+		    <zipgroupfileset dir="${lib.dir}" includes="**/activemq-all-5.12.0.jar" />
 		</jar>
 		<antcall target="clean">
 		</antcall>
