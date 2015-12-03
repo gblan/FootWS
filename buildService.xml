@@ -36,7 +36,7 @@
 				<exclude name="*.xml" />
 				<exclude name="*.xslt" />
 				<exclude name="camel-context.xml" />
-				<exclude name="*.properties" />				
+				<exclude name="appliMail*" />				
 			</fileset>
 		</copy>
 		<copy todir="${work}/${bundle}/OSGI-INF" overwrite="true">
@@ -55,7 +55,11 @@
 
 			<!-- TO INCLUDE REFERENCED JAR -->
 		    <zipgroupfileset dir="${lib.dir}" includes="**/camel-core-2.15.3.jar" />
+		    <zipgroupfileset dir="${lib.dir}" includes="**/camel-jms-2.15.3.jar" />
 		    <zipgroupfileset dir="${lib.dir}" includes="**/activemq-all-5.12.0.jar" />
+		    <zipgroupfileset dir="${lib.dir}" includes="**/spring-tx-4.2.1.RELEASE.jar" />
+		    <zipgroupfileset dir="${lib.dir}" includes="**/spring-jms-4.2.1.RELEASE.jar" />
+		    <zipgroupfileset dir="${lib.dir}" includes="**/commons-pool2-2.4.2.jar" />
 		</jar>
 		<antcall target="clean">
 		</antcall>
