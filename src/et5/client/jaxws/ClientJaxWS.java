@@ -60,6 +60,9 @@ public class ClientJaxWS {
 			} 
 			// Envoie le resultat par mail
 			else if (choix == 2) {
+				/* repositionnement du buffer en début de ligne*/
+				scanner.nextLine();
+				
 				System.out.println("Veuillez saisir votre e-mail :");
 				String mail = scanner.nextLine().trim();
 				
