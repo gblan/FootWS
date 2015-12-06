@@ -79,7 +79,7 @@ public class UtilsIO {
 	
 	/**
 	 * 
-	 * transformation xslt, to transform an XML string with the xslt transfo param
+	 * transformation xslt, to transform an XML string to an HTML file with the xslt transfo param
 	 * @param input
 	 * @param output
 	 */
@@ -91,7 +91,7 @@ public class UtilsIO {
 
 	/**
 	 * 
-	 * transformation xslt, to transform an XML string with the xslt transfo param
+	 * transformation xslt, to transform an XML to an HTML string with the xslt transfo param
 	 * @param stringInput
 	 */
 	public static String routeTransformXMLStringIntoHTMLString(String stringInput) {
