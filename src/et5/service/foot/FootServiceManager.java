@@ -53,7 +53,9 @@ public class FootServiceManager {
 	}
 
 	public String obtenirParcours(String country) throws JAXBException, IOException {
-		Route route = getCountryRoute(country);
+		/* first letter uppercase and other letters lowercase*/
+		String countryName = country.toUpperCase().substring(0, 1) + country.toLowerCase().substring(1);
+		Route route = getCountryRoute(countryName);
 		return UtilsIO.marshalToString("et5.service.route", route);
 	}
 	
