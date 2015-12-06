@@ -54,8 +54,7 @@ public class FootServiceManager {
 
 	public String obtenirParcours(String country) throws JAXBException, IOException {
 		/* first letter uppercase and other letters lowercase*/
-		String countryName = country.toUpperCase().substring(0, 1) + country.toLowerCase().substring(1);
-		Route route = getCountryRoute(countryName);
+		Route route = getCountryRoute(country);
 		return UtilsIO.marshalToString("et5.service.route", route);
 	}
 	
@@ -125,10 +124,11 @@ public class FootServiceManager {
 			match.setCompetitionPhase("Quarter-finals");
 		} else if (idMatch <= NB_FOURTH_LAP) {
 			match.setCompetitionPhase("Semi-finals");
+		} else if (idMatch == NB_FINAL_LAP) {
+			match.setCompetitionPhase("Third place play-off");
 		} else if (idMatch > NB_FINAL_LAP) {
 			match.setCompetitionPhase("Final");
 		}
-
 		/* final score */
 		match.setTeam1(gameInfo.getTeam1().getSName());
 		match.setFinalScore(gameInfo.getSScore());
