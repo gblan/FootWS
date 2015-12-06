@@ -29,6 +29,8 @@ public class FootWorldCupManager {
 	private final String countryHeader = "COUNTRY";
 	private final String operationNameHeader = "OPERATION_NAME";
 	private final String mailHeader = "MAIL";
+	String resultString = "";
+	int resultInt;
 
 	public FootWorldCupManager() {
 		connect();
@@ -98,16 +100,14 @@ public class FootWorldCupManager {
 	public String receiveResponseString(final String teamName){
 		JmsEndpoint responseEndPoint = (JmsEndpoint)camelcontext.getEndpoint(responseQueue);		
 		JmsConsumer consumer;
-
 		try {
 			consumer = responseEndPoint.createConsumer(new Processor() {
-				final String response = "";	// FIXME
-
 				public void process(Exchange e) throws Exception {
 					if(e.getIn().getHeader(countryHeader).equals(teamName)){
-						e.getIn().getBody().toString();
+						resultString = e.getIn().getBody().toString();
 					}
-				}});
+				}			
+			});
 			/* demarrage du consumer pour reception de la reponse */
 			consumer.start();
 
@@ -115,8 +115,7 @@ public class FootWorldCupManager {
 			e.printStackTrace();
 		}
 
-
-		return null;
+		return resultString;
 	}
 
 	/**
@@ -127,14 +126,11 @@ public class FootWorldCupManager {
 	public int receiveResponseInt(final String teamName){
 		JmsEndpoint responseEndPoint = (JmsEndpoint)camelcontext.getEndpoint(responseQueue);			
 		JmsConsumer consumer;
-
-		final int response = 0;
-
 		try {
 			consumer = responseEndPoint.createConsumer(new Processor() {
 				public void process(Exchange e) throws Exception {
 					if(e.getIn().getHeader(countryHeader).equals(teamName)){
-						e.getIn().getBody().toString();
+						resultInt = Integer.parseInt((String) e.getIn().getHeader("STATUS"));
 					}
 				}});
 			
@@ -143,6 +139,6 @@ public class FootWorldCupManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return response;
+		return resultInt;
 	}
 }
