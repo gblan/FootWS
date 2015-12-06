@@ -27,6 +27,10 @@ public class Service {
 		/* JMScorrelationID */
 		ex.getOut().setHeader("JMSCorrelationID", ex.getIn().getMessageId());
 		ex.getOut().setHeader("COUNTRY", (String) ex.getIn().getHeader("COUNTRY"));
+		if(ex.getIn().getHeader("MAIL")!= null){
+			ex.getOut().setHeader("MAIL", (String) ex.getIn().getHeader("MAIL"));
+
+		}
 	}
 
 	/**
@@ -44,12 +48,11 @@ public class Service {
 		if (!UtilsMail.mailValidator((String) ex.getIn().getHeader("MAIL"))) {
 			status = MAIL_FORMAT_ERROR;
 		} else {
-			FootServiceManager fsm = new FootServiceManager(new Info());
 			try {
-				String html = UtilsIO.transformXMLStringintoHTMLString(fsm.obtenirParcours(country));
+				String html = UtilsIO.transformXMLStringintoHTMLString((String) ex.getIn().getBody());
 				UtilsMail.sendHTMLMailUsingSMTPAppliEmail(mail, "route of " + country, html);
 
-			} catch (MessagingException | JAXBException | IOException e) {
+			} catch (MessagingException e) {
 				status = MAIL_TRANSPORT_ERROR;
 			}
 		}
