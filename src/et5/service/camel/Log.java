@@ -11,6 +11,9 @@ public class Log {
 	 * @param exchange
 	 */
 	public void log(Exchange ex){
-		logger.info("["+ex.getExchangeId()+"] : "+ex.getIn().getBody(String.class));						
+		logger.info("["+ex.getExchangeId()+"] : "+ex.getIn().getBody(String.class));
+		/* transfers informations in logging */
+		ex.getOut().setBody(ex.getIn().getBody());
+		ex.getOut().setHeaders(ex.getIn().getHeaders());
 	}
 }
