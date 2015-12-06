@@ -136,7 +136,7 @@ public class ClientJaxWS {
 		File temp = null;
 		try {
 			temp = File.createTempFile("result-" + country, ".html");
-			UtilsIO.transformXMLStringintoHTMLFile(xmlContent, temp.getAbsolutePath());
+			UtilsIO.routeTransformXMLStringintoHTMLFile(xmlContent, temp.getAbsolutePath());
 			openDefaultBrowser(temp);
 			
 		} catch (Exception e) {

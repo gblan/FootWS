@@ -51,7 +51,7 @@ public class Service {
 			status = MAIL_FORMAT_ERROR;
 		} else {
 			try {
-				String html = UtilsIO.transformXMLStringintoHTMLString((String) ex.getIn().getBody());
+				String html = UtilsIO.routeTransformXMLStringIntoHTMLString((String) ex.getIn().getBody());
 				UtilsMail.sendHTMLMailUsingSMTPAppliEmail(mail, "route of " + country, html);
 
 			} catch (MessagingException e) {

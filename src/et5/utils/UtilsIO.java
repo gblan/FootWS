@@ -77,36 +77,13 @@ public class UtilsIO {
 		return new String(readAllBytes(get(filePath)));
 	}
 	
-//	/**
-//	 * transformation xslt, to transform an XML file with the xslt transfo param
-//	 * 
-//	 * @param fileInput
-//	 * @param output
-//	 */
-//	public static void transformXMLFileintoHTMLFile(String fileInput, String output) {
-//		transformXMLFileintoHTMLFile(fileInput, output, DEFAULT_PATH_TRANSFO_XSLT);
-//
-//	}
-	
-//	/**
-//	 * transformation xslt, to transform an XML file with the xslt transfo param
-//	 * 
-//	 * @param fileInput
-//	 * @param fileOutput
-//	 * @param transfo
-//	 */
-//	public static void transformXMLFileintoHTMLFile(String fileInput, String fileOutput, String transfo) {
-//		transformXMLintoHTML(new StreamSource(fileInput), fileOutput, transfo);
-//
-//	}
-	
 	/**
 	 * 
 	 * transformation xslt, to transform an XML string with the xslt transfo param
 	 * @param input
 	 * @param output
 	 */
-	public static void transformXMLStringintoHTMLFile(String stringInput, String fileOutput) {
+	public static void routeTransformXMLStringintoHTMLFile(String stringInput, String fileOutput) {
 		StreamSource xmlSource = new StreamSource(new StringReader(stringInput));
 		StreamResult outputTarget = new StreamResult(new File(fileOutput));
 		transformXMLIntoHTML(xmlSource, outputTarget, ROUTE_PATH_TRANSFO_XSLT);
