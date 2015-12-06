@@ -63,7 +63,7 @@ public class FootServiceManager {
 	 * @param country
 	 * @return String
 	 */
-	public Route getCountryRoute(String country) {
+	private Route getCountryRoute(String country) {
 		TFullTeamInfo teamInfo = this.soap.fullTeamInfo(country);
 		Route route = new Route();
 		

@@ -8,7 +8,6 @@ import javax.xml.bind.JAXBException;
 import org.apache.camel.Exchange;
 
 import et5.service.foot.FootServiceManager;
-import et5.service.route.Route;
 import et5.utils.UtilsIO;
 import et5.utils.UtilsMail;
 import eu.dataaccess.footballpool.Info;
@@ -20,10 +19,13 @@ public class Service {
 
 	public void obtenirParcours(Exchange ex) throws JAXBException, IOException {
 		FootServiceManager fsm = new FootServiceManager(new Info());
-		Route route = fsm.getCountryRoute((String) ex.getIn().getHeader("COUNTRY"));
+		//Route route = fsm.getCountryRoute((String) ex.getIn().getHeader("COUNTRY"));
+		String parcoursXML = fsm.obtenirParcours((String) ex.getIn().getHeader("COUNTRY"));
 
 		/* data */
-		ex.getOut().setBody(UtilsIO.marshalToString("et5.service.route", route));
+		//ex.getOut().setBody(UtilsIO.marshalToString("et5.service.route", route));
+		ex.getOut().setBody(parcoursXML);
+
 		/* JMScorrelationID */
 		ex.getOut().setHeader("JMSCorrelationID", ex.getIn().getMessageId());
 		ex.getOut().setHeader("COUNTRY", (String) ex.getIn().getHeader("COUNTRY"));
