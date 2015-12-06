@@ -12,7 +12,7 @@
     		<choice>
     			<!-- ASYNCHRONE MAIL RESULT -->
 	    		<when>
-					<simple>${headers.operationName} == 'obtenir_parcours_mail'</simple>
+					<simple>${headers.OPERATION_NAME} == 'obtenir_parcours_mail'</simple>
 					<bean ref="log" method="log" />					
 					<bean ref="service" method="obtenirParcours" />					
 					<bean ref="log" method="log" />					
@@ -21,7 +21,7 @@
 	    		</when>
 	    		<!-- SYNCHRONE XML RESULT -->
 	    		<when>
-					<simple>${headers.operationName} == 'obtenir_parcours_xml'</simple>
+					<simple>${headers.OPERATION_NAME} == 'obtenir_parcours_xml'</simple>
 					<bean ref="log" method="log" />					
 					<bean ref="service" method="obtenirParcours" />					
 					<bean ref="log" method="log" />					
