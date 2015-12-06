@@ -32,8 +32,16 @@ public class FootWorldCupManager {
 	String resultString = "";
 	int resultInt;
 
-	public FootWorldCupManager() {
+	private FootWorldCupManager() {
 		connect();
+	}
+	
+	/** Instance unique pré-initialisée */
+	private static FootWorldCupManager INSTANCE = new FootWorldCupManager();
+ 
+	/** Point d'accès pour l'instance unique du singleton */
+	public static FootWorldCupManager getInstance(){
+		return INSTANCE;
 	}
 
 	public void connect() {
