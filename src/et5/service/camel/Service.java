@@ -26,6 +26,7 @@ public class Service {
 		ex.getOut().setBody(UtilsIO.marshalToString("et5.service.route", route));
 		/* JMScorrelationID */
 		ex.getOut().setHeader("JMSCorrelationID", ex.getIn().getMessageId());
+		ex.getOut().setHeader("COUNTRY", (String) ex.getIn().getHeader("COUNTRY"));
 	}
 
 	/**
