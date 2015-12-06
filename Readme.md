@@ -12,7 +12,7 @@ http://localhost:8181/system/console/bundles
 user : karaf
 pass : karaf
 
-pour voir ce qui se passe sur mon service (affichage continu des logs) :    log:display
+pour voir ce qui se passe sur mon service (affichage continu des logs) :    log:tail
 
 
 #Lancement des jars
