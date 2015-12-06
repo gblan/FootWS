@@ -45,8 +45,8 @@ public class ClientJaxWS {
 		while (true) {
 			// 1. Demande le pays
 			System.out.println("Saisir un pays (en Anglais) :");
-			country = scanner.nextLine().trim().toLowerCase();
-
+			String countryInput = scanner.nextLine().trim().toLowerCase();
+			country = countryInput.substring(0, 1).toUpperCase()+countryInput.substring(1).toLowerCase();
 			// 2. Ajoute les elements necessaires pour distinguer le choix de l'utilisateur
 			System.out.println("Veuillez maintenant choisir le mode de réception :");
 			System.out.println("   Pour le mode synchrone (réception par file JMS puis affichage navigateur) \t Tapez 1");
