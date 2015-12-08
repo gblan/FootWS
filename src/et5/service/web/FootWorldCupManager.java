@@ -24,6 +24,7 @@ public class FootWorldCupManager {
 	private final String responseQueue = "activemq:foot.responseQueue";
 	private final String requestQueue = "activemq:foot.requestQueue";
 	private CamelContext camelcontext = new DefaultCamelContext();
+	private JmsConsumer consumer;
 
 	// Message Header 
 	private final String countryHeader = "COUNTRY";
@@ -72,7 +73,12 @@ public class FootWorldCupManager {
 		headers.put(operationNameHeader, "obtenir_parcours_xml");
 		headers.put(countryHeader, teamName);
 		sendMessageWithHeader(teamName,headers);
-		return receiveResponseString(teamName);
+		try {
+			return receiveResponseString(teamName);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
 	}
 
 	/**
@@ -88,7 +94,12 @@ public class FootWorldCupManager {
 		headers.put(countryHeader, teamName);
 		headers.put(mailHeader, mail);
 		sendMessageWithHeader(teamName, headers);
-		return receiveResponseInt(teamName);
+		try {
+			return receiveResponseInt(teamName);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
 	}
 
 	/**
@@ -104,25 +115,25 @@ public class FootWorldCupManager {
 	 * 
 	 * @param teamName
 	 * @return
+	 * @throws Exception 
 	 */
-	public String receiveResponseString(final String teamName){
+	public String receiveResponseString(final String teamName) throws Exception{
 		JmsEndpoint responseEndPoint = (JmsEndpoint)camelcontext.getEndpoint(responseQueue);		
-		JmsConsumer consumer;
-		try {
-			consumer = responseEndPoint.createConsumer(new Processor() {
-				public void process(Exchange e) throws Exception {
-					if(e.getIn().getHeader(countryHeader).equals(teamName)){
-						resultString = e.getIn().getBody().toString();
-					}
-				}			
-			});
-			/* demarrage du consumer pour reception de la reponse */
-			consumer.start();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+		consumer = responseEndPoint.createConsumer(new Processor() {
+			public void process(Exchange e) throws Exception {
+				if(e.getIn().getHeader(countryHeader).equals(teamName)){
+					resultString = "";
+					System.out.println("###resultString : "+resultString);
+					resultString = e.getIn().getBody().toString();
+					System.out.println("###resultString : "+resultString);
+				}
+			}			
+		});
+		/* demarrage du consumer pour reception de la reponse */
+		consumer.start();
+		Thread.sleep(5000);		
+		consumer.stop();
+		
 		return resultString;
 	}
 
@@ -130,23 +141,26 @@ public class FootWorldCupManager {
 	 * 
 	 * @param teamName
 	 * @return
+	 * @throws Exception 
 	 */
-	public int receiveResponseInt(final String teamName){
-		JmsEndpoint responseEndPoint = (JmsEndpoint)camelcontext.getEndpoint(responseQueue);			
-		JmsConsumer consumer;
-		try {
-			consumer = responseEndPoint.createConsumer(new Processor() {
-				public void process(Exchange e) throws Exception {
-					if(e.getIn().getHeader(countryHeader).equals(teamName)){
-						resultInt = Integer.parseInt((String) e.getIn().getHeader("STATUS"));
-					}
-				}});
-			
-			/* demarrage du consumer pour reception de la reponse */
-			consumer.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public int receiveResponseInt(final String teamName) throws Exception{
+		JmsEndpoint responseEndPoint = (JmsEndpoint)camelcontext.getEndpoint(responseQueue);	
+		
+		consumer = responseEndPoint.createConsumer(new Processor() {
+			public void process(Exchange e) throws Exception {
+				if(e.getIn().getHeader(countryHeader).equals(teamName)){
+					resultInt = Integer.parseInt((String) e.getIn().getHeader("STATUS"));
+				}
+				e.notify();
+			}
+		});
+		
+		/* demarrage du consumer pour reception de la reponse */
+		consumer.start();
+		Thread.sleep(5000);		
+		consumer.stop();
+
 		return resultInt;
 	}
+
 }
