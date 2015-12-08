@@ -22,10 +22,16 @@
 				<exclude name="et5/client/**"/>
 				<exclude name="example/**" />
 				<exclude name="et5/service/web/**"/>
+				<exclude name="*.properties"/>
+				<exclude name="*.xsd"/>
+				<exclude name="*.xslt"/>
 			</fileset>
 		</copy>
 		<copy todir="${work}/${bundle}/OSGI-INF" overwrite="true">
 			<fileset dir="OSGI-INF" />
+		</copy>
+		<copy todir="${work}/${bundle}/resources" overwrite="true">
+			<fileset dir="resources" />
 		</copy>
 		<jar destfile="${work}/${bundle}-bundle.jar" basedir="${work}/${bundle}">
 			<manifest>
