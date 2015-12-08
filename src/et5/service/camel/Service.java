@@ -19,17 +19,15 @@ public class Service {
 
 	public void obtenirParcours(Exchange ex) throws JAXBException, IOException {
 		FootServiceManager fsm = new FootServiceManager(new Info());
-		//Route route = fsm.getCountryRoute((String) ex.getIn().getHeader("COUNTRY"));
 		String parcoursXML = fsm.obtenirParcours((String) ex.getIn().getHeader("COUNTRY"));
 
 		/* data */
-		//ex.getOut().setBody(UtilsIO.marshalToString("et5.service.route", route));
 		ex.getOut().setBody(parcoursXML);
 
 		/* JMScorrelationID */
 		ex.getOut().setHeader("JMSCorrelationID", ex.getIn().getMessageId());
 		ex.getOut().setHeader("COUNTRY", (String) ex.getIn().getHeader("COUNTRY"));
-		if(ex.getIn().getHeader("MAIL")!= null){
+		if(ex.getIn().getHeader("MAIL") != null){
 			ex.getOut().setHeader("MAIL", (String) ex.getIn().getHeader("MAIL"));
 
 		}
