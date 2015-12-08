@@ -117,21 +117,31 @@ public class FootWorldCupManager {
 	 * @return
 	 * @throws Exception 
 	 */
-	public String receiveResponseString(final String teamName) throws Exception{
+	public synchronized String receiveResponseString(final String teamName) throws Exception{
 		JmsEndpoint responseEndPoint = (JmsEndpoint)camelcontext.getEndpoint(responseQueue);		
 		consumer = responseEndPoint.createConsumer(new Processor() {
 			public void process(Exchange e) throws Exception {
 				if(e.getIn().getHeader(countryHeader).equals(teamName)){
 					resultString = "";
-					System.out.println("###resultString : "+resultString);
+//					System.out.println("###resultString : "+resultString);
 					resultString = e.getIn().getBody().toString();
-					System.out.println("###resultString : "+resultString);
+//					System.out.println("###resultString : "+resultString);
+					
+					/* Pour notifier la reception bloquante */
+					synchronized (consumer) {
+						consumer.notify();
+					}
 				}
 			}			
 		});
 		/* demarrage du consumer pour reception de la reponse */
 		consumer.start();
-		Thread.sleep(5000);		
+
+		/* pour réveiller la reception */
+		synchronized (consumer) {
+			consumer.wait();
+		}
+		
 		consumer.stop();
 		
 		return resultString;
@@ -151,13 +161,21 @@ public class FootWorldCupManager {
 				if(e.getIn().getHeader(countryHeader).equals(teamName)){
 					resultInt = Integer.parseInt((String) e.getIn().getHeader("STATUS"));
 				}
-				e.notify();
-			}
+				
+				/* Pour notifier la reception bloquante */
+				synchronized (consumer) {
+					consumer.notify();
+				}			}
 		});
 		
 		/* demarrage du consumer pour reception de la reponse */
 		consumer.start();
-		Thread.sleep(5000);		
+
+		/* pour réveiller la reception */
+		synchronized (consumer) {
+			consumer.wait();
+		}
+		
 		consumer.stop();
 
 		return resultInt;
