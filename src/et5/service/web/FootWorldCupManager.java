@@ -124,7 +124,10 @@ public class FootWorldCupManager {
 				if(e.getIn().getHeader(countryHeader).equals(teamName)){
 					resultString = "";
 //					System.out.println("###resultString : "+resultString);
-					resultString = e.getIn().getBody().toString();
+					if(!e.getIn().getHeaders().containsKey("ERROR")){
+						resultString = e.getIn().getBody().toString();
+
+					}
 //					System.out.println("###resultString : "+resultString);
 					
 					/* Pour notifier la reception bloquante */
