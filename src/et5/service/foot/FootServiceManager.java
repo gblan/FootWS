@@ -54,18 +54,25 @@ public class FootServiceManager {
 
 	public String obtenirParcours(String country) throws JAXBException, IOException {
 		/* first letter uppercase and other letters lowercase*/
-		Route route = getCountryRoute(country);
-		return UtilsIO.marshalToString("et5.service.route", route);
+		try{
+			Route route = getCountryRoute(country);
+			return UtilsIO.marshalToString("et5.service.route", route);
+		}catch(SOAPFaultException e){
+			return "";
+		}
 	}
 	
+
 	/**
 	 * print route information about a country in param
 	 * 
 	 * @param country
 	 * @return String
+	 * @throws SOAPFaultException
 	 */
-	private Route getCountryRoute(String country) {
+	private Route getCountryRoute(String country) throws SOAPFaultException{
 		TFullTeamInfo teamInfo = this.soap.fullTeamInfo(country);
+		
 		Route route = new Route();
 		
 		route.setCoachName(teamInfo.getSCoach());

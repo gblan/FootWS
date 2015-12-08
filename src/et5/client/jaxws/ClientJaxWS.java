@@ -55,7 +55,11 @@ public class ClientJaxWS {
 			
 			// Affiche le resultat dans le navigateur web (page HTML)
 			if (choix == 1) {
-				ClientJaxWS.transformAndDisplayRouteTeam(port.getRouteTeamSynchronous(country),country);
+				String htmlPage = port.getRouteTeamSynchronous(country);
+				if(htmlPage.equals("")){
+					System.out.println("Le pays '"+country+"' n'est pas disponible, veuillez saisir le nom du pays (en anglais) ayant participé a la coupe du monde 2014");
+				}
+				ClientJaxWS.transformAndDisplayRouteTeam(htmlPage,country);
 			
 			} 
 			// Envoie le resultat par mail

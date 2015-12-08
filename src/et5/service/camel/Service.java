@@ -15,15 +15,20 @@ import eu.dataaccess.footballpool.Info;
 public class Service {
 	private static final int MAIL_FORMAT_ERROR = 1;
 	private static final int MAIL_TRANSPORT_ERROR = 2;
+	private static final int NO_COUNTRY_FOUND_EXCEPTION = 3;
 	private static final int CORRECT_SEND = 0;
 
 	public void obtenirParcours(Exchange ex) throws JAXBException, IOException {
 		FootServiceManager fsm = new FootServiceManager(new Info());
 		String parcoursXML = fsm.obtenirParcours((String) ex.getIn().getHeader("COUNTRY"));
 
+		/* if error */
+		if(parcoursXML.equals("")){
+			ex.getOut().setHeader("ERROR", "COUNTRY_NOT_FOUND");
+		}else{
 		/* data */
-		ex.getOut().setBody(parcoursXML);
-
+			ex.getOut().setBody(parcoursXML);
+		}
 		/* JMScorrelationID */
 		ex.getOut().setHeader("JMSCorrelationID", ex.getIn().getMessageId());
 		ex.getOut().setHeader("COUNTRY", (String) ex.getIn().getHeader("COUNTRY"));
@@ -45,7 +50,9 @@ public class Service {
 		String mail = (String) ex.getIn().getHeader("MAIL");
 		int status = CORRECT_SEND;
 
-		if (!UtilsMail.mailValidator((String) ex.getIn().getHeader("MAIL"))) {
+		if(ex.getIn().getHeader("ERROR")!=null){
+			status = NO_COUNTRY_FOUND_EXCEPTION;
+		}else if (!UtilsMail.mailValidator((String) ex.getIn().getHeader("MAIL"))) {
 			status = MAIL_FORMAT_ERROR;
 		} else {
 			try {
