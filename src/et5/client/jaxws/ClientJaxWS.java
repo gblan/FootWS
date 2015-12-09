@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import javax.xml.ws.WebServiceException;
@@ -20,7 +21,7 @@ public class ClientJaxWS {
 	
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
-		String msg;
+		String msg = "";
 		String country;
 		    
 		/* Appel des méthodes du web service*/
@@ -34,6 +35,7 @@ public class ClientJaxWS {
 		}
 		catch(WebServiceException e){
 			System.err.println("Impossible de se connecter au web service FootWorldCupService : "+e.getMessage());
+			scanner.close();
 			System.exit(-1);
 		}
 		
@@ -95,7 +97,16 @@ public class ClientJaxWS {
 			}
 
 			System.out.println("Pour arreter le programme : tapez 'quit'");
-			msg = scanner.nextLine().trim().toLowerCase();
+			System.out.println("Pour faire une nouvelle recherche, saisissez n'importe quoi d'autre");
+			
+			try{
+				msg = scanner.nextLine().trim().toLowerCase();
+			}catch(NoSuchElementException e){
+				System.err.println("Fin du programme.");
+				scanner.close();
+				System.exit(-1);
+			}
+			
 			if (msg.equals("quit")) {
 				break;
 			}
