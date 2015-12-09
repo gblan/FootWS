@@ -29,9 +29,10 @@ public class Service {
 		/* data */
 			ex.getOut().setBody(parcoursXML);
 		}
-		/* JMScorrelationID */
-		ex.getOut().setHeader("JMSCorrelationID", ex.getIn().getMessageId());
+	
+		/* set headers from incoming message */
 		ex.getOut().setHeader("COUNTRY", (String) ex.getIn().getHeader("COUNTRY"));
+
 		if(ex.getIn().getHeader("MAIL") != null){
 			ex.getOut().setHeader("MAIL", (String) ex.getIn().getHeader("MAIL"));
 
@@ -64,8 +65,9 @@ public class Service {
 			}
 		}
 
-		/* JMScorrelationID */
-		ex.getOut().setHeader("JMSCorrelationID", ex.getIn().getMessageId());
+		/* set headers from incoming message */
+		ex.getOut().setHeaders(ex.getIn().getHeaders());
+
 		/* status */
 		ex.getOut().setHeader("STATUS", status);
 
