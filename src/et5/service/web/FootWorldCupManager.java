@@ -164,8 +164,8 @@ public class FootWorldCupManager {
 				if(e.getIn().getHeader(countryHeader).equals(teamName)){
 					resultInt = 0;
 
-					String status = (String) e.getIn().getExchange().getProperty("STATUS");
-					resultInt = Integer.parseInt(status);
+					int status = (int) e.getIn().getHeader("STATUS");
+					resultInt = status;
 
 				}
 				
