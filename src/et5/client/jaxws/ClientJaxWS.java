@@ -73,7 +73,8 @@ public class ClientJaxWS {
 				
 				/* valeur de retour de la methode */
 				//FIXME, voir si on renvoie qq chose ou pas
-				switch (port.getRouteTeamAsynchronous(country, mail)) {
+				int t = port.getRouteTeamAsynchronous(country, mail);
+				switch (t) {
 					case CORRECT_SEND:
 						System.out.println("envoi de la réponse effectué, veuillez consulter votre boite de reception ("+mail+")");
 						break;	
