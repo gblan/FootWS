@@ -53,18 +53,26 @@ public class FootServiceManager {
 	}
 
 	public String obtenirParcours(String country) throws JAXBException, IOException {
-		Route route = getCountryRoute(country);
-		return UtilsIO.marshalToString("et5.service.route", route);
+		/* first letter uppercase and other letters lowercase*/
+		try{
+			Route route = getCountryRoute(country);
+			return UtilsIO.marshalToString("et5.service.route", route);
+		}catch(SOAPFaultException e){
+			return "";
+		}
 	}
 	
+
 	/**
 	 * print route information about a country in param
 	 * 
 	 * @param country
 	 * @return String
+	 * @throws SOAPFaultException
 	 */
-	private Route getCountryRoute(String country) {
+	private Route getCountryRoute(String country) throws SOAPFaultException{
 		TFullTeamInfo teamInfo = this.soap.fullTeamInfo(country);
+		
 		Route route = new Route();
 		
 		route.setCoachName(teamInfo.getSCoach());
@@ -123,10 +131,11 @@ public class FootServiceManager {
 			match.setCompetitionPhase("Quarter-finals");
 		} else if (idMatch <= NB_FOURTH_LAP) {
 			match.setCompetitionPhase("Semi-finals");
+		} else if (idMatch == NB_FINAL_LAP) {
+			match.setCompetitionPhase("Third place play-off");
 		} else if (idMatch > NB_FINAL_LAP) {
 			match.setCompetitionPhase("Final");
 		}
-
 		/* final score */
 		match.setTeam1(gameInfo.getTeam1().getSName());
 		match.setFinalScore(gameInfo.getSScore());

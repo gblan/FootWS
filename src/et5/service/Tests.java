@@ -23,8 +23,7 @@ import eu.dataaccess.footballpool.Info;
 public class Tests {
 
 //	public static void main(String[] args) throws IOException, JAXBException, AddressException, MessagingException{
-////			MessagingException, IOException, JAXBException {
-//
+
 //		 FootServiceManager fs = new FootServiceManager(new Info());
 //		//
 //		 String country = "Germany";
@@ -34,7 +33,7 @@ public class Tests {
 //
 //		String route = UtilsIO.fileToString("resources/example/routeGermany.xml");
 //		System.out.println(route);
-//		
+//		System.out.println(UtilsIO.routeTransformXMLStringIntoHTMLString(UtilsIO.fileToString("resources/example/routeGermany.xml")));
 //		UtilsIO.transformXMLFileintoHTMLFile("resources/example/routeGermany.xml", "resources/example/routeGermany.html", "resources/displayHTMLroute.xslt");
 //		String message = UtilsIO.readFile("resources/example/routeGermany.html", Charset.forName("UTF-8"));
 //		UtilsMail.sendHTMLMailUsingSMTPAppliEmail("julien.preisner@u-psud.fr","Objet Message", message);

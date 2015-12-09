@@ -18,7 +18,10 @@ import et5.service.utils.SMTPAuthenticator;
  * class utils contains utils static methods
  */
 public class UtilsMail {
-	private static final String APPLI_PROPERTIES = "resources/appliMail.properties";
+	//LOCAL
+	//private static final String APPLI_PROPERTIES = "resources/appliMail.properties";
+	//DEPLOY
+	private static final String APPLI_PROPERTIES = "deploy/resources/appliMail.properties";
 	private static final String EMAIL_PATTERN = 
 			"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
