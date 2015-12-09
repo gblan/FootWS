@@ -3,6 +3,7 @@
 <project name="FootWS" default="all" basedir=".">
 	<property name="work" value="${basedir}" />
 	<property name="bundle" value="${ant.project.name}" />
+	<property name="bundleRun" value="et5.service.web.ActivatorWS" />
 	<property name="lib.dir" value="lib" />
 
 	<target name="all" depends="package" />
@@ -38,6 +39,7 @@
 				<attribute name="Bundle-ManifestVersion" value="2" />
 				<attribute name="Bundle-Name" value="${bundle}" />
 				<attribute name="Bundle-SymbolicName" value="${bundle}" />
+				<attribute name="Bundle-Activator" value="${bundleRun}" />
 				<attribute name="Bundle-Version" value="1.0.0.0" />
 				<attribute name="DynamicImport-Package" value="*" />
 			</manifest>
