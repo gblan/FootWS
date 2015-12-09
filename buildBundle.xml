@@ -21,7 +21,7 @@
 				<!-- ONLY THE BUNDLE -->
 				<exclude name="et5/client/**"/>
 				<exclude name="example/**" />
-				<exclude name="et5/service/web/**"/>
+				<!--<exclude name="et5/service/web/**"/>-->
 				<exclude name="*.properties"/>
 				<exclude name="*.xsd"/>
 				<exclude name="*.xslt"/>
