@@ -16,7 +16,7 @@ public class FootWorldCup {
 	 */
 	@WebMethod
 	public String getRouteTeamSynchronous(String teamName){
-		FootWorldCupManager fwcm = new FootWorldCupManager();
+		FootWorldCupManager fwcm = FootWorldCupManager.getInstance();
 		String result = "";
 		try {
 			result = fwcm.getRouteTeamSynchronous(teamName);
@@ -29,7 +29,7 @@ public class FootWorldCup {
 	
 	@WebMethod
 	public int getRouteTeamAsynchronous(String teamName, String mail){
-		FootWorldCupManager fwcm = new FootWorldCupManager();
+		FootWorldCupManager fwcm = FootWorldCupManager.getInstance();
 		return fwcm.getRouteTeamAsynchronous(teamName, mail);
 	}
 		

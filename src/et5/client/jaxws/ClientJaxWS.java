@@ -45,8 +45,8 @@ public class ClientJaxWS {
 		while (true) {
 			// 1. Demande le pays
 			System.out.println("Saisir un pays (en Anglais) :");
-			country = scanner.nextLine().trim().toLowerCase();
-
+			String countryInput = scanner.nextLine().trim().toLowerCase();
+			country = countryInput.substring(0, 1).toUpperCase()+countryInput.substring(1).toLowerCase();
 			// 2. Ajoute les elements necessaires pour distinguer le choix de l'utilisateur
 			System.out.println("Veuillez maintenant choisir le mode de réception :");
 			System.out.println("   Pour le mode synchrone (réception par file JMS puis affichage navigateur) \t Tapez 1");
@@ -55,8 +55,12 @@ public class ClientJaxWS {
 			
 			// Affiche le resultat dans le navigateur web (page HTML)
 			if (choix == 1) {
-				ClientJaxWS.transformAndDisplayRouteTeam(port.getRouteTeamSynchronous(country),country);
-			
+				String htmlPage = port.getRouteTeamSynchronous(country);
+				if(htmlPage.equals("")){
+					System.out.println("Le pays '"+country+"' n'est pas disponible, veuillez saisir le nom du pays (en anglais) ayant participé a la coupe du monde 2014");
+				}else{
+					ClientJaxWS.transformAndDisplayRouteTeam(htmlPage,country);
+				}
 			} 
 			// Envoie le resultat par mail
 			else if (choix == 2) {
@@ -69,7 +73,8 @@ public class ClientJaxWS {
 				
 				/* valeur de retour de la methode */
 				//FIXME, voir si on renvoie qq chose ou pas
-				switch (port.getRouteTeamAsynchronous(country, mail)) {
+				int t = port.getRouteTeamAsynchronous(country, mail);
+				switch (t) {
 					case CORRECT_SEND:
 						System.out.println("envoi de la réponse effectué, veuillez consulter votre boite de reception ("+mail+")");
 						break;	

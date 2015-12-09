@@ -24,6 +24,7 @@ public class FootWorldCupManager {
 	private final String responseQueue = "activemq:foot.responseQueue";
 	private final String requestQueue = "activemq:foot.requestQueue";
 	private CamelContext camelcontext = new DefaultCamelContext();
+	private JmsConsumer consumer;
 
 	// Message Header 
 	private final String countryHeader = "COUNTRY";
@@ -32,8 +33,16 @@ public class FootWorldCupManager {
 	String resultString = "";
 	int resultInt;
 
-	public FootWorldCupManager() {
+	private FootWorldCupManager() {
 		connect();
+	}
+	
+	/** Instance unique pré-initialisée */
+	private static FootWorldCupManager INSTANCE = new FootWorldCupManager();
+ 
+	/** Point d'accès pour l'instance unique du singleton */
+	public static FootWorldCupManager getInstance(){
+		return INSTANCE;
 	}
 
 	public void connect() {
@@ -64,7 +73,12 @@ public class FootWorldCupManager {
 		headers.put(operationNameHeader, "obtenir_parcours_xml");
 		headers.put(countryHeader, teamName);
 		sendMessageWithHeader(teamName,headers);
-		return receiveResponseString(teamName);
+		try {
+			return receiveResponseString(teamName);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
 	}
 
 	/**
@@ -80,7 +94,12 @@ public class FootWorldCupManager {
 		headers.put(countryHeader, teamName);
 		headers.put(mailHeader, mail);
 		sendMessageWithHeader(teamName, headers);
-		return receiveResponseInt(teamName);
+		try {
+			return receiveResponseInt(teamName);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
 	}
 
 	/**
@@ -96,25 +115,38 @@ public class FootWorldCupManager {
 	 * 
 	 * @param teamName
 	 * @return
+	 * @throws Exception 
 	 */
-	public String receiveResponseString(final String teamName){
+	public synchronized String receiveResponseString(final String teamName) throws Exception{
 		JmsEndpoint responseEndPoint = (JmsEndpoint)camelcontext.getEndpoint(responseQueue);		
-		JmsConsumer consumer;
-		try {
-			consumer = responseEndPoint.createConsumer(new Processor() {
-				public void process(Exchange e) throws Exception {
-					if(e.getIn().getHeader(countryHeader).equals(teamName)){
+		consumer = responseEndPoint.createConsumer(new Processor() {
+			public void process(Exchange e) throws Exception {
+				if(e.getIn().getHeader(countryHeader).equals(teamName)){
+					resultString = "";
+//					System.out.println("###resultString : "+resultString);
+					if(!e.getIn().getHeaders().containsKey("ERROR")){
 						resultString = e.getIn().getBody().toString();
+
 					}
-				}			
-			});
-			/* demarrage du consumer pour reception de la reponse */
-			consumer.start();
+//					System.out.println("###resultString : "+resultString);
+					
+					/* Pour notifier la reception bloquante */
+					synchronized (consumer) {
+						consumer.notify();
+					}
+				}
+			}			
+		});
+		/* demarrage du consumer pour reception de la reponse */
+		consumer.start();
 
-		} catch (Exception e) {
-			e.printStackTrace();
+		/* pour réveiller la reception */
+		synchronized (consumer) {
+			consumer.wait();
 		}
-
+		
+		consumer.stop();
+		
 		return resultString;
 	}
 
@@ -122,23 +154,39 @@ public class FootWorldCupManager {
 	 * 
 	 * @param teamName
 	 * @return
+	 * @throws Exception 
 	 */
-	public int receiveResponseInt(final String teamName){
-		JmsEndpoint responseEndPoint = (JmsEndpoint)camelcontext.getEndpoint(responseQueue);			
-		JmsConsumer consumer;
-		try {
-			consumer = responseEndPoint.createConsumer(new Processor() {
-				public void process(Exchange e) throws Exception {
-					if(e.getIn().getHeader(countryHeader).equals(teamName)){
-						resultInt = Integer.parseInt((String) e.getIn().getHeader("STATUS"));
-					}
-				}});
-			
-			/* demarrage du consumer pour reception de la reponse */
-			consumer.start();
-		} catch (Exception e) {
-			e.printStackTrace();
+	public int receiveResponseInt(final String teamName) throws Exception{
+		JmsEndpoint responseEndPoint = (JmsEndpoint)camelcontext.getEndpoint(responseQueue);	
+		
+		consumer = responseEndPoint.createConsumer(new Processor() {
+			public void process(Exchange e) throws Exception {
+				if(e.getIn().getHeader(countryHeader).equals(teamName)){
+					resultInt = 0;
+
+					String status = (String) e.getIn().getExchange().getProperty("STATUS");
+					resultInt = Integer.parseInt(status);
+
+				}
+				
+				/* Pour notifier la reception bloquante */
+				synchronized (consumer) {
+					consumer.notify();
+				}			
+			}
+		});
+		
+		/* demarrage du consumer pour reception de la reponse */
+		consumer.start();
+
+		/* pour réveiller la reception */
+		synchronized (consumer) {
+			consumer.wait();
 		}
+		
+		consumer.stop();
+
 		return resultInt;
 	}
+
 }
