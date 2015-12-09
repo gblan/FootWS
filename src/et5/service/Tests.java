@@ -3,6 +3,7 @@ package et5.service;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import javax.mail.MessagingException;
@@ -46,13 +47,18 @@ public class Tests {
 		
 		endpoint.publish("http://localhost:8090/ws");
 		
-		System.err.println("Saisir (car + return) pour arreter le endpoint ");	
+		System.err.println("Saisir (char + return) pour arreter le endpoint ");	
 		Scanner sc = new Scanner(System.in);
-		sc.next();
-		
-		endpoint.stop();
-		System.out.println("Endpoint stopp� !");
-		sc.close();
+		try{
+			sc.next();
+		}catch(NoSuchElementException e){
+			
+		}finally {
+			endpoint.stop();
+			System.out.println("Endpoint stoppe !");
+			sc.close();			
+		}
+
 	}
 
 }
