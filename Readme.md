@@ -15,6 +15,10 @@ pour voir ce qui se passe sur mon service (affichage continu des logs) :    log:
 pour installer un bundle (le mettre dans deploy)
 pour désinstaller un bundle (le voir dans osgi:list) puis executer osgi:uninstall #id
 
+dans servicemix, modifier le fichier etc/activemq.xml :
+commenter la balise     <!--   <plugins>
+            				<jaasAuthenticationPlugin configuration="karaf" />
+        				</plugins> -->
 
 #URLS ACCESSIBLES
 le WSDL est accessible sur http://localhost:8090/ws?wsdl
