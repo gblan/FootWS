@@ -20,12 +20,12 @@
 		<copy todir="${work}/${bundle}" overwrite="true">
 			<fileset dir="bin">
 				<!-- ONLY THE BUNDLE -->
-				<exclude name="et5/client/**"/>
+				<exclude name="et5/client/**" />
 				<exclude name="example/**" />
 				<!--<exclude name="et5/service/web/**"/>-->
-				<exclude name="*.properties"/>
-				<exclude name="*.xsd"/>
-				<exclude name="*.xslt"/>
+				<exclude name="appliMail*" />
+				<exclude name="*.xsd" />
+				<exclude name="*.xslt" />
 			</fileset>
 		</copy>
 		<copy todir="${work}/${bundle}/OSGI-INF" overwrite="true">
@@ -44,8 +44,7 @@
 				<attribute name="DynamicImport-Package" value="*" />
 			</manifest>
 			<!-- TO INCLUDE REFERENCED JAR -->
-		    <zipgroupfileset dir="${lib.dir}" includes="**/javax.mail-1.5.4.jar" />
-
+			<zipgroupfileset dir="${lib.dir}" includes="**/javax.mail-1.5.4.jar" />
 		</jar>
 		<antcall target="clean">
 		</antcall>
