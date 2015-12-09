@@ -4,6 +4,7 @@
 	<property name="work" value="${basedir}" />
 	<property name="bundle" value="${ant.project.name}" />
 	<property name="main-class" value="et5.client.jaxws.ClientJaxWS" />
+	<property name="lib.dir" value="lib" />
 
 	<target name="all" depends="package" />
 
@@ -38,6 +39,9 @@
 				<attribute name="Bundle-Version" value="1.0.0.0" />
 				<attribute name="DynamicImport-Package" value="*" />
 			</manifest>
+
+			<!-- TO INCLUDE REFERENCED JAR -->
+		    <zipgroupfileset dir="${lib.dir}" includes="**/log4j-1.2.17.jar" />
 		</jar>
 		<antcall target="clean">
 		</antcall>
