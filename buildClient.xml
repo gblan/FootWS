@@ -27,6 +27,12 @@
 				<exclude name="example/**" />
 				<exclude name="*.xsd" />
 				<exclude name="*.properties" />
+				<exclude name="*.xslt" />
+			</fileset>
+		</copy>
+		<copy todir="${work}/${bundle}/resources" overwrite="true">
+			<fileset dir="resources" >
+				<exclude name="*.properties" />
 			</fileset>
 		</copy>
 		<jar destfile="${work}/${bundle}-client.jar" basedir="${work}/${bundle}">
