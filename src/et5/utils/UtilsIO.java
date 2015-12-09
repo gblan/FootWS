@@ -5,7 +5,6 @@ import static java.nio.file.Paths.get;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -31,13 +30,8 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
 
-import et5.service.camel.Log;
-
 public class UtilsIO {
-	//LOCAL
-	//private static final String ROUTE_PATH_TRANSFO_XSLT = "resources/displayHTMLroute.xslt";
-	// DEPLOY
-	private static final String ROUTE_PATH_TRANSFO_XSLT = "deploy/resources/displayHTMLroute.xslt";
+	private static final String ROUTE_PATH_TRANSFO_XSLT = "resources/displayHTMLroute.xslt";
 	private static final Logger logger = Logger.getLogger(UtilsIO.class); 
 
 
@@ -46,15 +40,16 @@ public class UtilsIO {
 	 * @param keyProperty
 	 * @return a property read in the file passed in param, at the key position
 	 *         passed in param
+	 * @throws Exception 
 	 */
-	public static String readPropertyFile(String filename, String keyProperty) {
+	public static String readPropertyFile(String filename, String keyProperty) throws Exception {
 		logger.info("filename : "+filename);
 		Properties prop = new Properties();
 		InputStream input = null;
 		String result = "";
 		try {
 			logger.info("pwd : "+System.getProperty("user.dir"));
-			input = new FileInputStream(filename);
+			input = getResource(filename);
 
 			// load a properties file
 			prop.load(input);
@@ -92,8 +87,9 @@ public class UtilsIO {
 	 * transformation xslt, to transform an XML string to an HTML file with the xslt transfo param
 	 * @param input
 	 * @param output
+	 * @throws Exception 
 	 */
-	public static void routeTransformXMLStringintoHTMLFile(String stringInput, String fileOutput) {
+	public static void routeTransformXMLStringintoHTMLFile(String stringInput, String fileOutput) throws Exception {
 		StreamSource xmlSource = new StreamSource(new StringReader(stringInput));
 		StreamResult outputTarget = new StreamResult(new File(fileOutput));
 		transformXMLIntoHTML(xmlSource, outputTarget, ROUTE_PATH_TRANSFO_XSLT);
@@ -103,8 +99,9 @@ public class UtilsIO {
 	 * 
 	 * transformation xslt, to transform an XML to an HTML string with the xslt transfo param
 	 * @param stringInput
+	 * @throws Exception 
 	 */
-	public static String routeTransformXMLStringIntoHTMLString(String stringInput) {
+	public static String routeTransformXMLStringIntoHTMLString(String stringInput) throws Exception {
 		StreamSource xmlSource = new StreamSource(new StringReader(stringInput));
 		StreamResult outputTarget = new StreamResult(new StringWriter());
 		transformXMLIntoHTML(xmlSource, outputTarget, ROUTE_PATH_TRANSFO_XSLT);
@@ -116,12 +113,15 @@ public class UtilsIO {
 	 * @param output
 	 * @param transfo
 	 * @param xmlSource
+	 * @throws Exception 
 	 */
-	private static void transformXMLIntoHTML(StreamSource xmlSource, StreamResult htmlResult, String transfo) {
+	private static void transformXMLIntoHTML(StreamSource xmlSource, StreamResult htmlResult, String transfo) throws Exception {
 		final String TRANSFORMER_FACTORY_CLASS = "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl";
 
 		TransformerFactory tFactory = TransformerFactory.newInstance(TRANSFORMER_FACTORY_CLASS,null);
-		Source xslSource = new StreamSource(transfo);
+		Source xslSource = new StreamSource(getResource(transfo));
+		logger.info("getResource(transfo) : "+getResource(transfo));
+
 		logger.info("transfo : "+transfo);
 		logger.info("xslSource : "+xslSource.getSystemId());
 		try {
@@ -213,5 +213,11 @@ public class UtilsIO {
 		Marshaller marshaller = context.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 		return marshaller;
+	}
+	
+	public static InputStream getResource(String resource) throws Exception {
+	   ClassLoader cl = Thread.currentThread().getContextClassLoader();
+	   InputStream is = cl.getResourceAsStream(resource);
+	   return is;
 	}
 }

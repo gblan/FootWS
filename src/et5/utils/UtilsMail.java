@@ -18,10 +18,7 @@ import et5.service.utils.SMTPAuthenticator;
  * class utils contains utils static methods
  */
 public class UtilsMail {
-	//LOCAL
-	//private static final String APPLI_PROPERTIES = "resources/appliMail.properties";
-	//DEPLOY
-	private static final String APPLI_PROPERTIES = "deploy/resources/appliMail.properties";
+	private static final String APPLI_PROPERTIES = "resources/appliMail.properties";
 	private static final String EMAIL_PATTERN = 
 			"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -29,11 +26,10 @@ public class UtilsMail {
 	 * @param to
 	 * @param subject
 	 * @param content
-	 * @throws AddressException
-	 * @throws MessagingException
+	 * @throws Exception 
 	 */
 	public static void sendHTMLMailUsingSMTPAppliEmail(String to, String subject,
-			String content) throws AddressException, MessagingException {
+			String content) throws Exception {
 
 		String appliEmail = UtilsIO.readPropertyFile(APPLI_PROPERTIES, "Appli.Email");
 		String appliPassword = UtilsIO.readPropertyFile(APPLI_PROPERTIES,"Appli.Password");
