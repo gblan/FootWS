@@ -29,8 +29,16 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.log4j.Logger;
+
+import et5.service.camel.Log;
+
 public class UtilsIO {
-	private static final String ROUTE_PATH_TRANSFO_XSLT = "resources/displayHTMLroute.xslt";
+	//LOCAL
+	//private static final String ROUTE_PATH_TRANSFO_XSLT = "resources/displayHTMLroute.xslt";
+	// DEPLOY
+	private static final String ROUTE_PATH_TRANSFO_XSLT = "deploy/resources/displayHTMLroute.xslt";
+	private static final Logger logger = Logger.getLogger(UtilsIO.class); 
 
 
 	/**
@@ -40,10 +48,12 @@ public class UtilsIO {
 	 *         passed in param
 	 */
 	public static String readPropertyFile(String filename, String keyProperty) {
+		logger.info("filename : "+filename);
 		Properties prop = new Properties();
 		InputStream input = null;
 		String result = "";
 		try {
+			logger.info("pwd : "+System.getProperty("user.dir"));
 			input = new FileInputStream(filename);
 
 			// load a properties file
@@ -98,7 +108,7 @@ public class UtilsIO {
 		StreamSource xmlSource = new StreamSource(new StringReader(stringInput));
 		StreamResult outputTarget = new StreamResult(new StringWriter());
 		transformXMLIntoHTML(xmlSource, outputTarget, ROUTE_PATH_TRANSFO_XSLT);
-		return outputTarget.toString();
+		return outputTarget.getWriter().toString();
 	}
 		
 	/**
@@ -108,10 +118,15 @@ public class UtilsIO {
 	 * @param xmlSource
 	 */
 	private static void transformXMLIntoHTML(StreamSource xmlSource, StreamResult htmlResult, String transfo) {
-		TransformerFactory tFactory = TransformerFactory.newInstance();
+		final String TRANSFORMER_FACTORY_CLASS = "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl";
+
+		TransformerFactory tFactory = TransformerFactory.newInstance(TRANSFORMER_FACTORY_CLASS,null);
 		Source xslSource = new StreamSource(transfo);
+		logger.info("transfo : "+transfo);
+		logger.info("xslSource : "+xslSource.getSystemId());
 		try {
 			Transformer xml2soap = tFactory.newTransformer(xslSource);
+			logger.info("xml2soap : "+xml2soap);
 			xml2soap.setOutputProperty(OutputKeys.INDENT, "yes");
 			xml2soap.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 			xml2soap.transform(xmlSource, htmlResult);
