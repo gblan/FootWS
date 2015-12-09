@@ -162,13 +162,18 @@ public class FootWorldCupManager {
 		consumer = responseEndPoint.createConsumer(new Processor() {
 			public void process(Exchange e) throws Exception {
 				if(e.getIn().getHeader(countryHeader).equals(teamName)){
-					resultInt = Integer.parseInt((String) e.getIn().getHeader("STATUS"));
+					resultInt = 0;
+
+					String status = (String) e.getIn().getExchange().getProperty("STATUS");
+					resultInt = Integer.parseInt(status);
+
 				}
 				
 				/* Pour notifier la reception bloquante */
 				synchronized (consumer) {
 					consumer.notify();
-				}			}
+				}			
+			}
 		});
 		
 		/* demarrage du consumer pour reception de la reponse */
