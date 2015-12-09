@@ -2,7 +2,6 @@ package et5.service.camel;
 
 import java.io.IOException;
 
-import javax.mail.MessagingException;
 import javax.xml.bind.JAXBException;
 
 import org.apache.camel.Exchange;
@@ -60,7 +59,7 @@ public class Service {
 				String html = UtilsIO.routeTransformXMLStringIntoHTMLString((String) ex.getIn().getBody());
 				UtilsMail.sendHTMLMailUsingSMTPAppliEmail(mail, "route of " + country, html);
 
-			} catch (MessagingException e) {
+			} catch (Exception e) {
 				status = MAIL_TRANSPORT_ERROR;
 			}
 		}
