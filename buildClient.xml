@@ -46,8 +46,6 @@
 				<attribute name="DynamicImport-Package" value="*" />
 			</manifest>
 
-			<!-- TO INCLUDE REFERENCED JAR -->
-		    <zipgroupfileset dir="${lib.dir}" includes="**/log4j-1.2.17.jar" />
 		</jar>
 		<antcall target="clean">
 		</antcall>
