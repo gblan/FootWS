@@ -13,6 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Hashtable;
 import java.util.Properties;
 
 import javax.xml.bind.JAXBContext;
@@ -208,7 +209,14 @@ public class UtilsIO {
 	
 	public static InputStream getResource(String resource) throws Exception {
 	   ClassLoader cl = Thread.currentThread().getContextClassLoader();
-	   InputStream is = cl.getResourceAsStream(resource);
-	   return is;
+	   return cl.getResourceAsStream(resource);
+	}
+
+
+
+	public static Hashtable<?, ?> getHashTableFromProperties(InputStream resource) throws IOException {
+		Properties props = new Properties();
+		props.load(resource);		
+		return props;
 	}
 }
