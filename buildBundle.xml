@@ -22,7 +22,7 @@
 				<!-- ONLY THE BUNDLE -->
 				<exclude name="et5/client/**" />
 				<exclude name="example/**" />
-				<!--<exclude name="et5/service/web/**"/>-->
+				<exclude name="et5/service/web/**"/>
 				<exclude name="appliMail*" />
 				<exclude name="*.xsd" />
 				<exclude name="*.xslt" />
@@ -32,14 +32,16 @@
 			<fileset dir="OSGI-INF" />
 		</copy>
 		<copy todir="${work}/${bundle}/resources" overwrite="true">
-			<fileset dir="resources" />
+			<fileset dir="resources">
+				<exclude name="example/**" />
+			</fileset>
 		</copy>
 		<jar destfile="${work}/${bundle}-bundle.jar" basedir="${work}/${bundle}">
 			<manifest>
 				<attribute name="Bundle-ManifestVersion" value="2" />
 				<attribute name="Bundle-Name" value="${bundle}" />
 				<attribute name="Bundle-SymbolicName" value="${bundle}" />
-				<attribute name="Bundle-Activator" value="${bundleRun}" />
+				<!--<attribute name="Bundle-Activator" value="${bundleRun}" />-->
 				<attribute name="Bundle-Version" value="1.0.0.0" />
 				<attribute name="DynamicImport-Package" value="*" />
 			</manifest>
