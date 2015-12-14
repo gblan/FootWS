@@ -11,12 +11,17 @@ import javax.mail.internet.AddressException;
 import javax.xml.bind.JAXBException;
 import javax.xml.ws.Endpoint;
 
+import org.oorsprong.websamples.ArrayOftLanguage;
+import org.oorsprong.websamples.CapitalCity;
+import org.oorsprong.websamples.CountryInfoService;
+import org.oorsprong.websamples.CountryInfoServiceSoapType;
+import org.oorsprong.websamples.TCountryInfo;
+
 import et5.service.foot.FootServiceManager;
 import et5.service.route.Route;
 import et5.service.web.FootWorldCup;
 import et5.utils.UtilsIO;
 import et5.utils.UtilsMail;
-import eu.dataaccess.footballpool.Info;
 
 /**
  * CLasse de tests
@@ -60,5 +65,5 @@ public class Tests {
 		}
 
 	}
-
+	
 }
