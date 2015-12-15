@@ -1,7 +1,9 @@
 package et5.service.country;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.xml.bind.JAXBException;
 import javax.xml.ws.soap.SOAPFaultException;
 
 import org.oorsprong.websamples.ArrayOftContinent;
@@ -14,6 +16,7 @@ import org.oorsprong.websamples.TLanguage;
 
 import et5.service.country.Country.MeteoLocation;
 import et5.service.weather.WeatherManager;
+import et5.utils.UtilsIO;
 import net.webservicex.GlobalWeather;
 
 public class CountryManager {
@@ -21,10 +24,26 @@ public class CountryManager {
 	private static String NO_COUNTRY_FOUND="No country found by that name";
 	
 	/**
+	 * @param country
+	 * @return String route of a team passed in parameter
+	 * @throws JAXBException
+	 * @throws IOException
+	 */
+	public String obtenirInformationPays(String countryName) throws JAXBException, IOException {
+		/* first letter uppercase and other letters lowercase*/
+		try{
+			Country country = getCountryInformation(countryName);
+			return UtilsIO.marshalToString("et5.service.country", country);
+		}catch(SOAPFaultException e){
+			return "";
+		}
+	}
+	
+	/**
 	 * @param countryName
 	 * @return all information about a country (continent, capital city, phone code, flag, languages)
 	 */
-	public Country getCountryInformation(String countryName) throws IllegalArgumentException{
+	private Country getCountryInformation(String countryName) throws IllegalArgumentException{
 		Country country = new Country(); 
 		CountryInfoService cis = new CountryInfoService();
 		CountryInfoServiceSoapType portCountry = cis.getCountryInfoServiceSoap();
