@@ -11,22 +11,27 @@
 				<element name="currencyExchange" type="string" />
 				<element name="phoneCodePrefix" type="string" />
 				<element name="flagURL" type="string" />
-				<sequence>
-							<element name="languages" type="string" maxOccurs="unbounded"/>							
-				</sequence>
+				
+				<element name="languages">
+					<complexType>
+						<sequence>
+							<element name="language" type="string" maxOccurs="unbounded"/>
+						</sequence>
+					</complexType>
+				</element>
 							
 				<element name="meteoLocation">
-				<complexType>
-					<sequence>
-						<element name="Location" type="string" />
-						<element name="Time" type="string" />
-						<element name="Wind" type="string" />
-						<element name="skyConditions" type="string" />
-						<element name="Temperature" type="string" />
-						<element name="RelativeHumidity" type="string" />
-					</sequence>
-				</complexType>
-			</element>
+					<complexType>
+						<sequence>
+							<element name="Location" type="string" />
+							<element name="Time" type="string" />
+							<element name="Wind" type="string" />
+							<element name="skyConditions" type="string" />
+							<element name="Temperature" type="string" />
+							<element name="RelativeHumidity" type="string" />
+						</sequence>
+					</complexType>
+				</element>
 			</sequence>
 		</complexType>
 	</element>

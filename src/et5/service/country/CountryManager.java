@@ -78,7 +78,7 @@ public class CountryManager {
 		country.setFlagURL(tinfo.getSCountryFlag());
 
 		for (TLanguage language : tinfo.getLanguages().getTLanguage()) {
-			country.getLanguages().add(language.getSName());
+			country.getLanguages().getLanguage().add(language.getSName());
 
 		}
 		
