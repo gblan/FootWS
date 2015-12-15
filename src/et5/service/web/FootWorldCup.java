@@ -32,5 +32,17 @@ public class FootWorldCup {
 		FootWorldCupManager fwcm = FootWorldCupManager.getInstance();
 		return fwcm.getRouteTeamAsynchronous(teamName, mail);
 	}
-		
+	
+	@WebMethod
+	public String getCountryInformation(String countryName){
+		FootWorldCupManager fwcm = FootWorldCupManager.getInstance();
+		String result = "";
+		try {
+			result = fwcm.getCountryInfoSynchronous(countryName);
+		} catch (Exception e) {
+			System.err.println("Erreur lors de la récuperation des informations du pays [" + countryName + "] en mode synchrone. " + e.getMessage());
+			e.printStackTrace();
+		}
+		return result;
+	}
 }
