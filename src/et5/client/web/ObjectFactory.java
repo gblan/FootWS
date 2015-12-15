@@ -1,3 +1,4 @@
+
 package et5.client.web;
 
 import javax.xml.bind.JAXBElement;
@@ -23,10 +24,12 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _GetRouteTeamSynchronousResponse_QNAME = new QName("http://web.client.et5/", "getRouteTeamSynchronousResponse");
-    private final static QName _GetRouteTeamAsynchronous_QNAME = new QName("http://web.client.et5/", "getRouteTeamAsynchronous");
-    private final static QName _GetRouteTeamAsynchronousResponse_QNAME = new QName("http://web.client.et5/", "getRouteTeamAsynchronousResponse");
-    private final static QName _GetRouteTeamSynchronous_QNAME = new QName("http://web.client.et5/", "getRouteTeamSynchronous");
+    private final static QName _GetRouteTeamSynchronousResponse_QNAME = new QName("http://web.service.et5/", "getRouteTeamSynchronousResponse");
+    private final static QName _GetCountryInformationResponse_QNAME = new QName("http://web.service.et5/", "getCountryInformationResponse");
+    private final static QName _GetRouteTeamAsynchronous_QNAME = new QName("http://web.service.et5/", "getRouteTeamAsynchronous");
+    private final static QName _GetCountryInformation_QNAME = new QName("http://web.service.et5/", "getCountryInformation");
+    private final static QName _GetRouteTeamAsynchronousResponse_QNAME = new QName("http://web.service.et5/", "getRouteTeamAsynchronousResponse");
+    private final static QName _GetRouteTeamSynchronous_QNAME = new QName("http://web.service.et5/", "getRouteTeamSynchronous");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: et5.service.web
@@ -60,6 +63,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetCountryInformation }
+     * 
+     */
+    public GetCountryInformation createGetCountryInformation() {
+        return new GetCountryInformation();
+    }
+
+    /**
      * Create an instance of {@link GetRouteTeamAsynchronous }
      * 
      */
@@ -68,28 +79,54 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetCountryInformationResponse }
+     * 
+     */
+    public GetCountryInformationResponse createGetCountryInformationResponse() {
+        return new GetCountryInformationResponse();
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetRouteTeamSynchronousResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://web.client.et5/", name = "getRouteTeamSynchronousResponse")
+    @XmlElementDecl(namespace = "http://web.service.et5/", name = "getRouteTeamSynchronousResponse")
     public JAXBElement<GetRouteTeamSynchronousResponse> createGetRouteTeamSynchronousResponse(GetRouteTeamSynchronousResponse value) {
         return new JAXBElement<GetRouteTeamSynchronousResponse>(_GetRouteTeamSynchronousResponse_QNAME, GetRouteTeamSynchronousResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetCountryInformationResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://web.service.et5/", name = "getCountryInformationResponse")
+    public JAXBElement<GetCountryInformationResponse> createGetCountryInformationResponse(GetCountryInformationResponse value) {
+        return new JAXBElement<GetCountryInformationResponse>(_GetCountryInformationResponse_QNAME, GetCountryInformationResponse.class, null, value);
     }
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetRouteTeamAsynchronous }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://web.client.et5/", name = "getRouteTeamAsynchronous")
+    @XmlElementDecl(namespace = "http://web.service.et5/", name = "getRouteTeamAsynchronous")
     public JAXBElement<GetRouteTeamAsynchronous> createGetRouteTeamAsynchronous(GetRouteTeamAsynchronous value) {
         return new JAXBElement<GetRouteTeamAsynchronous>(_GetRouteTeamAsynchronous_QNAME, GetRouteTeamAsynchronous.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetCountryInformation }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://web.service.et5/", name = "getCountryInformation")
+    public JAXBElement<GetCountryInformation> createGetCountryInformation(GetCountryInformation value) {
+        return new JAXBElement<GetCountryInformation>(_GetCountryInformation_QNAME, GetCountryInformation.class, null, value);
     }
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetRouteTeamAsynchronousResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://web.client.et5/", name = "getRouteTeamAsynchronousResponse")
+    @XmlElementDecl(namespace = "http://web.service.et5/", name = "getRouteTeamAsynchronousResponse")
     public JAXBElement<GetRouteTeamAsynchronousResponse> createGetRouteTeamAsynchronousResponse(GetRouteTeamAsynchronousResponse value) {
         return new JAXBElement<GetRouteTeamAsynchronousResponse>(_GetRouteTeamAsynchronousResponse_QNAME, GetRouteTeamAsynchronousResponse.class, null, value);
     }
@@ -98,7 +135,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link GetRouteTeamSynchronous }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://web.client.et5/", name = "getRouteTeamSynchronous")
+    @XmlElementDecl(namespace = "http://web.service.et5/", name = "getRouteTeamSynchronous")
     public JAXBElement<GetRouteTeamSynchronous> createGetRouteTeamSynchronous(GetRouteTeamSynchronous value) {
         return new JAXBElement<GetRouteTeamSynchronous>(_GetRouteTeamSynchronous_QNAME, GetRouteTeamSynchronous.class, null, value);
     }
