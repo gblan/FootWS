@@ -1,6 +1,8 @@
 #Projet WebService utilisant Apache Servicemix
 
 
+#Commande pour autogénerer des classes enveloppe a partir d'un fichier xsd
+xjc -d src file.xsd
 #Transformation XSLT
 Ne pas oublier de laisser namespace = "" dans la classe package-info.java;
 ceci pour éviter les problèmes lors de la transformation du xml en html
@@ -29,3 +31,37 @@ la webconsole de activemq est accessible sur http://localhost:8181/activemqweb/q
 service : java -jar FootWS-service.jar
 
 client : java -jar FootWS-client.jar
+
+#Pays accessibles
+Spain
+Germany
+Argentina
+Colombia
+Belgium
+Uruguay
+Switzerland
+Brazil
+Chile 
+Ecuador 
+Côte D'Ivoire (Ivory Coast) 
+Ghana 
+Algeria 
+Nigeria 
+Cameroon 
+Italy 
+United States 
+Mexico 
+Costa Rica 
+Honduras 
+Iran 
+Japan 
+South Korea 
+Australia 
+United Kingdom
+Bosnia & Herzegovina 
+Croatia 
+France 
+Greece 
+Netherland 
+Portugal 
+Russia 
