@@ -6,6 +6,7 @@ import javax.xml.bind.JAXBException;
 
 import org.apache.camel.Exchange;
 
+import et5.service.country.CountryManager;
 import et5.service.foot.FootServiceManager;
 import et5.utils.UtilsIO;
 import et5.utils.UtilsMail;
@@ -71,4 +72,26 @@ public class Service {
 		ex.getOut().setHeader("STATUS", status);
 
 	}
+	
+	public void obtenirInformationPays(Exchange ex) throws JAXBException, IOException {
+		CountryManager cm = new CountryManager();
+		String informationPaysXML = cm.obtenirInformationPays((String) ex.getIn().getHeader("COUNTRY"));
+
+		/* if error */
+		if(informationPaysXML.equals("")){
+			ex.getOut().setHeader("ERROR", "COUNTRY_NOT_FOUND");
+		}else{
+		/* data */
+			ex.getOut().setBody(informationPaysXML);
+		}
+	
+		/* set headers from incoming message */
+		ex.getOut().setHeader("COUNTRY", (String) ex.getIn().getHeader("COUNTRY"));
+
+		if(ex.getIn().getHeader("MAIL") != null){
+			ex.getOut().setHeader("MAIL", (String) ex.getIn().getHeader("MAIL"));
+
+		}
+	}
+	
 }
