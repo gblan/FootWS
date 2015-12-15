@@ -38,6 +38,7 @@ import org.xml.sax.SAXException;
 
 public class UtilsIO {
 	private static final String ROUTE_PATH_TRANSFO_XSLT = "resources/displayHTMLroute.xslt";
+	private static final String COUNTRY_INFOS_TRANSFO_XSLT = "resources/displayHTMLcountryInfos.xslt";
 	// private static final Logger logger = Logger.getLogger(UtilsIO.class);
 
 	/**
@@ -85,8 +86,7 @@ public class UtilsIO {
 
 	/**
 	 * 
-	 * transformation xslt, to transform an XML string to an HTML file with the
-	 * xslt transfo param
+	 * transformation xslt, to transform an XML string to an HTML file with the ROUTE_PATH_TRANSFO_XSLT
 	 * 
 	 * @param input
 	 * @param output
@@ -96,6 +96,20 @@ public class UtilsIO {
 		StreamSource xmlSource = new StreamSource(new StringReader(stringInput));
 		StreamResult outputTarget = new StreamResult(new File(fileOutput));
 		transformXMLIntoHTML(xmlSource, outputTarget, ROUTE_PATH_TRANSFO_XSLT);
+	}
+	
+	/**
+	 * 
+	 * transformation xslt, to transform an XML string to an HTML file with the COUNTRY_INFOS_TRANSFO_XSLT
+	 * 
+	 * @param input
+	 * @param output
+	 * @throws Exception
+	 */
+	public static void countryInfosTransformXMLStringintoHTMLFile(String stringInput, String fileOutput) throws Exception {
+		StreamSource xmlSource = new StreamSource(new StringReader(stringInput));
+		StreamResult outputTarget = new StreamResult(new File(fileOutput));
+		transformXMLIntoHTML(xmlSource, outputTarget, COUNTRY_INFOS_TRANSFO_XSLT);
 	}
 
 	/**
