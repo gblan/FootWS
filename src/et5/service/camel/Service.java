@@ -88,10 +88,6 @@ public class Service {
 		/* set headers from incoming message */
 		ex.getOut().setHeader("COUNTRY", (String) ex.getIn().getHeader("COUNTRY"));
 
-		if(ex.getIn().getHeader("MAIL") != null){
-			ex.getOut().setHeader("MAIL", (String) ex.getIn().getHeader("MAIL"));
-
-		}
 	}
 	
 }
