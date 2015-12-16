@@ -37,7 +37,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class UtilsIO {
-	private static final String ROUTE_PATH_TRANSFO_XSLT = "resources/displayHTMLroute.xslt";
+	private static final String ROUTE_PATH_TRANSFO_XSLT = "resources/displayHTMLroute_bootstrap.xslt";
 	private static final String COUNTRY_INFOS_TRANSFO_XSLT = "resources/displayHTMLcountryInfos.xslt";
 	// private static final Logger logger = Logger.getLogger(UtilsIO.class);
 
