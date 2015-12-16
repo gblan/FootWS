@@ -32,6 +32,21 @@ public interface FootWorldCup {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getRouteTeamSynchronous", targetNamespace = "http://web.service.et5/", className = "et5.service.web.GetRouteTeamSynchronous")
+    @ResponseWrapper(localName = "getRouteTeamSynchronousResponse", targetNamespace = "http://web.service.et5/", className = "et5.service.web.GetRouteTeamSynchronousResponse")
+    @Action(input = "http://web.service.et5/FootWorldCup/getRouteTeamSynchronousRequest", output = "http://web.service.et5/FootWorldCup/getRouteTeamSynchronousResponse")
+    public String getRouteTeamSynchronous(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "getCountryInformation", targetNamespace = "http://web.service.et5/", className = "et5.service.web.GetCountryInformation")
     @ResponseWrapper(localName = "getCountryInformationResponse", targetNamespace = "http://web.service.et5/", className = "et5.service.web.GetCountryInformationResponse")
     @Action(input = "http://web.service.et5/FootWorldCup/getCountryInformationRequest", output = "http://web.service.et5/FootWorldCup/getCountryInformationResponse")
@@ -43,33 +58,15 @@ public interface FootWorldCup {
      * 
      * @param arg1
      * @param arg0
-     * @return
-     *     returns int
      */
     @WebMethod
-    @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "getRouteTeamAsynchronous", targetNamespace = "http://web.service.et5/", className = "et5.service.web.GetRouteTeamAsynchronous")
     @ResponseWrapper(localName = "getRouteTeamAsynchronousResponse", targetNamespace = "http://web.service.et5/", className = "et5.service.web.GetRouteTeamAsynchronousResponse")
     @Action(input = "http://web.service.et5/FootWorldCup/getRouteTeamAsynchronousRequest", output = "http://web.service.et5/FootWorldCup/getRouteTeamAsynchronousResponse")
-    public int getRouteTeamAsynchronous(
+    public void getRouteTeamAsynchronous(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0,
         @WebParam(name = "arg1", targetNamespace = "")
         String arg1);
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getRouteTeamSynchronous", targetNamespace = "http://web.service.et5/", className = "et5.service.web.GetRouteTeamSynchronous")
-    @ResponseWrapper(localName = "getRouteTeamSynchronousResponse", targetNamespace = "http://web.service.et5/", className = "et5.service.web.GetRouteTeamSynchronousResponse")
-    @Action(input = "http://web.service.et5/FootWorldCup/getRouteTeamSynchronousRequest", output = "http://web.service.et5/FootWorldCup/getRouteTeamSynchronousResponse")
-    public String getRouteTeamSynchronous(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0);
 
 }
