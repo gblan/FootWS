@@ -51,7 +51,7 @@ public class ClientJaxWS {
 				// 1. Demande le pays
 				System.out.println("Saisir un pays (en Anglais) :");
 				String countryInput = scanner.nextLine().trim().toLowerCase();
-				country = countryInput.substring(0, 1).toUpperCase() + countryInput.substring(1).toLowerCase();
+				country = UtilsIO.parseCountryName(countryInput);
 				// 2. Ajoute les elements necessaires pour distinguer le choix
 				// de l'utilisateur
 				System.out.println("Veuillez maintenant choisir le mode de reception :");

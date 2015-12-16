@@ -274,4 +274,19 @@ public class UtilsIO {
 		}
 
 	}
+	
+	/**
+	 * @param countryName
+	 * @return a format string with first letter in Uppercase and all other letters in lowercase
+	 * example : united states -> United States
+	 */
+	public static String parseCountryName(String countryName){
+		String[] tabCountryName = countryName.split(" ");
+		StringBuilder result = new StringBuilder();
+		for (int i = 0; i < tabCountryName.length; i++) {
+			result.append(tabCountryName[i].substring(0, 1).toUpperCase() + tabCountryName[i].substring(1).toLowerCase()+" ");
+		}
+		
+		return result.toString();
+	}
 }
