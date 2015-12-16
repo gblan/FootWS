@@ -20,7 +20,7 @@
 		<h3> Phone prefix of <xsl:value-of select="countryName" /> : <xsl:value-of select="phoneCodePrefix" /></h3>
 
 		<h2> Main language(s) </h2>
-		<xsl:for-each select="languages/language">
+		<xsl:for-each select="languages">
 			<h4> <xsl:value-of select="language" /> , </h4>
 		</xsl:for-each>
 		
@@ -29,16 +29,16 @@
 			<tr bgcolor="#9acd32">
 				<th>Time</th>
 				<th>Wind</th>
-				<th>skyConditions</th>
+				<th>Sky Conditions</th>
 				<th>Temperature</th>
-				<th>RelativeHumidity</th>				
+				<th>Relative Humidity</th>				
 			</tr>
 			<tr>
-				<th><xsl:value-of select="Time" /></th>
-				<th><xsl:value-of select="Wind" /></th>
-				<th><xsl:value-of select="skyConditions" /></th>
-				<th><xsl:value-of select="Temperature" /></th>
-				<th><xsl:value-of select="RelativeHumidity" /></th>
+				<th><xsl:value-of select="meteoLocation/Time" /></th>
+				<th><xsl:value-of select="meteoLocation/Wind" /></th>
+				<th><xsl:value-of select="meteoLocation/skyConditions" /></th>
+				<th><xsl:value-of select="meteoLocation/Temperature" /></th>
+				<th><xsl:value-of select="meteoLocation/RelativeHumidity" /></th>
 			</tr>	
 		</table>
 	</body>
