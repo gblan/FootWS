@@ -3,6 +3,7 @@ package et5.service.web;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.jms.ConnectionFactory;
 import javax.naming.Context;
@@ -36,10 +37,10 @@ public class FootWorldCupManager {
 	private FootWorldCupManager() {
 		connect();
 	}
-	
+
 	/** Instance unique pré-initialisée */
 	private static FootWorldCupManager INSTANCE = new FootWorldCupManager();
- 
+
 	/** Point d'accès pour l'instance unique du singleton */
 	public static FootWorldCupManager getInstance(){
 		return INSTANCE;
@@ -48,7 +49,24 @@ public class FootWorldCupManager {
 	public void connect() {
 		try {
 			// Creation d'un contexte JNDI
-			Context jndiContext = new InitialContext();
+			//Context jndiContext = new InitialContext();
+
+			/*Hashtable<String, String> env = new Hashtable<String, String>() {{
+				put(Context.INITIAL_CONTEXT_FACTORY, "org.apache.activemq.jndi.ActiveMQInitialContextFactory");
+				put(Context.PROVIDER_URL, "tcp://localhost:61616");
+				put("connectionFactoryNames", "connectionFactory");
+				put("queue.requestQueue", "foot.requestQueue");
+				put("queue.responseQueue", "foot.responseQueue");
+			}};
+			*/
+			Properties env = new Properties();
+			env.setProperty(Context.INITIAL_CONTEXT_FACTORY, "org.apache.activemq.jndi.ActiveMQInitialContextFactory");
+			env.setProperty(Context.PROVIDER_URL, "tcp://localhost:61616");
+			env.setProperty("connectionFactoryNames", "connectionFactory");
+			env.setProperty("queue.requestQueue", "foot.requestQueue");
+			env.setProperty("queue.responseQueue", "foot.responseQueue");			
+
+			Context jndiContext = new InitialContext(env);
 
 			// Lookup de la fabrique de connexion et de la destination
 			ConnectionFactory connectionFactory = (ConnectionFactory) jndiContext.lookup("connectionFactory");
@@ -123,13 +141,13 @@ public class FootWorldCupManager {
 			public void process(Exchange e) throws Exception {
 				if(e.getIn().getHeader(countryHeader).equals(teamName)){
 					resultString = "";
-//					System.out.println("###resultString : "+resultString);
+					//					System.out.println("###resultString : "+resultString);
 					if(!e.getIn().getHeaders().containsKey("ERROR")){
 						resultString = e.getIn().getBody().toString();
 
 					}
-//					System.out.println("###resultString : "+resultString);
-					
+					//					System.out.println("###resultString : "+resultString);
+
 					/* Pour notifier la reception bloquante */
 					synchronized (consumer) {
 						consumer.notify();
@@ -144,9 +162,9 @@ public class FootWorldCupManager {
 		synchronized (consumer) {
 			consumer.wait();
 		}
-		
+
 		consumer.stop();
-		
+
 		return resultString;
 	}
 
@@ -158,7 +176,7 @@ public class FootWorldCupManager {
 	 */
 	public int receiveResponseInt(final String teamName) throws Exception{
 		JmsEndpoint responseEndPoint = (JmsEndpoint)camelcontext.getEndpoint(responseQueue);	
-		
+
 		consumer = responseEndPoint.createConsumer(new Processor() {
 			public void process(Exchange e) throws Exception {
 				if(e.getIn().getHeader(countryHeader).equals(teamName)){
@@ -168,14 +186,14 @@ public class FootWorldCupManager {
 					resultInt = status;
 
 				}
-				
+
 				/* Pour notifier la reception bloquante */
 				synchronized (consumer) {
 					consumer.notify();
 				}			
 			}
 		});
-		
+
 		/* demarrage du consumer pour reception de la reponse */
 		consumer.start();
 
@@ -183,7 +201,7 @@ public class FootWorldCupManager {
 		synchronized (consumer) {
 			consumer.wait();
 		}
-		
+
 		consumer.stop();
 
 		return resultInt;

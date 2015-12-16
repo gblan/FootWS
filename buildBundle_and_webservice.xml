@@ -1,51 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- Script ANT de déploiement pour ServiceMix -->
 <project name="FootWS_bundle_and_webservice" default="all" basedir=".">
-	<property name="work" value="${basedir}" />
-	<property name="bundle" value="${ant.project.name}" />
-	<property name="lib.dir" value="lib" />
+    <property name="work" value="${basedir}" />
+    <property name="bundle" value="${ant.project.name}" />
+    <property name="bundleRun" value="et5.service.web.ActivatorWS" />
+    <property name="lib.dir" value="lib" />
 
-	<target name="all" depends="package" />
+    <target name="all" depends="package" />
 
-	<target name="clean" description="delete temporary files/directory">
-		<delete dir="${work}/${bundle}" />
-	</target>
+    <target name="clean" description="delete temporary files/directory">
+        <delete dir="${work}/${bundle}" />
+    </target>
 
-	<target name="init" description="create temporary directory">
-		<mkdir dir="${work}/${bundle}" />
-	</target>
+    <target name="init" description="create temporary directory">
+        <mkdir dir="${work}/${bundle}" />
+    </target>
 
-	<target name="package" depends="clean,init">
-		<copy todir="${work}/${bundle}" overwrite="true">
-			<fileset dir="bin">
-				<!-- ONLY THE BUNDLE -->
-				<exclude name="et5/client/**"/>
-				<exclude name="example/**" />
-				<exclude name="*.properties"/>
-				<exclude name="*.xsd"/>
-				<exclude name="*.xslt"/>
-			</fileset>
-		</copy>
-		<copy todir="${work}/${bundle}/OSGI-INF" overwrite="true">
-			<fileset dir="OSGI-INF" />
-		</copy>
-		<copy todir="${work}/${bundle}/resources" overwrite="true">
-			<fileset dir="resources" />
-		</copy>
-		<jar destfile="${work}/${bundle}-bundle.jar" basedir="${work}/${bundle}">
-			<manifest>
-				<attribute name="Bundle-ManifestVersion" value="2" />
-				<attribute name="Bundle-Name" value="${bundle}" />
-				<attribute name="Bundle-SymbolicName" value="${bundle}" />
-				<attribute name="Bundle-Version" value="1.0.0.0" />
-				<attribute name="DynamicImport-Package" value="*" />
-			</manifest>
-			<!-- TO INCLUDE REFERENCED JAR -->
-		    <zipgroupfileset dir="${lib.dir}" includes="**/javax.mail-1.5.4.jar" />
+    <target name="package" depends="clean,init">
+        <copy todir="${work}/${bundle}" overwrite="true">
+            <fileset dir="bin">
+                <!-- ONLY THE BUNDLE -->
+                <exclude name="et5/client/**" />
+                <exclude name="example/**" />
+                <exclude name="*appliMail*" />
+                <exclude name="*.xsd" />
+                <exclude name="*.xslt" />
+            </fileset>
+        </copy>
+        <copy todir="${work}/${bundle}/OSGI-INF" overwrite="true">
+            <fileset dir="OSGI-INF" />
+        </copy>
+        <copy todir="${work}/${bundle}/resources" overwrite="true">
+            <fileset dir="resources">
+                <exclude name="example/**" />
+            </fileset>
+        </copy>
+        <jar destfile="${work}/${bundle}-bundle.jar" basedir="${work}/${bundle}">
+            <manifest>
+                <attribute name="Bundle-ManifestVersion" value="2" />
+                <attribute name="Bundle-Name" value="${bundle}" />
+                <attribute name="Bundle-SymbolicName" value="${bundle}" />
+                <attribute name="Bundle-Activator" value="${bundleRun}" />
+                <attribute name="Bundle-Version" value="1.0.0.0" />
+                <attribute name="DynamicImport-Package" value="*" />
+            </manifest>
+            <!-- TO INCLUDE REFERENCED JAR -->
+            <zipgroupfileset dir="${lib.dir}" includes="**/javax.mail-1.5.4.jar" />
 
-		</jar>
-		<antcall target="clean">
-		</antcall>
-	</target>
+        </jar>
+        <antcall target="clean">
+        </antcall>
+    </target>
 
-</project>
+</project> 
