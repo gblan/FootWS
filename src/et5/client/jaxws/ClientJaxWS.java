@@ -62,7 +62,7 @@ public class ClientJaxWS {
 
 				// Affiche le resultat dans le navigateur web (page HTML)
 				if (choix == 1) {
-					String htmlPage = port.getCountryInformation(country);
+					String htmlPage = port.getRouteTeamSynchronous(country);
 					if (htmlPage.equals("")) {
 						System.out.println("Le pays '" + country
 								+ "' n'est pas disponible, veuillez saisir le nom du pays (en anglais) ayant participe a la coupe du monde 2014");
