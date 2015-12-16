@@ -73,7 +73,7 @@ public class WeatherManager {
 				xmlWeather = soap.getWeather(listCityCountry.get(0), country);
 			}
 		}
-		System.out.println(xmlWeather);
+//		System.out.println(xmlWeather);
 		Document doc = UtilsIO.loadXML(xmlWeather);		
 
 		meteoLocation.setLocation(doc.getElementsByTagName("Location").item(0).getTextContent());
