@@ -29,14 +29,22 @@
 			<tr bgcolor="#9acd32">
 				<th>Time</th>
 				<th>Wind</th>
-				<th>Sky Conditions</th>
+				<xsl:choose>
+				    <xsl:when test="meteoLocation/skyConditions != null">
+						<th>Sky Conditions</th>
+				    </xsl:when>
+				</xsl:choose>				
 				<th>Temperature</th>
 				<th>Relative Humidity</th>				
 			</tr>
 			<tr>
 				<th><xsl:value-of select="meteoLocation/Time" /></th>
 				<th><xsl:value-of select="meteoLocation/Wind" /></th>
-				<th><xsl:value-of select="meteoLocation/skyConditions" /></th>
+				<xsl:choose>
+				    <xsl:when test="meteoLocation/skyConditions != null">
+						<th><xsl:value-of select="meteoLocation/skyConditions" /></th>
+				    </xsl:when>
+				</xsl:choose>					
 				<th><xsl:value-of select="meteoLocation/Temperature" /></th>
 				<th><xsl:value-of select="meteoLocation/RelativeHumidity" /></th>
 			</tr>	
