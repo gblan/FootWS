@@ -113,57 +113,66 @@
 							</div>
 
 							<div>
-								<div style="display: inline-block;" class="panel panel-default">
-									<div class="panel-heading" style="text-align: center;">Strikers</div>
-									<table class="table">
-										<tbody>
-											<xsl:for-each select="goals/goal">
-												<tr>
-													<td>
-														<xsl:value-of select="minutes" />'
-													</td>
-													<td>
-														<xsl:value-of select="goalTeam" />
-													</td>
-													<td>
-														(<xsl:value-of select="striker" />)
-													</td>
-												</tr>
-											</xsl:for-each>
-										</tbody>
-									</table>
-								</div>
-								<div style="display: inline-block;" class="panel panel-default">
-									<div class="panel-heading" style="text-align: center;">Cards</div>
-									<table class="table">
-										<tbody>
-											<xsl:for-each select="cards/card">
-												<tr>
-													<xsl:choose>
-														<xsl:when test="color='Yellow Card'">
+								<xsl:choose>
+									<xsl:when test="goals/goal">
+									<div style="display: inline-block;" class="panel panel-default">
+										<div class="panel-heading" style="text-align: center;">Strikers</div>
+										<table class="table">
+											<tbody>
+												<xsl:for-each select="goals/goal">
+													<tr>
+														<th>
+															<xsl:value-of select="minutes" />'
+														</th>
+														<td>
+															<xsl:value-of select="goalTeam" />
+														</td>
+														<td>
+															(<xsl:value-of select="striker" />)
+														</td>
+													</tr>
+												</xsl:for-each>
+											</tbody>
+										</table>
+									</div>
+									</xsl:when>
+								</xsl:choose>
+								
+								<xsl:choose>
+									<xsl:when test="cards/card">
+										<div style="display: inline-block;" class="panel panel-default">
+											<div class="panel-heading" style="text-align: center;">Cards</div>
+											<table class="table">
+												<tbody>
+													<xsl:for-each select="cards/card">
+														<tr>
+															<xsl:choose>
+																<xsl:when test="color='Yellow Card'">
+																	<td>
+																		<span class="glyphicon glyphicon-stop" aria-hidden="true"
+																			style="color:yellow;"></span>
+																	</td>
+																</xsl:when>
+																<xsl:otherwise>
+																	<td>
+																		<span class="glyphicon glyphicon-stop" aria-hidden="true"
+																			style="color:red"></span>
+																	</td>
+																</xsl:otherwise>
+															</xsl:choose>
 															<td>
-																<span class="glyphicon glyphicon-stop" aria-hidden="true"
-																	style="color:yellow;"></span>
+																<xsl:value-of select="player" />
 															</td>
-														</xsl:when>
-														<xsl:otherwise>
 															<td>
-																<span class="glyphicon glyphicon-stop" aria-hidden="true"
-																	style="color:red"></span>
+																(<xsl:value-of select="goalTeam" />)
 															</td>
-														</xsl:otherwise>
-													</xsl:choose>
-													<td>
-														<xsl:value-of select="player" />
-													</td>
-													<td>
-														(<xsl:value-of select="goalTeam" />)
-													</td>
-												</tr>
-											</xsl:for-each>
-										</tbody>
-									</table>
-								</div>
+														</tr>
+													</xsl:for-each>
+												</tbody>
+											</table>
+										</div>
+									</xsl:when>
+								</xsl:choose>
 							</div>
 						</div>
 					</xsl:for-each>
