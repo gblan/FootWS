@@ -287,6 +287,6 @@ public class UtilsIO {
 			result.append(tabCountryName[i].substring(0, 1).toUpperCase() + tabCountryName[i].substring(1).toLowerCase()+" ");
 		}
 		
-		return result.toString();
+		return result.toString().trim();
 	}
 }
