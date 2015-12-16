@@ -106,17 +106,16 @@ public class FootWorldCupManager {
 	 * @param mail
 	 * @return int
 	 */
-	public int getRouteTeamAsynchronous(String teamName, String mail) {
+	public void getRouteTeamAsynchronous(String teamName, String mail) {
 		Map<String, Object> headers = new HashMap<String,Object>();
 		headers.put(operationNameHeader, "obtenir_parcours_mail");
 		headers.put(countryHeader, teamName);
 		headers.put(mailHeader, mail);
 		sendMessageWithHeader(teamName, headers);
 		try {
-			return receiveResponseInt(teamName);
+			receiveResponseInt(teamName);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return -1;
 		}
 	}
 	
@@ -208,9 +207,9 @@ public class FootWorldCupManager {
 				}
 
 				/* Pour notifier la reception bloquante */
-				synchronized (consumer) {
-					consumer.notify();
-				}			
+//				synchronized (consumer) {
+//					consumer.notify();
+//				}			
 			}
 		});
 
@@ -218,9 +217,9 @@ public class FootWorldCupManager {
 		consumer.start();
 
 		/* pour réveiller la reception */
-		synchronized (consumer) {
-			consumer.wait();
-		}
+//		synchronized (consumer) {
+//			consumer.wait();
+//		}
 
 		consumer.stop();
 
