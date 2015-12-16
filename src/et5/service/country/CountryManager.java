@@ -1,6 +1,7 @@
 package et5.service.country;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.xml.bind.JAXBException;
@@ -30,12 +31,12 @@ public class CountryManager {
 	 * @throws JAXBException
 	 * @throws IOException
 	 */
-	public String obtenirInformationPays(String countryName) throws JAXBException, IOException {
+	public String obtenirInformationPays(String countryName) throws JAXBException {
 		/* first letter uppercase and other letters lowercase*/
 		try{
 			Country country = getCountryInformation(countryName);
 			return UtilsIO.marshalToString("et5.service.country", country);
-		}catch(SOAPFaultException e){
+		}catch(IllegalArgumentException | UnsupportedEncodingException e){
 			return "";
 		}
 	}
