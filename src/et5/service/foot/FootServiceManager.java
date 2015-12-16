@@ -149,7 +149,9 @@ public class FootServiceManager {
 
 		/* Stade on maps */
 		match.setStadiumMapsURL(gameInfo.getStadiumInfo().getSGoogleMapsURL());
-
+		match.setStadiumName(gameInfo.getStadiumInfo().getSStadiumName());
+		match.setStadiumCity(gameInfo.getStadiumInfo().getSCityName());
+		
 		/* goals */
 		ArrayOftGoal listTgoals = gameInfo.getGoals();
 		List<TGoal> listGoal = listTgoals.getTGoal();
