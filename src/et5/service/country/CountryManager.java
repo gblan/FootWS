@@ -14,6 +14,7 @@ import org.oorsprong.websamples.TCountryCodeAndName;
 import org.oorsprong.websamples.TCountryInfo;
 import org.oorsprong.websamples.TLanguage;
 
+import et5.service.country.Country.Languages;
 import et5.service.country.Country.MeteoLocation;
 import et5.service.weather.WeatherManager;
 import et5.utils.UtilsIO;
@@ -47,11 +48,6 @@ public class CountryManager {
 		Country country = new Country(); 
 		CountryInfoService cis = new CountryInfoService();
 		CountryInfoServiceSoapType portCountry = cis.getCountryInfoServiceSoap();
-		List<TCountryCodeAndName> tmp = portCountry.listOfCountryNamesByName().getTCountryCodeAndName();
-		
-		for (TCountryCodeAndName tCountryCodeAndName : tmp) {
-			System.out.println(tCountryCodeAndName.getSName());
-		}
 		
 		String countryISOCode = portCountry.countryISOCode(countryName);
 		if (countryISOCode.equals(NO_COUNTRY_FOUND)){
@@ -77,11 +73,12 @@ public class CountryManager {
 		country.setPhoneCodePrefix(tinfo.getSPhoneCode());
 		country.setFlagURL(tinfo.getSCountryFlag());
 
+		Languages languages = new Languages();
 		for (TLanguage language : tinfo.getLanguages().getTLanguage()) {
-			country.getLanguages().getLanguage().add(language.getSName());
-
+			languages.getLanguage().add(language.getSName());
 		}
-		
+		country.setLanguages(languages);
+
 		/* meteo */
 		WeatherManager wm = new WeatherManager(new GlobalWeather());
 		MeteoLocation meteo;
