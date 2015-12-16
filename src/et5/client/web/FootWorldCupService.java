@@ -1,3 +1,4 @@
+
 package et5.client.web;
 
 import java.net.MalformedURLException;

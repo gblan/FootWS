@@ -26,7 +26,8 @@
 					<th>Team 1</th>
 					<th>Score</th>
 					<th>Team 2</th>
-					<th>Stadium link</th>
+					<th>Stadium Name</th>
+					<th>Stadium Link</th>
 				</tr>
 				<tr>
 					<th><xsl:value-of select="idMatch" /></th>
@@ -34,8 +35,10 @@
 					<th><xsl:value-of select="team1" /></th>
 					<th><xsl:value-of select="finalScore" /></th>
 					<th><xsl:value-of select="team2" /></th>
+					<th><xsl:value-of select="stadiumName" /> (<xsl:value-of select="stadiumCity" />)</th>
+					
 					<xsl:variable name="stadiumMapsURL"><xsl:value-of select="stadiumMapsURL"/></xsl:variable>
-					<th><a href="{$stadiumMapsURL}">Maps of the stadium</a></th>
+					<th><a href="{$stadiumMapsURL}">Google Maps of the stadium</a></th>
 				</tr>				
 			</table>			
 			<h4> Goals </h4>

@@ -4,7 +4,7 @@
 	<import file="taskdef.xml" />
 
 	<!-- MY WEB SERVICE -->
-	<property name="wsdl" value="http://localhost:8090/ws?wsdl" />
+	<!--<property name="wsdl" value="http://localhost:8090/ws?wsdl" />-->
 
 	<!-- FOOTBALLPOOL-->
 	<!--<property name="wsdl" value="http://footballpool.dataaccess.eu/data/info.wso?wsdl" />-->
@@ -12,9 +12,15 @@
 	<!-- GET COUNTRY -->
 	<!--<property name="wsdl" value="http://www.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?WSDL" />-->
 
+	<!-- GET WEATHER -->
+	<property name="wsdl" value="http://www.webservicex.net/globalweather.asmx?WSDL" />
+
 	<target name="generateProxy">
-		<wsimport debug="false" verbose="false" destdir="./bin" keep="true" sourcedestdir="./src/et5/client" wsdl="${wsdl}">
-			<!--<wsimport debug="false" verbose="false" destdir="./bin" keep="true" sourcedestdir="./src" wsdl="${wsdl}">-->
+			<!-- LOCAL WSDL -->
+			<!--<wsimport debug="false" verbose="false" destdir="./bin" keep="true" sourcedestdir="./src/et5/client" wsdl="${wsdl}">-->
+		
+			<!-- REMOTE WSDL -->
+			<wsimport debug="false" verbose="false" destdir="./bin" keep="true" sourcedestdir="./src" wsdl="${wsdl}">
 		</wsimport>
 	</target>
 </project>

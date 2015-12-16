@@ -1,0 +1,22 @@
+<country>
+	<countryName>Japan</countryName>
+	<continent>Asia</continent>
+	<continentCode>AS</continentCode>
+	<administrativeCapital>Tokyo</administrativeCapital>
+	<currencyExchange>JPY</currencyExchange>
+	<phoneCodePrefix>81</phoneCodePrefix>
+	<flagURL>http://www.oorsprong.org/WebSamples.CountryInfo/Images/Japan.jpg
+	</flagURL>
+	<languages>
+		<language>Japanese</language>
+	</languages>
+	<meteoLocation>
+		<Location>Tokyo International Airport, Japan (RJTT) 35-33N 139-47E 8M
+		</Location>
+		<Time>Dec 16, 2015 - 02:30 AM EST / 2015.12.16 0730 UTC</Time>
+		<Wind> from the N (350 degrees) at 8 MPH (7 KT):0</Wind>
+		<skyConditions> mostly clear</skyConditions>
+		<Temperature> 60 F (16 C)</Temperature>
+		<RelativeHumidity> 72%</RelativeHumidity>
+	</meteoLocation>
+</country>

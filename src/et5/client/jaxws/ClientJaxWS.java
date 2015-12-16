@@ -55,9 +55,9 @@ public class ClientJaxWS {
 				// 2. Ajoute les elements necessaires pour distinguer le choix
 				// de l'utilisateur
 				System.out.println("Veuillez maintenant choisir le mode de reception :");
-				System.out.println(
-						"   Pour le mode synchrone (reception par file JMS puis affichage navigateur) \t Tapez 1");
-				System.out.println("   Pour le mode asynchrone (reception par e-mail) \t\t Tapez 2");
+				System.out.println("\tPour le mode synchrone (reception par file JMS puis affichage navigateur) \t Tapez 1");
+				System.out.println("\tPour le mode asynchrone (reception par e-mail) \t\t Tapez 2");
+				System.out.println("\tPour obtenir uniquement des informations sur le pays \t\t Tapez 3");
 				int choix = Integer.parseInt(scanner.nextLine().trim());
 
 				// Affiche le resultat dans le navigateur web (page HTML)
@@ -98,6 +98,14 @@ public class ClientJaxWS {
 						break;
 					}
 
+				} else if(choix == 3){
+					String htmlPage = port.getCountryInformation(country);
+					if (htmlPage.equals("")) {
+						System.out.println("Le pays '" + country
+								+ "' n'est pas disponible, veuillez saisir le nom du pays (en anglais) ayant participe a la coupe du monde 2014");
+					} else {
+						ClientJaxWS.transformAndDisplayCountryInformation(htmlPage, country);
+					}
 				} else {
 					System.out.println("Erreur dans la saisie! Veuillez saisir 1 ou 2.");
 				}
@@ -157,6 +165,23 @@ public class ClientJaxWS {
 		try {
 			temp = File.createTempFile("result-" + country, ".html");
 			UtilsIO.routeTransformXMLStringintoHTMLFile(xmlContent, temp.getAbsolutePath());
+			openDefaultBrowser(temp);
+
+		} catch (Exception e) {
+			System.err.println("Impossible to transform and display the route team. " + e.getMessage());
+		} finally {
+			if (temp != null)
+				temp.deleteOnExit(); // delete the file when the JVM terminates
+										// itself
+		}
+	}
+	
+
+	private static void transformAndDisplayCountryInformation(String xmlContent, String country) {
+		File temp = null;
+		try {
+			temp = File.createTempFile("infos-" + country, ".html");
+			UtilsIO.countryInfosTransformXMLStringintoHTMLFile(xmlContent, temp.getAbsolutePath());
 			openDefaultBrowser(temp);
 
 		} catch (Exception e) {

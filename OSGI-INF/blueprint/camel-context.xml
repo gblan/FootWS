@@ -26,6 +26,13 @@
 					<bean ref="service" method="obtenirParcours" />					
 					<bean ref="log" method="log" />					
 	    		</when>
+	    		<!-- SYNCHRONE XML RESULT -->
+	    		<when>
+					<simple>${headers.OPERATION_NAME} == 'obtenir_information_pays'</simple>
+					<bean ref="log" method="log" />					
+					<bean ref="service" method="obtenirInformationPays" />					
+					<bean ref="log" method="log" />					
+	    		</when>	    		
     		</choice>
     		<to uri="activemq:queue:foot.responseQueue"/>
     	</route>   	

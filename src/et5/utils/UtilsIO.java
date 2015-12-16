@@ -20,6 +20,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -29,17 +32,21 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
 public class UtilsIO {
 	private static final String ROUTE_PATH_TRANSFO_XSLT = "resources/displayHTMLroute.xslt";
-//	private static final Logger logger = Logger.getLogger(UtilsIO.class); 
-
+	private static final String COUNTRY_INFOS_TRANSFO_XSLT = "resources/displayHTMLcountryInfos.xslt";
+	// private static final Logger logger = Logger.getLogger(UtilsIO.class);
 
 	/**
 	 * @param filename
 	 * @param keyProperty
 	 * @return a property read in the file passed in param, at the key position
 	 *         passed in param
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static String readPropertyFile(String filename, String keyProperty) throws Exception {
 		Properties prop = new Properties();
@@ -68,35 +75,50 @@ public class UtilsIO {
 		return result;
 	}
 
-	
-	
 	/**
 	 * @param filePath
 	 * @return String of the file content in param
 	 * @throws IOException
 	 */
-	public static String fileToString(String filePath) throws IOException{
+	public static String fileToString(String filePath) throws IOException {
 		return new String(readAllBytes(get(filePath)));
 	}
-	
+
 	/**
 	 * 
-	 * transformation xslt, to transform an XML string to an HTML file with the xslt transfo param
+	 * transformation xslt, to transform an XML string to an HTML file with the ROUTE_PATH_TRANSFO_XSLT
+	 * 
 	 * @param input
 	 * @param output
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static void routeTransformXMLStringintoHTMLFile(String stringInput, String fileOutput) throws Exception {
 		StreamSource xmlSource = new StreamSource(new StringReader(stringInput));
 		StreamResult outputTarget = new StreamResult(new File(fileOutput));
 		transformXMLIntoHTML(xmlSource, outputTarget, ROUTE_PATH_TRANSFO_XSLT);
 	}
+	
+	/**
+	 * 
+	 * transformation xslt, to transform an XML string to an HTML file with the COUNTRY_INFOS_TRANSFO_XSLT
+	 * 
+	 * @param input
+	 * @param output
+	 * @throws Exception
+	 */
+	public static void countryInfosTransformXMLStringintoHTMLFile(String stringInput, String fileOutput) throws Exception {
+		StreamSource xmlSource = new StreamSource(new StringReader(stringInput));
+		StreamResult outputTarget = new StreamResult(new File(fileOutput));
+		transformXMLIntoHTML(xmlSource, outputTarget, COUNTRY_INFOS_TRANSFO_XSLT);
+	}
 
 	/**
 	 * 
-	 * transformation xslt, to transform an XML to an HTML string with the xslt transfo param
+	 * transformation xslt, to transform an XML to an HTML string with the xslt
+	 * transfo param
+	 * 
 	 * @param stringInput
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static String routeTransformXMLStringIntoHTMLString(String stringInput) throws Exception {
 		StreamSource xmlSource = new StreamSource(new StringReader(stringInput));
@@ -104,18 +126,21 @@ public class UtilsIO {
 		transformXMLIntoHTML(xmlSource, outputTarget, ROUTE_PATH_TRANSFO_XSLT);
 		return outputTarget.getWriter().toString();
 	}
-		
+
 	/**
-	 * transformation xslt, to transform an xmlSource with the xslt transfo param
+	 * transformation xslt, to transform an xmlSource with the xslt transfo
+	 * param
+	 * 
 	 * @param output
 	 * @param transfo
 	 * @param xmlSource
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	private static void transformXMLIntoHTML(StreamSource xmlSource, StreamResult htmlResult, String transfo) throws Exception {
+	private static void transformXMLIntoHTML(StreamSource xmlSource, StreamResult htmlResult, String transfo)
+			throws Exception {
 		final String TRANSFORMER_FACTORY_CLASS = "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl";
 
-		TransformerFactory tFactory = TransformerFactory.newInstance(TRANSFORMER_FACTORY_CLASS,null);
+		TransformerFactory tFactory = TransformerFactory.newInstance(TRANSFORMER_FACTORY_CLASS, null);
 		Source xslSource = new StreamSource(getResource(transfo));
 		try {
 			Transformer xml2soap = tFactory.newTransformer(xslSource);
@@ -143,80 +168,110 @@ public class UtilsIO {
 	/**
 	 * @param packageName
 	 * @param pathToXmlFile
-	 * @return Object corresponding to the XMLfile param , having a XML schema and a XML description at the packageName param
+	 * @return Object corresponding to the XMLfile param , having a XML schema
+	 *         and a XML description at the packageName param
 	 * @throws JAXBException
 	 */
-	public static Object unmarshalFromFile(String packageName, String pathToXmlFile) throws JAXBException{
+	public static Object unmarshalFromFile(String packageName, String pathToXmlFile) throws JAXBException {
 		return UtilsIO.unmarshaller(packageName).unmarshal(new File(pathToXmlFile));
 	}
-	
+
 	/**
 	 * @param packageName
 	 * @param inputStream
-	 * @return Object corresponding to the XML string param , having a XML schema and a XML description at the packageName param
+	 * @return Object corresponding to the XML string param , having a XML
+	 *         schema and a XML description at the packageName param
 	 * @throws JAXBException
 	 */
-	public static Object unmarshalFromString(String packageName, InputStream inputStream) throws JAXBException{
+	public static Object unmarshalFromString(String packageName, InputStream inputStream) throws JAXBException {
 		return UtilsIO.unmarshaller(packageName).unmarshal(inputStream);
 	}
-	
+
 	/**
 	 * @param packageName
 	 * @return unmarshaller
 	 * @throws JAXBException
 	 */
-	private static Unmarshaller unmarshaller(String packageName) throws JAXBException{
+	private static Unmarshaller unmarshaller(String packageName) throws JAXBException {
 		JAXBContext context = JAXBContext.newInstance(packageName);
 		return context.createUnmarshaller();
 	}
 
-	
 	/**
-	 * output an XML file at the newFile param, corresponding to the obj param, and with the XMLSchema and the XMLDescription at the packageName param
+	 * output an XML file at the newFile param, corresponding to the obj param,
+	 * and with the XMLSchema and the XMLDescription at the packageName param
+	 * 
 	 * @param packageName
 	 * @param obj
 	 * @param newFile
 	 * @throws JAXBException
 	 */
-	public static void marshalToFile(String packageName, Object obj, String newFile) throws JAXBException{
+	public static void marshalToFile(String packageName, Object obj, String newFile) throws JAXBException {
 		marshaller(packageName).marshal(obj, new File(newFile));
 	}
-	
+
 	/**
 	 * @param packageName
 	 * @param obj
-	 * @return xml string correspondind to the obj in param and with the XMLSchema and the XMLDescription at the packageName param
+	 * @return xml string correspondind to the obj in param and with the
+	 *         XMLSchema and the XMLDescription at the packageName param
 	 * @throws JAXBException
 	 * @throws UnsupportedEncodingException
 	 */
-	public static String marshalToString(String packageName, Object obj) throws JAXBException, UnsupportedEncodingException{
+	public static String marshalToString(String packageName, Object obj)
+			throws JAXBException, UnsupportedEncodingException {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		marshaller(packageName).marshal(obj, os);
 		return new String(os.toByteArray(), "UTF-8");
 	}
-	
+
 	/**
 	 * @param packageName
 	 * @return marshaller
 	 * @throws JAXBException
 	 */
-	private static Marshaller marshaller(String packageName) throws JAXBException{
+	private static Marshaller marshaller(String packageName) throws JAXBException {
 		JAXBContext context = JAXBContext.newInstance(packageName);
 		Marshaller marshaller = context.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 		return marshaller;
 	}
-	
+
+	/**
+	 * @param resource
+	 * @return inputStream to file in the packaged jar
+	 * @throws Exception
+	 */
 	public static InputStream getResource(String resource) throws Exception {
-	   ClassLoader cl = Thread.currentThread().getContextClassLoader();
-	   return cl.getResourceAsStream(resource);
+		ClassLoader cl = Thread.currentThread().getContextClassLoader();
+		return cl.getResourceAsStream(resource);
 	}
 
-
-
+	/**
+	 * @param resource
+	 * @return hashtable from properties
+	 * @throws IOException
+	 */
 	public static Hashtable<?, ?> getHashTableFromProperties(InputStream resource) throws IOException {
 		Properties props = new Properties();
-		props.load(resource);		
+		props.load(resource);
 		return props;
+	}
+
+	/**
+	 * @param xml
+	 * @return Document file from xml string passed in parameter
+	 */
+	public static Document loadXML(String xml) {
+		DocumentBuilderFactory fctr = DocumentBuilderFactory.newInstance();
+		DocumentBuilder bldr = null;
+		try {
+			bldr = fctr.newDocumentBuilder();
+			InputSource insrc = new InputSource(new StringReader(xml));
+			return bldr.parse(insrc);
+		} catch (ParserConfigurationException | IOException | SAXException e) {
+			return bldr.newDocument();
+		}
+
 	}
 }

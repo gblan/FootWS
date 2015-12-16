@@ -119,6 +119,26 @@ public class FootWorldCupManager {
 			return -1;
 		}
 	}
+	
+	/**
+	 * @param teamName
+	 * @return XML -> to string via JMS
+	 * @throws IOException
+	 * @throws JAXBException
+	 * 
+	 */
+	public String getCountryInfoSynchronous(String countryInfo) throws IOException, JAXBException {
+		Map<String, Object> headers = new HashMap<String,Object>();
+		headers.put(operationNameHeader, "obtenir_information_pays");
+		headers.put(countryHeader, countryInfo);
+		sendMessageWithHeader(countryInfo,headers);
+		try {
+			return receiveResponseString(countryInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
 
 	/**
 	 * @param message

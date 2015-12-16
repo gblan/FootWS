@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.service.et5/country"
+	xmlns:tns="http://www.service.et5/route" elementFormDefault="qualified">
+	<element name="country">
+		<complexType>
+			<sequence>
+				<element name="countryName" type="string" />
+				<element name="continent" type="string" />
+				<element name="continentCode" type="string" />
+				<element name="administrativeCapital" type="string" />
+				<element name="currencyExchange" type="string" />
+				<element name="phoneCodePrefix" type="string" />
+				<element name="flagURL" type="string" />
+				
+				<element name="languages">
+					<complexType>
+						<sequence>
+							<element name="language" type="string" maxOccurs="unbounded"/>
+						</sequence>
+					</complexType>
+				</element>
+							
+				<element name="meteoLocation">
+					<complexType>
+						<sequence>
+							<element name="Location" type="string" />
+							<element name="Time" type="string" />
+							<element name="Wind" type="string" />
+							<element name="skyConditions" type="string" />
+							<element name="Temperature" type="string" />
+							<element name="RelativeHumidity" type="string" />
+						</sequence>
+					</complexType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+</schema>
