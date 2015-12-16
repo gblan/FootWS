@@ -81,23 +81,25 @@ public class ClientJaxWS {
 
 					/* valeur de retour de la methode */
 					// FIXME, voir si on renvoie qq chose ou pas
-					int t = port.getRouteTeamAsynchronous(country, mail);
-					switch (t) {
-					case CORRECT_SEND:
-						System.out.println("envoi de la reponse effectue, veuillez consulter votre boite de reception ("
-								+ mail + ")");
-						break;
-					case MAIL_FORMAT_ERROR:
-						System.out.println("mauvais format de l'e-mail, veuillez reessayer");
-						break;
-					case MAIL_TRANSPORT_ERROR:
-						System.out.println("erreur de transmission de l'e-mail, veuillez reessayer");
-						break;
-
-					default:
-						break;
-					}
-
+					port.getRouteTeamAsynchronous(country, mail);
+//					int t = port.getRouteTeamAsynchronous(country, mail);
+//					switch (t) {
+//					case CORRECT_SEND:
+//						System.out.println("envoi de la reponse effectue, veuillez consulter votre boite de reception ("
+//								+ mail + ")");
+//						break;
+//					case MAIL_FORMAT_ERROR:
+//						System.out.println("mauvais format de l'e-mail, veuillez reessayer");
+//						break;
+//					case MAIL_TRANSPORT_ERROR:
+//						System.out.println("erreur de transmission de l'e-mail, veuillez reessayer");
+//						break;
+//
+//					default:
+//						break;
+//					}
+					System.out.println("envoi de la reponse effectue, veuillez consulter votre boite de reception ("
+					+ mail + ")");
 				} else if(choix == 3){
 					String htmlPage = port.getCountryInformation(country);
 					if (htmlPage.equals("")) {
