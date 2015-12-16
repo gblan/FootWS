@@ -63,17 +63,15 @@ public class WeatherManager {
 			
 			if(!cityFound && listCityCountry.size()>0){
 				city = listCityCountry.get(0);
-			}else{
+			}else if(listCityCountry.size()==0) {
 				throw new IllegalAccessException("No weather available");
 			}
-
 			xmlWeather = soap.getWeather(city, country);
 			
 			if(xmlWeather.equals("Data Not Found")){
 				xmlWeather = soap.getWeather(listCityCountry.get(0), country);
 			}
 		}
-//		System.out.println(xmlWeather);
 		Document doc = UtilsIO.loadXML(xmlWeather);		
 
 		meteoLocation.setLocation(doc.getElementsByTagName("Location").item(0).getTextContent());
