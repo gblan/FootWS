@@ -41,27 +41,27 @@ Belgium
 Uruguay
 Switzerland
 Brazil
-Chile 
-Ecuador 
-Côte D'Ivoire (Ivory Coast) 
-Ghana 
-Algeria 
-Nigeria 
-Cameroon 
-Italy 
-United States 
-Mexico 
-Costa Rica 
-Honduras 
-Iran 
-Japan 
-South Korea 
-Australia 
+Chile
+Ecuador
+Côte D'Ivoire (Ivory Coast)
+Ghana
+Algeria
+Nigeria
+Cameroon
+Italy
+United States
+Mexico
+Costa Rica
+Honduras
+Iran
+Japan
+South Korea
+Australia
 United Kingdom
-Bosnia & Herzegovina 
-Croatia 
-France 
-Greece 
-Netherland 
-Portugal 
-Russia 
+Bosnia & Herzegovina
+Croatia
+France
+Greece
+Netherland
+Portugal
+Russia
