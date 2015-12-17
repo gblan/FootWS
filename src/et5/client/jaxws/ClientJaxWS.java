@@ -56,8 +56,8 @@ public class ClientJaxWS {
 				// de l'utilisateur
 				System.out.println("Veuillez maintenant choisir le mode de reception :");
 				System.out.println("\tPour le mode synchrone (reception par file JMS puis affichage navigateur) \t Tapez 1");
-				System.out.println("\tPour le mode asynchrone (reception par e-mail) \t\t Tapez 2");
-				System.out.println("\tPour obtenir uniquement des informations sur le pays \t\t Tapez 3");
+				System.out.println("\tPour le mode asynchrone (reception par e-mail) \t\t\t\t\t Tapez 2");
+				System.out.println("\tPour obtenir uniquement des informations sur le pays \t\t\t\t Tapez 3");
 				int choix = Integer.parseInt(scanner.nextLine().trim());
 
 				// Affiche le resultat dans le navigateur web (page HTML)
@@ -98,7 +98,7 @@ public class ClientJaxWS {
 //					default:
 //						break;
 //					}
-					System.out.println("envoi de la reponse effectue, veuillez consulter votre boite de reception ("
+					System.out.println("Vous recevrez la reponse dans quelques instants sur votre boite de reception ("
 					+ mail + ")");
 				} else if(choix == 3){
 					String htmlPage = port.getCountryInformation(country);
