@@ -22,7 +22,7 @@ public class ActivatorWS implements BundleActivator{
 		MYHASH. put("queue.requestQueue","foot.requestQueue");
 		MYHASH.  put("queue.responseQueue","foot.responseQueue");
 				
-		System.out.println("\n\n MyHASH : "+MYHASH.toString());
+//		System.out.println("\n\n MyHASH : "+MYHASH.toString());
 
 		/* put jndi.properties into bundle INFORMATIONS */
 		context.registerService(Service.class.getName(), new Service(), MYHASH);
