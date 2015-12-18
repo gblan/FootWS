@@ -3,18 +3,14 @@ package et5.service.web;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
-import javax.jms.ConnectionFactory;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.xml.bind.JAXBException;
 
+import org.apache.activemq.camel.component.ActiveMQComponent;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.ProducerTemplate;
-import org.apache.camel.component.jms.JmsComponent;
 import org.apache.camel.component.jms.JmsConsumer;
 import org.apache.camel.component.jms.JmsEndpoint;
 import org.apache.camel.impl.DefaultCamelContext;
@@ -46,33 +42,25 @@ public class FootWorldCupManager {
 		return INSTANCE;
 	}
 
+	/**
+	 * WARNING : 
+	 * for external deployment (1 bundle jar and 1 service jar), use camelcontext.start
+	 * for bundle deployment (1 bundle jar with activator), use only activemq component)
+	 */
 	public void connect() {
 		try {
-			// Creation d'un contexte JNDI
-			//Context jndiContext = new InitialContext();
-
-			/*Hashtable<String, String> env = new Hashtable<String, String>() {{
-				put(Context.INITIAL_CONTEXT_FACTORY, "org.apache.activemq.jndi.ActiveMQInitialContextFactory");
-				put(Context.PROVIDER_URL, "tcp://localhost:61616");
-				put("connectionFactoryNames", "connectionFactory");
-				put("queue.requestQueue", "foot.requestQueue");
-				put("queue.responseQueue", "foot.responseQueue");
-			}};
-			*/
-			Properties env = new Properties();
-			env.setProperty(Context.INITIAL_CONTEXT_FACTORY, "org.apache.activemq.jndi.ActiveMQInitialContextFactory");
-			env.setProperty(Context.PROVIDER_URL, "tcp://localhost:61616");
-			env.setProperty("connectionFactoryNames", "connectionFactory");
-			env.setProperty("queue.requestQueue", "foot.requestQueue");
-			env.setProperty("queue.responseQueue", "foot.responseQueue");			
-
-			Context jndiContext = new InitialContext(env);
-
-			// Lookup de la fabrique de connexion et de la destination
-			ConnectionFactory connectionFactory = (ConnectionFactory) jndiContext.lookup("connectionFactory");
-			camelcontext.addComponent("jms-test", JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
-
-			camelcontext.start();
+			/* FOR external deployment */
+			
+//			// Creation d'un contexte JNDI
+//			Context jndiContext = new InitialContext();
+//		
+//			// Lookup de la fabrique de connexion et de la destination
+//			ConnectionFactory connectionFactory = (ConnectionFactory) jndiContext.lookup("connectionFactory");
+//			camelcontext.addComponent("jms-test", JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
+//			camelcontext.start();
+			
+			/* For bundle deployment ONLY */
+			camelcontext.addComponent("activemq", new ActiveMQComponent());
 		} catch (Exception e) {
 			System.err.println("Impossible de se connecter JNDI/JMS : " + e.getMessage());
 			e.printStackTrace();
