@@ -30,7 +30,9 @@
 			</fileset>
 		</copy>
 		<copy todir="${work}/${bundle}/resources" overwrite="true">
-			<fileset dir="resources" />
+			<fileset dir="resources">
+				<exclude name="*.properties" />
+			</fileset>
 		</copy>
 		<jar destfile="${work}/${bundle}-client.jar" basedir="${work}/${bundle}">
 			<manifest>
