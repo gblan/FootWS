@@ -22,8 +22,7 @@
 				<!-- ONLY THE BUNDLE -->
 				<exclude name="et5/client/**" />
 				<exclude name="example/**" />
-				<exclude name="et5/service/web/**"/>
-				<exclude name="appliMail*" />
+				<exclude name="*appliMail*" />
 				<exclude name="*.xsd" />
 				<exclude name="*.xslt" />
 			</fileset>
@@ -41,7 +40,7 @@
 				<attribute name="Bundle-ManifestVersion" value="2" />
 				<attribute name="Bundle-Name" value="${bundle}" />
 				<attribute name="Bundle-SymbolicName" value="${bundle}" />
-				<!--<attribute name="Bundle-Activator" value="${bundleRun}" />-->
+				<attribute name="Bundle-Activator" value="${bundleRun}" />
 				<attribute name="Bundle-Version" value="1.0.0.0" />
 				<attribute name="DynamicImport-Package" value="*" />
 			</manifest>
@@ -51,5 +50,4 @@
 		<antcall target="clean">
 		</antcall>
 	</target>
-
 </project>
